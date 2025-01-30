@@ -30,6 +30,14 @@ show_reading_time: false
     </div>
   </a>
 
+  <a href="{{site.baseurl}}/student/assign-grades" class="toolkit-button" data-description="Grade the submissions you are assigned to." data-authors="Author: Alex Johnson">
+    <img src="{{site.baseurl}}/images/toolkit-nav-buttons/studentgrader.png" alt="Grading" />
+    <span class="button-name">Assignment Grader</span>
+    <div class="description">
+      <p>Grade the assignments you are set to grade and send a grade request to Mr. Mortensen.</p>
+    </div>
+  </a>
+
   <a href="{{site.baseurl}}/student/seedtracker" class="toolkit-button" data-description="Do you want to request seed? This will allow you to do so." data-authors="Author: Alex Johnson">
     <img src="{{site.baseurl}}/images/toolkit-nav-buttons/seedtracker.png" alt="Seed Tracker" />
     <span class="button-name">Seed Tracker</span>
