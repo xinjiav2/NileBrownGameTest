@@ -119,19 +119,12 @@ title: Stocks Game
         <button class="simulate-button" onclick="submitStocks()">Submit Stocks</button>
     </div>
     <script type="module">
-    // import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
-    const javaURI = "http://localhost:8085";
-
+    import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
     window.javaURI = javaURI; // Make sure javaURI is accessible globally
-</script>
-
-    <script>
     const STOCK_API = "https://nitdpython.stu.nighthawkcodingsociety.com/api/stocks/price_five_years_ago/";
     let balance = 10000;
     let userStocks = {};
-
     document.getElementById("moneyDisplay").textContent = `Balance: $${balance.toFixed(2)}`;
-
     async function getStockPrice(symbol) {
         try {
             const response = await fetch(`${STOCK_API}${symbol}`);
@@ -143,33 +136,27 @@ title: Stocks Game
             return null;
         }
     }
-
     async function addStock() {
         const stockSymbol = document.getElementById("stockSearch").value.trim().toUpperCase();
         const quantity = parseInt(document.getElementById("stockQuantity").value.trim(), 10);
-        
         if (!stockSymbol || isNaN(quantity) || quantity <= 0) {
             alert("Enter a valid stock symbol and quantity.");
             return;
         }
-
         const stockPrice = await getStockPrice(stockSymbol);
         if (stockPrice === null) {
             alert("Stock not found.");
             return;
         }
-
         const totalCost = stockPrice * quantity;
         if (totalCost > balance) {
             alert("Insufficient funds!");
             return;
         }
-
         balance -= totalCost;
         userStocks[stockSymbol] = (userStocks[stockSymbol] || 0) + quantity;
         updateUI();
     }
-
     function removeStock(symbol) {
         if (!userStocks[symbol]) return;
         getStockPrice(symbol).then(stockPrice => {
@@ -178,7 +165,6 @@ title: Stocks Game
             updateUI();
         });
     }
-
     function updateUI() {
         document.getElementById("moneyDisplay").textContent = `Balance: $${balance.toFixed(2)}`;
         const table = document.getElementById("stockTable");
@@ -190,7 +176,6 @@ title: Stocks Game
                 <th>Action</th>
             </tr>
         `;
-
         Object.keys(userStocks).forEach(symbol => {
             getStockPrice(symbol).then(price => {
                 const row = document.createElement("tr");
@@ -204,15 +189,35 @@ title: Stocks Game
             });
         });
     }
-
+    function getCredentialsJava() {
+        const URL = javaURI + '/api/person/get';
+        return fetch(URL, fetchOptions)
+            .then(response => {
+                if (response.status !== 200) {
+                    console.error("HTTP status code: " + response.status);
+                    return null;
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data === null) return null;
+                console.log(data);
+                return data;
+            })
+            .catch(err => {
+                console.error("Fetch error: ", err);
+                return null;
+            });
+    }
     async function submitStocks() {
         const stockList = Object.entries(userStocks).map(([symbol, quantity]) => ({
             stockSymbol: symbol,
             quantity: quantity
         }));      
-        const payload = { username: "toby@gmail.com", stocks: stockList };       
+         const credentials = await getCredentialsJava(); // Get user data
+        const email = credentials?.email; // Extract email
+        const payload = { username: email, stocks: stockList };       
         console.log("Submitting payload:", JSON.stringify(payload, null, 2));       
-
         try {
             const response = await fetch(`${javaURI}/stocks/table/simulateStocks`, {
                 method: "POST",
@@ -221,21 +226,17 @@ title: Stocks Game
                 },
                 body: JSON.stringify(payload)
             });     
-
             const result = await response.text(); // Log raw response
             console.log("Server response:", result);        
-
             if (!response.ok) {
                 alert("Error submitting stocks: " + result);
                 return;
             }        
-
             alert("Stocks successfully purchased!");
         } catch (err) {
             console.error("Stock purchase error:", err);
         }
     }
-
     // Make functions globally available
     window.addStock = addStock;
     window.removeStock = removeStock;
