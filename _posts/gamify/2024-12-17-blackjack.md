@@ -57,15 +57,13 @@ permalink: /gamify/blackjack
         <p id="gameStatus" class="error"></p>
         <h2>Balance: <span id="balance">$1000</span></h2>
     </div>
-
-    <script>
-        const API_URL = "http://localhost:8085/api/blackjack";
+    <script type="module">
+        import {javaURI, fetchOptions } from '{(site.baseurl)}/assets/js/api/config.js';
+        const API_URL = `${javaURI}/api/blackjack`;
         let balance = 1000;
-
         function updateBetDisplay() {
-            document.getElementById("betValue").innerText = `$${document.getElementById("betAmount").value}`;
+            document.getElementById("betValue").innerText = `${document.getElementById("betAmount").value}`;
         }
-
         document.getElementById("startGame").addEventListener("click", async function () {
             try {
                 const bet = parseInt(document.getElementById("betAmount").value);
@@ -73,32 +71,26 @@ permalink: /gamify/blackjack
                     document.getElementById("gameStatus").innerText = "Insufficient balance!";
                     return;
                 }
-
                 const response = await fetch(`${API_URL}/start?bet=${bet}`, { method: "POST" });
                 if (!response.ok) throw new Error("Failed to start game.");
-
                 const data = await response.json();
                 updateUI(data, bet);
-
                 document.getElementById("hit").disabled = false;
                 document.getElementById("stand").disabled = false;
             } catch (error) {
                 document.getElementById("gameStatus").innerText = error.message;
             }
         });
-
         document.getElementById("hit").addEventListener("click", async function () {
             try {
                 const response = await fetch(`${API_URL}/hit`, { method: "POST" });
                 if (!response.ok) throw new Error("Failed to hit.");
-
                 const data = await response.json();
                 updateUI(data);
             } catch (error) {
                 document.getElementById("gameStatus").innerText = error.message;
             }
         });
-
         document.getElementById("stand").addEventListener("click", async function () {
             try {
                 const response = await fetch(`${API_URL}/stand`, { method: "POST" });
