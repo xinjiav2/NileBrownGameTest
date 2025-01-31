@@ -119,7 +119,9 @@ title: Stocks Game
         <button class="simulate-button" onclick="submitStocks()">Submit Stocks</button>
     </div>
     <script type="module">
-    import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+    // import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+    const javaURI = "http://localhost:8085";
+
     window.javaURI = javaURI; // Make sure javaURI is accessible globally
 </script>
 
