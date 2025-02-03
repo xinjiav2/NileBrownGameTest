@@ -1,5 +1,5 @@
 ---
-layout: none
+layout: base
 permalink: /stocks/leaderboard
 title: Leaderboard
 ---
