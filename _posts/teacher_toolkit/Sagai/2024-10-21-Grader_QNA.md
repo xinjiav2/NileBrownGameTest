@@ -237,7 +237,7 @@ permalink: /student/sagai/QNA
 
   // prepare fetch urls
   // const url = `${pythonURI}/api/jokes`;
-  const url = `${javaURI}/api/saigai/messages`;
+  const url = `${javaURI}/api/sagai/messages`;
   const getURL = url +"/";
   const likeURL = url + "/message";  // haha reaction
   const jeerURL = url + "/jeer/";  // boohoo reaction
@@ -346,7 +346,7 @@ permalink: /student/sagai/QNA
   // Reaction function to likes or jeers user actions
   function submitMessage() {
     const questionText = document.getElementById('question-input').value;
-    const postURL = `${javaURI}/api/saigai/messages/saigai/message`;
+    const postURL = `${javaURI}/api/sagai/messages/sagai/message`;
     const data = {
                 content: questionText
             };
@@ -389,7 +389,7 @@ permalink: /student/sagai/QNA
         return;
     }
     const questionText = document.getElementById('question-input').value;
-    const postURL = `${javaURI}/api/saigai/comments/${questionId}`;
+    const postURL = `${javaURI}/api/sagai/comments/${questionId}`;
     const data = {
                 content: replyText
             };
@@ -412,11 +412,6 @@ permalink: /student/sagai/QNA
       response.json().then(data => {
           console.log(data);
                 addCommenttoReplyDiv(replyDiv, data);
-            // const replyDivText = document.createElement('div');
-            // replyDivText.classList.add('reply-text');
-            // replyDivText.innerHTML = `<p>${data.content}</p>`;
-            // replyDiv.appendChild(replyDivText);
-         
       })
     })
     // catch fetch errors (ie Nginx ACCESS to server blocked)
@@ -428,7 +423,7 @@ permalink: /student/sagai/QNA
 
   // Reaction function to likes or jeers user actions
   function deleteMessageReply(commentId, replyTextArea, replyDiv) {
-    const postURL = `${javaURI}/api/saigai/comments/${commentId}`;
+    const postURL = `${javaURI}/api/sagai/comments/${commentId}`;
   // prepare fetch PUT options, clones with JS Spread Operator (...)
   const postOptions = {...fetchOptions,
     method: 'DELETE',
@@ -455,7 +450,7 @@ permalink: /student/sagai/QNA
 
     // Delete Message
   function deleteMessage(commentId, replyDiv, questionDiv) {
-    const postURL = `${javaURI}/api/saigai/messages/${commentId}`;
+    const postURL = `${javaURI}/api/sagai/messages/${commentId}`;
   // prepare fetch PUT options, clones with JS Spread Operator (...)
   const postOptions = {...fetchOptions,
     method: 'DELETE',
