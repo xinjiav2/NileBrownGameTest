@@ -31,7 +31,10 @@ def barcode_reader():
                     break
                 else:
                     ss += hid.get(int(ord(c)), '')
-
+    name = get_name_by_sid(ss)
+    
+    add_to_queue("jmort1021@gmail.com", name, javaURI)
+    
     return ss
 
 def send_barcode_to_server(student_id):
