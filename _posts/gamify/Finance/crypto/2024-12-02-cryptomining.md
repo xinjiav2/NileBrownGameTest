@@ -517,10 +517,35 @@ body {
             if (updateInterval) {
                 clearInterval(updateInterval);
             }
-            // Update mining stats every min
+            // Update mining stats every minute
             updateInterval = setInterval(async () => {
                 await updateMiningStats();
             }, 60000);
+            // Add frequent updates for temperature and power
+            setInterval(() => {
+                const statsElement = document.getElementById('gpu-temp');
+                const powerElement = document.getElementById('power-draw');
+                if (statsElement && powerElement) {
+                    const currentTemp = parseFloat(statsElement.textContent);
+                    const currentPower = parseFloat(powerElement.textContent);
+                    if (!isNaN(currentTemp) && !isNaN(currentPower)) {
+                        const tempVariation = Math.random() * 2 - 1;
+                        const powerVariation = Math.random() * 10 - 5;
+                        const newTemp = Math.max(30, Math.min(90, currentTemp + tempVariation));
+                        const newPower = Math.max(0, currentPower + powerVariation);
+                        statsElement.textContent = `${newTemp.toFixed(1)}°C`;
+                        powerElement.textContent = `${newPower.toFixed(0)}W`;
+                        // Update temperature color
+                        if (newTemp >= 80) {
+                            statsElement.className = 'stat-value text-red-500';
+                        } else if (newTemp >= 70) {
+                            statsElement.className = 'stat-value text-yellow-500';
+                        } else {
+                            statsElement.className = 'stat-value text-green-500';
+                        }
+                    }
+                }
+            }, 2000); // Update every 2 seconds
         }
         // API Calls
         async function loadGPUs() {
@@ -547,18 +572,22 @@ body {
                 };
                 const response = await fetch(`${javaURI}/api/mining/toggle`, options);
                 const result = await response.json();
+                console.log('Mining toggle result:', result);
                 updateMiningButton(result.isMining);
                 if (result.isMining) {
                     startPeriodicUpdates();
+                    showNotification('Mining started successfully');
                 } else {
                     stopPeriodicUpdates();
+                    showNotification('Mining stopped');
                 }
                 await updateMiningStats();
             } catch (error) {
                 console.error('Error toggling mining:', error);
+                showNotification('Error toggling mining state');
             }
         }
-        async function toggleGPU(gpuId) {
+        window.toggleGPU = async function(gpuId) {
             try {
                 const options = {
                     ...fetchOptions,
@@ -587,14 +616,12 @@ body {
                 };
                 const response = await fetch(`${javaURI}/api/mining/gpu/buy/${gpuId}`, options);
                 const result = await response.json();
-                console.log('Response Status:', response.status); // Log the response status
-                console.log('Result:', result); // Log the parsed result
-                if (response.ok) { // Check if the response status is OK (200)
+                
+                if (response.ok) {
                     showNotification(result.message);
-                    await loadGPUs();
-                    await updateMiningStats();
+                    await updateMiningStats(); // This will update the GPU inventory
+                    await loadGPUs(); // This will update the shop
                 } else {
-                    // Notify the user if they already own the GPU
                     showNotification(result.message || 'Failed to buy GPU');
                 }
             } catch (error) {
@@ -627,74 +654,103 @@ body {
                     cache: 'no-cache'
                 };
                 const response = await fetch(`${javaURI}/api/mining/stats`, options);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch mining stats');
+                }
                 const stats = await response.json();
-                console.log('Raw mining stats:', stats); // Add this line
-                console.log('GPUs in stats:', stats.gpus); // Add this line
+                // Debug logging
+                console.log('Full stats object:', stats);
+                console.log('GPUs in inventory:', stats.gpus);
+                
                 updateDisplay(stats);
                 updateCharts(stats);
+                renderGpuInventory(stats);
             } catch (error) {
                 console.error('Error updating mining stats:', error);
             }
         }
         // UI Updates
         function updateDisplay(stats) {
-            console.log('Updating display with stats:', stats); // Debug log
-            if (!stats) return; // Guard clause for undefined stats
-            // Update BTC Balance
+            if (!stats) return;
+            
+            // Add small random fluctuations to temperature and power
+            const tempVariation = Math.random() * 2 - 1; // Random variation ±1°C
+            const powerVariation = Math.random() * 10 - 5; // Random variation ±5W
+            
+            // Get base values
+            const baseTemp = parseFloat(stats.averageTemperature) || 0;
+            const basePower = parseFloat(stats.powerConsumption) || 0;
+            
+            // Calculate new values with fluctuations
+            const newTemp = Math.max(30, Math.min(90, baseTemp + tempVariation)); // Keep between 30-90°C
+            const newPower = Math.max(0, basePower + powerVariation); // Keep above 0W
+            
+            // Update display elements
             document.getElementById('btc-balance').textContent = (parseFloat(stats.btcBalance) || 0).toFixed(8);
-            // Update Pending BTC
             document.getElementById('pending-balance').textContent = (parseFloat(stats.pendingBalance) || 0).toFixed(8);
-            // Update Hashrate
             document.getElementById('hashrate').textContent = `${(parseFloat(stats.hashrate) || 0).toFixed(2)} MH/s`;
-            // Update Shares
             document.getElementById('shares').textContent = stats.shares || 0;
-            // Update GPU Temperature
-            document.getElementById('gpu-temp').textContent = `${(typeof stats.averageTemperature === 'number' ? stats.averageTemperature : 0).toFixed(1)}°C`;
-            // Update Power Draw
-            document.getElementById('power-draw').textContent = `${(typeof stats.powerConsumption === 'number' ? stats.powerConsumption : 0).toFixed(0)}W`;
-            // Update Daily Revenue
+            document.getElementById('gpu-temp').textContent = `${newTemp.toFixed(1)}°C`;
+            document.getElementById('power-draw').textContent = `${newPower.toFixed(0)}W`;
             document.getElementById('daily-revenue').textContent = `$${(typeof stats.dailyRevenue === 'number' ? stats.dailyRevenue : 0).toFixed(2)}`;
-            // Update Power Cost
             document.getElementById('power-cost').textContent = `$${(typeof stats.powerCost === 'number' ? stats.powerCost : 0).toFixed(2)}`;
-            // Update Current GPU
-            if (stats.activeGPUs && stats.activeGPUs.length > 0) {
-                document.getElementById('current-gpu').textContent = stats.activeGPUs[0].name; // Display the first active GPU
+            
+            // Update current GPU display
+            if (stats.gpus && stats.gpus.length > 0) {
+                const activeGpu = stats.gpus.find(gpu => gpu.isActive);
+                document.getElementById('current-gpu').textContent = activeGpu ? activeGpu.name : 'No Active GPU';
             } else {
                 document.getElementById('current-gpu').textContent = 'No GPU';
             }
-            // Render GPU Inventory
-            renderGpuInventory(stats); // Ensure this function is correctly populating the GPU inventory
+
+            // Add color indicators for temperature
+            const tempElement = document.getElementById('gpu-temp');
+            if (newTemp >= 80) {
+                tempElement.className = 'stat-value text-red-500'; // Hot
+            } else if (newTemp >= 70) {
+                tempElement.className = 'stat-value text-yellow-500'; // Warm
+            } else {
+                tempElement.className = 'stat-value text-green-500'; // Good
+            }
         }
         function renderGpuInventory(stats) {
-            console.log('Rendering GPU inventory with stats:', stats);
+            if (!stats || !stats.gpus) {
+                console.error('No GPUs array in stats');
+                return;
+            }
+            
             const inventoryElement = document.getElementById('gpu-inventory');
             if (!inventoryElement) {
                 console.error('GPU inventory element not found');
                 return;
             }
-            if (!stats.activeGPUs) {
-                console.error('No GPUs array in stats');
-                return;
-            }
+            
             inventoryElement.innerHTML = '';
-            if (stats.activeGPUs.length === 0) {
-                console.log('No GPUs in inventory');
+            
+            // Debug logging
+            console.log('Attempting to render GPUs:', stats.gpus);
+            
+            if (stats.gpus.length === 0) {
                 inventoryElement.innerHTML = `
-                   <div class="text-gray-400 text-center p-8 bg-gray-800 rounded-lg w-full col-span-full">
+                    <div class="text-gray-400 text-center p-8 bg-gray-800 rounded-lg w-full col-span-full">
                         No GPUs in inventory. Visit the shop to buy some!
                     </div>
                 `;
                 return;
             }
-            console.log('Number of GPUs to render:', stats.activeGPUs.length);
-            stats.activeGPUs.forEach(gpu => {
-                console.log('Rendering GPU:', gpu);
+
+            stats.gpus.forEach(gpu => {
+                // Debug logging
+                console.log('Processing GPU:', gpu);
+                
                 const gpuCard = document.createElement('div');
                 gpuCard.className = 'gpu-card transform transition-all duration-200 hover:scale-105';
+                
                 const efficiency = (gpu.hashrate / gpu.power).toFixed(3);
                 const dailyRevenue = gpu.hashrate * 86400 / (1e12);
                 const dailyPowerCost = (gpu.power * 24) / 1000 * 0.12;
                 const dailyProfit = dailyRevenue - dailyPowerCost;
+                
                 gpuCard.innerHTML = `
                     <div class="flex justify-between items-start">
                         <div class="flex-1">
@@ -715,8 +771,15 @@ body {
                                 </div>
                             </div>
                         </div>
+                        <div class="text-right ml-4">
+                            <button onclick="toggleGPU(${gpu.id})" 
+                                    class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded mt-2">
+                                ${gpu.isActive ? 'Deactivate' : 'Activate'}
+                            </button>
+                        </div>
                     </div>
                 `;
+                
                 inventoryElement.appendChild(gpuCard);
             });
         }
