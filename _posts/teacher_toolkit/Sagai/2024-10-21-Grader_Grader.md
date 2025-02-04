@@ -129,11 +129,6 @@ permalink: /student/sagai/grader
 </head>
 <body>
 
-    <!-- Sign out link -->
-    <div class="signout">
-        <a href="#" style="color: white; text-decoration: none;">Sign out</a>
-    </div>
-
     <!-- SAGAI Header -->
     <h1>SAGAI</h1>
     <h2>Super Advanced Grader Artificial Intelligence</h2>
