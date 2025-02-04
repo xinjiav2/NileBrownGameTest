@@ -1,6 +1,6 @@
 ---
-permalink: /issue/post
-title: Issues Post
+permalink: /blogs/post
+title: Blogs Post
 ---
 
 <html lang="en">
@@ -121,19 +121,19 @@ title: Issues Post
             border: 1px solid #555;
             color: white;
         }
-        .problem {
+        .body {
             width: 400px;
             height: 300px;
         }
     </style>
 </head>
 <body>
-    <h1>Create a Issue Post</h1>
+    <h1>Create a Blog Post</h1>
     <form id="issueForm">
         <label for="title">Title:</label><br>
         <input type="text" id="title" name="title" required><br><br>
-        <label for="problem">Problem:</label><br>
-        <textarea id="problem" name="problem" required class="problem"></textarea><br><br>
+        <label for="body">Body:</label><br>
+        <textarea id="body" name="body" required class="body"></textarea><br><br>
         <button type="submit">Submit</button>
     </form>
     <div id="response"></div>
@@ -155,7 +155,7 @@ title: Issues Post
                 {
                     const author = null;
                     const title = document.getElementById('title').value;
-                    const context = document.getElementById('problem').value;
+                    const context = document.getElementById('body').value;
                     fetch('http://localhost:8085/forum/issue/post', {
                         method: 'POST',
                         headers: {
@@ -174,7 +174,7 @@ title: Issues Post
             }
             if (isLoggedIn()) {
                 const title = document.getElementById('title').value;
-                const context = document.getElementById('problem').value;
+                const context = document.getElementById('body').value;
                 const author = localStorage.getItem('ghid');
                 fetch('http://localhost:8085/forum/issue/post', {
                     method: 'POST',
