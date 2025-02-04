@@ -2,7 +2,6 @@
 toc: false
 layout: post
 title: Grader
-description: Grade your work
 permalink: /student/sagai/grader
 ---
 
