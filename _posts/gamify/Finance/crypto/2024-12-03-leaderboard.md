@@ -19,7 +19,6 @@ title: Leaderboard
     }
 
     body {
-      font-family: Arial, sans-serif;
       background-color: #F4F4F9;
       color: #333;
       margin: 0;
@@ -32,7 +31,7 @@ title: Leaderboard
       justify-content: space-between;
       align-items: center;
       padding: 10px 20px;
-      background-color: #001F3F; /* Dark blue background */
+      background-color: #001F3F;
       color: #fff;
     }
     .navbar .logo {
@@ -53,20 +52,18 @@ title: Leaderboard
       transition: background-color 0.3s;
     }
     .navbar .nav-buttons a:hover {
-      background-color: #FF8C00; /* Orange hover effect */
+      background-color: #FF8C00;
     }
 
-    /* Main Dashboard Layout */
+    /* Dashboard Layout */
     .dashboard {
       display: flex;
       gap: 20px;
       padding: 20px;
     }
-
     .dashboard-content {
       flex: 3;
     }
-
     .sidebar {
       flex: 1;
       display: flex;
@@ -195,21 +192,21 @@ title: Leaderboard
 
   <!-- Dashboard -->
   <div class="dashboard">
-    <!-- Main Content -->
     <div class="dashboard-content">
-      <!-- Search -->
       <div class="search-container">
         <input type="text" placeholder="Search for a user..." />
         <button class="search-button">Search</button>
       </div>
-    <div class="navbar">
+
+      <div class="navbar">
         <div class="links">
             <a href="/portfolio_2025/crypto/portfolio" id="portfolioLink">Investing Portfolio</a>
             <a href="/portfolio_2025/crypto/mining" id="miningLink">Crypto Mining</a>
             <a href="/portfolio_2025/crypto/team" id="TeamLink">Team Stats</a>
             <a href="/portfolio_2025/crypto/leaderboard" id="leaderboardLink">Leaderboard</a>
         </div>
-    </div>
+      </div>
+
       <!-- Summary Cards -->
       <div class="summary-cards">
         <div class="card card-orange">
@@ -238,33 +235,29 @@ title: Leaderboard
             </tr>
           </thead>
           <tbody>
-            <!-- Data will be inserted dynamically -->
+            <!-- Data inserted dynamically -->
           </tbody>
         </table>
       </section>
     </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="stock-table">
-        <h2>Your Stocks</h2>
-        <table>
-          <tr><th>Stock</th><th>Value</th></tr>
-          <tr><td>Apple</td><td>$150.00</td></tr>
-          <tr><td>Amazon</td><td>$3,200.00</td></tr>
-        </table>
-      </div>
-    </div>
   </div>
+</body>
+</html>
+  <script type="module">
+    import { javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
-  <script>
-    // Fetch leaderboard data from the server
-    fetch('http://localhost:8085/api/rankings/leaderboard')
-      .then(response => response.json())
-      .then(data => {
-        const topUsersTable = document.querySelector('#top-users-table tbody');
+    // Fetch leaderboard data dynamically
+    async function fetchLeaderboard() {
+      try {
+        const response = await fetch(`${javaURI}/api/rankings/leaderboard`, fetchOptions);
+        if (!response.ok) throw new Error("Failed to fetch leaderboard data");
+
+        const data = await response.json();
+        const topUsersTable = document.querySelector("#top-users-table tbody");
+        topUsersTable.innerHTML = ""; // Clear existing data
+
         data.forEach((user, index) => {
-          const row = document.createElement('tr');
+          const row = document.createElement("tr");
           row.innerHTML = `
             <td>${index + 1}</td>
             <td>$${Number(user.balance).toFixed(2)}</td>
@@ -272,8 +265,10 @@ title: Leaderboard
           `;
           topUsersTable.appendChild(row);
         });
-      })
-      .catch(error => console.error('Error fetching leaderboard data:', error));
+      } catch (error) {
+        console.error("Error fetching leaderboard data:", error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", fetchLeaderboard);
   </script>
-</body>
-</html>
