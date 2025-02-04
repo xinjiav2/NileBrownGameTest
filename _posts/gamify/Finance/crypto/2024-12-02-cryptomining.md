@@ -1,5 +1,5 @@
 ---
-layout: none
+layout: post
 title: Crypto Mining Simulator
 type: issues
 permalink: /crypto/mining
@@ -10,6 +10,7 @@ permalink: /crypto/mining
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs-plugin-zoom.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <style>
@@ -25,7 +26,24 @@ permalink: /crypto/mining
    }
    /* GPU Inventory Styles */
    .dashboard-card {
-       @apply bg-gray-800 rounded-lg p-4 shadow-lg;
+       @apply bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-700;
+       transition: transform 0.2s, box-shadow 0.2s;
+   }
+   .dashboard-card:hover {
+       transform: translateY(-2px);
+       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+   }
+   .dashboard-card h2 {
+       @apply text-xl font-bold mb-4 text-blue-400;
+       border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+       padding-bottom: 0.5rem;
+   }
+   .stat-label {
+       @apply text-gray-400 text-sm font-medium mb-1;
+   }
+   .stat-value {
+       @apply text-2xl font-bold;
+       text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
    }
    #gpu-inventory {
        @apply mt-4;
@@ -75,7 +93,6 @@ permalink: /crypto/mining
     .navbar .nav-buttons a:hover {
         background-color: #ff8c00; /* Orange hover effect */
     }
-    
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
@@ -184,14 +201,9 @@ body {
     font-weight: bold;
 }
 .chart-container {
-    position: relative;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
-    display: flex;
-    gap: 20px;
+    @apply bg-gray-800 rounded-lg p-6 border border-gray-700;
+    height: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .chart {
     height: 100%;
@@ -232,8 +244,10 @@ body {
 }
 </style>
 <body class="bg-gray-900 text-white min-h-screen p-6">
-    *** note: If the stats number are not showing, try to stop the mining and start again... <br>
-    *** note: If it says "Error loading mining state. Please try again.", please check if you are logged in or no...
+    <div class="text-center mb-4 text-yellow-400">
+        *** note: If the stats number are not showing, try to stop the mining and start again... <br>
+        *** note: If it says "Error loading mining state. Please try again.", please check if you are logged in or no...
+    </div>
     <!-- Navigation Bar -->
     <div class="navbar">
         <div class="navbar-logo">Crypto Mining</div>
@@ -244,40 +258,8 @@ body {
         </div>
     </div>
     <div class="container mx-auto">
-        <!-- Main Dashboard -->
-        <div class="grid grid-cols-3 gap-4 mb-4">
-            <!-- NiceHash Market -->
-            <div class="dashboard-card">
-                <h2>NiceHash Market</h2>
-                <div class="grid gap-2">
-                    <div>
-                        <div class="stat-label">NICE Price</div>
-                        <div class="stat-value" id="nice-price">$0.00</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Ethereum Market -->
-            <div class="dashboard-card">
-                <h2>Ethereum Market</h2>
-                <div class="grid gap-2">
-                    <div>
-                        <div class="stat-label">ETH Price</div>
-                        <div class="stat-value" id="eth-price">$0.00</div>
-                    </div>
-                </div>
-            </div>
-            <!-- F2Pool Market -->
-            <div class="dashboard-card">
-                <h2>F2Pool Market</h2>
-                <div class="grid gap-2">
-                    <div>
-                        <div class="stat-label">F2P Price</div>
-                        <div class="stat-value" id="f2p-price">$0.00</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <!-- Core Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <!-- Wallet -->
             <div class="dashboard-card">
                 <h2>Wallet</h2>
@@ -345,36 +327,20 @@ body {
                     </div>
                 </div>
             </div>
-            <!-- Bitcoin Market -->
-            <div class="dashboard-card">
-                <h2>Bitcoin Market</h2>
-                <div class="grid gap-2">
-                    <div>
-                        <div class="stat-label">BTC Price</div>
-                        <div class="stat-value" id="btc-price">$0.00</div>
-                    </div>
-                </div>
-            </div>
         </div>
         <!-- Mining Controls -->
-        <div class="dashboard-card mt-4">
+        <div class="flex justify-center mt-8 mb-8">
             <div class="flex justify-between items-center">
-                <button id="start-mining" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded">
+                <button id="start-mining" class="mining-button">
                     Start Mining
-                </button>
-                <select id="pool-selection" class="bg-gray-700 rounded px-4 py-2">
-                    <option value="nicehash">NiceHash (2% fee, 4hr payout)</option>
-                    <option value="ethermine">Ethermine (1% fee, 24hr payout)</option>
-                    <option value="f2pool">F2Pool (2.5% fee, 12hr payout)</option>
-                    <option value="bitcoin">Bitcoin (3% fee, 1hr payout)</option>
-                </select>
-                <button id="gpu-shop" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded">
-                    GPU Shop
                 </button>
             </div>
         </div>
         <!-- Performance Charts -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <div class="flex flex-col gap-4 mt-4">
+            <div class="text-sm text-gray-400 text-center">
+                Drag to pan horizontally • Use mouse wheel to zoom • Double click to reset
+            </div>
             <div class="chart-container">
                 <canvas id="hashrate-chart"></canvas>
             </div>
@@ -384,7 +350,12 @@ body {
         </div>
         <!-- GPU Inventory -->
         <div class="dashboard-card mt-4 bg-gray-900 p-6 rounded-lg">
-            <h2 class="text-xl font-bold mb-4">My GPU Inventory</h2>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">My GPU Inventory</h2>
+                <button id="gpu-shop" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded">
+                    GPU Shop
+                </button>
+            </div>
             <div id="gpu-inventory" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[200px]">
                 <!-- GPU inventory will be populated here -->
             </div>
@@ -415,8 +386,6 @@ body {
                 initializeCharts();
                 setupEventListeners();
                 await initializeMiningState();
-                await updateAllMarketPrices();
-                await updateNiceHashPrice();
                 await loadGPUs();
             } catch (error) {
                 console.error('Error during initialization:', error);
@@ -427,18 +396,54 @@ body {
                 type: 'line',
                 options: {
                     responsive: true,
-                    animation: false,
-                    scales: {
-                        x: {
-                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
-                        },
-                        y: {
-                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
-                        }
+                    animation: {
+                        duration: 750,
+                        easing: 'easeInOutQuart'
+                    },
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
                     },
                     plugins: {
+                        zoom: {
+                            pan: {
+                                enabled: true,
+                                mode: 'x',
+                                modifierKey: 'ctrl'
+                            },
+                            zoom: {
+                                wheel: {
+                                    enabled: true,
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'x',
+                            }
+                        },
                         legend: {
-                            labels: { color: 'rgba(255, 255, 255, 0.9)' }
+                            labels: { 
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                font: { weight: 'bold' }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { 
+                                color: 'rgba(255, 255, 255, 0.1)',
+                                drawBorder: false
+                            },
+                            ticks: { color: 'rgba(255, 255, 255, 0.7)' }
+                        },
+                        y: {
+                            grid: { 
+                                color: 'rgba(255, 255, 255, 0.1)',
+                                drawBorder: false
+                            },
+                            ticks: { color: 'rgba(255, 255, 255, 0.7)' }
                         }
                     }
                 }
@@ -481,7 +486,6 @@ body {
         function setupEventListeners() {
             document.getElementById('start-mining').addEventListener('click', toggleMining);
             document.getElementById('gpu-shop').addEventListener('click', openGpuShop);
-            document.getElementById('pool-selection').addEventListener('change', switchPool);
         }
         async function initializeMiningState() {
             try {
@@ -517,11 +521,6 @@ body {
             updateInterval = setInterval(async () => {
                 await updateMiningStats();
             }, 60000);
-            // Update market prices every hour
-            setInterval(async () => {
-                await updateAllMarketPrices();
-                await updateNiceHashPrice();
-            }, 3600000);
         }
         // API Calls
         async function loadGPUs() {
@@ -722,31 +721,49 @@ body {
             });
         }
         function updateCharts(stats) {
+            if (!stats) return;
             const now = new Date().toLocaleTimeString();
             // Update hashrate chart
-            hashrateChart.data.labels.push(now);
-            hashrateChart.data.datasets[0].data.push(stats.hashrate);
-            // Update profit chart
-            profitChart.data.labels.push(now);
-            profitChart.data.datasets[0].data.push(stats.profit);
-            // Keep only last 10 points
-            if (hashrateChart.data.labels.length > 10) {
-                hashrateChart.data.labels.shift();
-                hashrateChart.data.datasets[0].data.shift();
-                profitChart.data.labels.shift();
-                profitChart.data.datasets[0].data.shift();
+            if (hashrateChart) {
+                hashrateChart.data.labels.push(now);
+                hashrateChart.data.datasets[0].data.push(stats.hashrate || 0);
+                // Keep only last 50 points
+                if (hashrateChart.data.labels.length > 50) {
+                    hashrateChart.data.labels.shift();
+                    hashrateChart.data.datasets[0].data.shift();
+                }
+                hashrateChart.update('none');
             }
-            hashrateChart.update();
-            profitChart.update();
+            // Update profit chart
+            if (profitChart) {
+                profitChart.data.labels.push(now);
+                // Calculate profit from daily revenue and power cost
+                const dailyRevenue = parseFloat(stats.dailyRevenue) || 0;
+                const powerCost = parseFloat(stats.powerCost) || 0;
+                const profit = dailyRevenue - powerCost;
+                profitChart.data.datasets[0].data.push(profit);
+                // Keep only last 50 points
+                if (profitChart.data.labels.length > 50) {
+                    profitChart.data.labels.shift();
+                    profitChart.data.datasets[0].data.shift();
+                }
+                profitChart.update('none');
+            }
+            console.log('Chart Data:', {
+                hashrate: stats.hashrate,
+                dailyRevenue: stats.dailyRevenue,
+                powerCost: stats.powerCost,
+                profit: profit
+            });
         }
         function updateMiningButton(isActive) {
             const button = document.getElementById('start-mining');
             if (isActive) {
                 button.textContent = 'Stop Mining';
-                button.className = 'bg-red-500 hover:bg-red-600 px-4 py-2 rounded';
+                button.className = 'mining-button active';
             } else {
                 button.textContent = 'Start Mining';
-                button.className = 'bg-green-500 hover:bg-green-600 px-4 py-2 rounded';
+                button.className = 'mining-button';
             }
         }
         function renderGpuShop(gpus) {
@@ -852,119 +869,6 @@ body {
                 e.target.classList.add('hidden');
             }
         });
-        // Define all functions first
-        function updateMarketDisplay(markets) {
-            if (!markets) return; // Guard clause
-            const elements = {
-                'nice-price': markets.nicehash,
-                'nice-change': markets.nicehashChange,
-                'eth-price': markets.ethereum,
-                'eth-change': markets.ethereumChange,
-                'f2p-price': markets.f2pool,
-                'f2p-change': markets.f2poolChange,
-                'btc-price': markets.bitcoin,
-                'btc-change': markets.bitcoinChange
-            };
-            for (const [id, value] of Object.entries(elements)) {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.textContent = id.includes('price') ? 
-                        `$${(value || 0).toFixed(2)}` : 
-                        `${(value || 0).toFixed(2)}%`;
-                }
-            }
-        }
-        async function updateAllMarketPrices() {
-            const markets = ['btc', 'eth', 'f2p'];
-            // Show loading state
-            markets.forEach(id => {
-                const priceElement = document.getElementById(`${id}-price`);
-                if (priceElement) priceElement.textContent = 'Loading...';
-            });
-            try {
-                const response = await fetch(`${javaURI}/api/crypto/prices`, {
-                    method: 'GET',
-                    mode: 'cors',
-                    cache: 'no-cache',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
-                // Log the data to see its structure
-                console.log('API Response:', data);
-                // Update markets except NiceHash
-                updatePriceDisplay('btc', data.bitcoin);
-                updatePriceDisplay('eth', data.ethereum);
-                updatePriceDisplay('f2p', data['ftx-token']);
-                // Update game state with new BTC price
-                if (data.bitcoin && data.bitcoin.usd) {
-                    gameState.btcPrice.current = data.bitcoin.usd;
-                }
-            } catch (error) {
-                console.error('Error fetching market prices:', error);
-                markets.forEach(id => {
-                    const priceElement = document.getElementById(`${id}-price`);
-                    if (priceElement) priceElement.textContent = 'API Error';
-                });
-            }
-        }
-        // Function to update NiceHash price
-        async function updateNiceHashPrice() {
-            const priceElement = document.getElementById('nice-price');
-            const changeElement = document.getElementById('nice-change');
-            try {
-                // Simulate NiceHash price based on Bitcoin price
-                const btcPrice = gameState.btcPrice.current;
-                const nicePrice = btcPrice * 0.00002 * (1 + (Math.random() * 0.1 - 0.05)); // Random variation ±5%
-                const change = (Math.random() * 4 - 2); 
-                // Update display
-                if (priceElement) priceElement.textContent = `$${nicePrice.toFixed(2)}`;
-                if (changeElement) {
-                    changeElement.textContent = `${change.toFixed(2)}%`;
-                    changeElement.style.color = change >= 0 ? '#2ecc71' : '#e74c3c';
-                }
-            } catch (error) {
-                console.error('Error updating NiceHash price:', error);
-                if (priceElement) priceElement.textContent = 'Error';
-                if (changeElement) {
-                    changeElement.textContent = '0.00%';
-                    changeElement.style.color = '#ffffff';
-                }
-            }
-        }
-        // Helper function to update display with validation
-        function updatePriceDisplay(id, data) {
-            const priceElement = document.getElementById(`${id}-price`);
-            const changeElement = document.getElementById(`${id}-change`);
-            // Check if data exists and has required properties
-            if (!data || typeof data.usd === 'undefined') {
-                if (priceElement) priceElement.textContent = 'N/A';
-                if (changeElement) changeElement.textContent = '0.00%';
-                return;
-            }
-            // Update price
-            if (priceElement) {
-                const formattedPrice = Number(data.usd).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                });
-                priceElement.textContent = `$${formattedPrice}`;
-            }
-            // Update change percentage if it exists
-            if (changeElement) {
-                const changeValue = data.usd_24h_change ? Number(data.usd_24h_change).toFixed(2) : '0.00';
-                changeElement.textContent = `${changeValue}%`;
-                changeElement.style.color = changeValue >= 0 ? '#2ecc71' : '#e74c3c';
-            }
-        }
-        // gameState
-        const gameState = {
-            btcPrice: {
-                current: 0
-            }
-        };
         function showNotification(message) {
             console.log('Notification:', message);
             const notificationElement = document.createElement('div');
