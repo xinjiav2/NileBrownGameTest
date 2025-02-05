@@ -155,13 +155,13 @@ title: Blogs Post
                 {
                     const author = null;
                     const title = document.getElementById('title').value;
-                    const context = document.getElementById('body').value;
+                    const body = document.getElementById('body').value;
                     fetch('http://localhost:8085/forum/blog/post', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ title, context, author }),
+                        body: JSON.stringify({ title, body, author }),
                     })
                     .then(response => response.text())
                     .then(data => {
@@ -174,14 +174,14 @@ title: Blogs Post
             }
             if (isLoggedIn()) {
                 const title = document.getElementById('title').value;
-                const context = document.getElementById('body').value;
+                const body = document.getElementById('body').value;
                 const author = localStorage.getItem('ghid');
                 fetch('http://localhost:8085/forum/blog/post', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ title, context, author }),
+                    body: JSON.stringify({ title, body, author }),
                 })
                 .then(response => response.text())
                 .then(data => {
