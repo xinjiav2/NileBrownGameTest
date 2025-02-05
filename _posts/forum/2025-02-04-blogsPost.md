@@ -156,7 +156,7 @@ title: Blogs Post
                     const author = null;
                     const title = document.getElementById('title').value;
                     const context = document.getElementById('body').value;
-                    fetch('http://localhost:8085/forum/issue/post', {
+                    fetch('http://localhost:8085/forum/blog/post', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -176,7 +176,7 @@ title: Blogs Post
                 const title = document.getElementById('title').value;
                 const context = document.getElementById('body').value;
                 const author = localStorage.getItem('ghid');
-                fetch('http://localhost:8085/forum/issue/post', {
+                fetch('http://localhost:8085/forum/blog/post', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
