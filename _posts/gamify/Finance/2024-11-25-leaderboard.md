@@ -17,7 +17,6 @@ title: Leaderboard
       box-sizing: border-box;
       font-family: Arial, sans-serif;
     }
-
     body {
       font-family: Arial, sans-serif;
       background-color: #F4F4F9;
@@ -25,7 +24,6 @@ title: Leaderboard
       margin: 0;
       padding: 0;
     }
-
     /* Navbar Styling */
     .navbar {
       display: flex;
@@ -55,25 +53,21 @@ title: Leaderboard
     .navbar .nav-buttons a:hover {
       background-color: #FF8C00; /* Orange hover effect */
     }
-
     /* Main Dashboard Layout */
     .dashboard {
       display: flex;
       gap: 20px;
       padding: 20px;
     }
-
     .dashboard-content {
       flex: 3;
     }
-
     .sidebar {
       flex: 1;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
-
     /* Leaderboard Table Styling */
     section {
       background: #fff;
@@ -83,43 +77,35 @@ title: Leaderboard
       padding: 20px;
       margin: 20px 0;
     }
-
     h1, h2 {
       text-align: center;
       margin-bottom: 20px;
       color: #2c3e50;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
     }
-
     thead {
       background-color: #001F3F;
       color: #fff;
     }
-
     th, td {
       padding: 12px 15px;
       text-align: center;
       border-bottom: 1px solid #ddd;
     }
-
     tbody tr:nth-child(even) {
       background-color: #f9f9f9;
     }
-
     tbody tr:hover {
       background-color: #f1f7ff;
       cursor: pointer;
     }
-
     td:first-child {
       font-weight: bold;
       color: #e67e22;
     }
-
     tbody tr:nth-child(1) td:first-child {
       color: #f1c40f;
       font-size: 1.2em;
@@ -130,7 +116,6 @@ title: Leaderboard
     tbody tr:nth-child(3) td:first-child {
       color: #cd7f32;
     }
-
     /* Search Bar */
     .search-container {
       margin-bottom: 20px;
@@ -157,7 +142,6 @@ title: Leaderboard
     .search-button:hover {
       background-color: #E07B00;
     }
-
     /* Summary Cards */
     .summary-cards {
       display: flex;
@@ -176,13 +160,11 @@ title: Leaderboard
     .card-orange { background-color: #FF8C00; }
     .card-purple { background-color: #6A0DAD; }
     .card-darkblue { background-color: #001F3F; }
-
     .card h2 { font-size: 20px; }
     .card p { font-size: 36px; font-weight: bold; }
   </style>
 </head>
 <body>
-
   <!-- Navbar -->
 <nav class="navbar">
   <div class="logo">NITD</div>
@@ -204,7 +186,6 @@ title: Leaderboard
         <input type="text" placeholder="Search for a user..." />
         <button class="search-button">Search</button>
       </div>
-
       <!-- Summary Cards -->
       <div class="summary-cards">
         <div class="card card-orange">
@@ -220,7 +201,6 @@ title: Leaderboard
           <p>$12,345</p>
         </div>
       </div>
-
       <!-- Leaderboard Table -->
       <section>
         <h2>Top 10 Users by Balance</h2>
@@ -238,7 +218,6 @@ title: Leaderboard
         </table>
       </section>
     </div>
-
     <!-- Sidebar -->
     <div class="sidebar">
       <div class="stock-table">
@@ -251,7 +230,6 @@ title: Leaderboard
       </div>
     </div>
   </div>
-
   <script>
     // Fetch leaderboard data from the server
     fetch('http://localhost:8085/api/rankings/leaderboard')
