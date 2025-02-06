@@ -204,6 +204,12 @@ permalink: /student/sagai/QNA
         <div id="ask-question">
             <h2>Ask a Question:</h2>
             <textarea id="question-input" placeholder="Insert question here..."></textarea><br>
+            <!--Drop down menu-->
+            <select id="subject">
+              <option value="Choose Subject" selected="selected">Choose Subject</option>
+              <option value="Objects">Objects</option>
+              <option value="Primitive">Primitive</option>
+            </select>
             <button id="submit-button">Submit Question</button>
         </div>
         <!-- Questions container -->
@@ -280,10 +286,6 @@ permalink: /student/sagai/QNA
         const questionsHeader = questionContainer.querySelector("h2");
         questionsHeader.insertAdjacentElement("afterend", questionDiv);
         questionDiv.insertAdjacentElement("afterend", replyDiv);           
-        //questionContainer.appendChild(questionDiv);
-        //questionContainer.appendChild(replyDiv);
-        // Clear input field after submission
-        //document.getElementById('question-input').value = "";
   }
 
   function returnQuestionDiv(row,replyDiv){
@@ -346,9 +348,12 @@ permalink: /student/sagai/QNA
   // Reaction function to likes or jeers user actions
   function submitMessage() {
     const questionText = document.getElementById('question-input').value;
+    // Read value from list selected from user
+    const subjectText = document.querySelector('#subject').value;
     const postURL = `${javaURI}/api/sagai/messages/sagai/message`;
     const data = {
-                content: questionText
+                content: questionText,
+                subject: subjectText
             };
      const jsonData = JSON.stringify(data);
   // prepare fetch PUT options, clones with JS Spread Operator (...)
@@ -389,6 +394,7 @@ permalink: /student/sagai/QNA
         return;
     }
     const questionText = document.getElementById('question-input').value;
+   
     const postURL = `${javaURI}/api/sagai/comments/${questionId}`;
     const data = {
                 content: replyText

@@ -7,7 +7,7 @@ from static.assets.api.assets import javaURI
 
 app = Flask(__name__)
 
-# Static queue data (replace with a dynamic backend if needed)
+# Static queue data (replace with a dynamic backend)
 queue = ["John Mortensen", "Srijan Atti"]
 current_user = ""
 next_up = "Matthew Wakayama"
