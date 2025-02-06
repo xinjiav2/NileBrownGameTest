@@ -286,10 +286,6 @@ permalink: /student/sagai/QNA
         const questionsHeader = questionContainer.querySelector("h2");
         questionsHeader.insertAdjacentElement("afterend", questionDiv);
         questionDiv.insertAdjacentElement("afterend", replyDiv);           
-        //questionContainer.appendChild(questionDiv);
-        //questionContainer.appendChild(replyDiv);
-        // Clear input field after submission
-        //document.getElementById('question-input').value = "";
   }
 
   function returnQuestionDiv(row,replyDiv){
