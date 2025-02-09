@@ -2,12 +2,13 @@ from flask import Flask, render_template, request, jsonify
 import threading
 import requests
 import json
+import serial  # Import pyserial for serial communication
 
 from static.assets.api.assets import javaURI
 
 app = Flask(__name__)
 
-# Static queue data (replace with a dynamic backend if needed)
+# Static queue data (replace with a dynamic backend)
 queue = ["John Mortensen", "Srijan Atti"]
 current_user = ""
 next_up = "Matthew Wakayama"
@@ -72,10 +73,11 @@ def barcode_reader():
 
     print("ss: ", ss)
     name = get_name_by_sid(ss)
-    
+
     add_to_queue("jmort1021@gmail.com", name, javaURI)
-    
     return ss
+
+
 
 
 
@@ -95,35 +97,35 @@ def barcode_listener():
     while True:
         student_id = barcode_reader()
         send_barcode_to_server(student_id)
-        
+
 def get_name_by_sid(sid):
-    url = f"localhost:8085/api/{sid}"
+    url = f"http://localhost:8085/api/{sid}"
     try:
         response = requests.get(url)
         if response.status_code == 200:
             print("Data fetched successfully:", response.json())
             return response.json()
         else:
-            print(f"GET req failed {response.status_code}: {response.text}")
+            print(f"GET request failed {response.status_code}: {response.text}")
     except requests.exceptions.RequestException as e:
         print("Error during GET request:", e)
 
 def add_to_queue(teacherEmail, studentName, uri):
     payload = {
-        "studentName":studentName,
-        "teacherEmail":teacherEmail,
-        "uri":uri
+        "studentName": studentName,
+        "teacherEmail": teacherEmail,
+        "uri": uri
     }
-    url = "localhost:8085/api/queue/add"
+    url = "http://localhost:8085/api/queue/add"
     headers = {"Content-Type": "application/json"}
     try:
         response = requests.post(url, json=payload, headers=headers)
         if response.status_code == 201:
-            print("Data posted successfully: ", response.json)
+            print("Data posted successfully: ", response.json())
         else:
-            print(f"POST req failed with status code {response.status_code}: {response.text}")
+            print(f"POST request failed with status code {response.status_code}: {response.text}")
     except requests.exceptions.RequestException as e:
-        print("Error during POST req:", e)
+        print("Error during POST request:", e)
     
 @app.route('/')
 def home():
@@ -153,6 +155,6 @@ def scan_barcode():
 if __name__ == '__main__':
     # Start barcode listening thread
     threading.Thread(target=barcode_listener, daemon=True).start()
-
+    
     # Run Flask app
     app.run(port=4100, debug=True)
