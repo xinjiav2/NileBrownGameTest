@@ -1,6 +1,7 @@
 import GameEnv from "./GameEnv.js";
 import Character from "./Character.js";
 import Prompt from "./Prompt.js";
+import GameControl from "./GameControl.js";
 class Npc extends Character {
     constructor(data = null) {
         super(data);
@@ -60,9 +61,9 @@ class Npc extends Character {
             players.forEach(player => {
                 if (!Prompt.isOpen) {
                     // Assign this NPC as the current NPC in the Prompt system
-                    Prompt.currentNpc = this;
+                    
                     // Open the Prompt panel with this NPC's details
-                    Prompt.openPromptPanel(this);
+                    GameControl.startMiniLevel(this);
                 }
             });
         }

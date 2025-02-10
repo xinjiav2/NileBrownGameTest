@@ -111,7 +111,7 @@ permalink: /gamify/adventureGame
 
     const path = "{{site.baseurl}}";
     GameControl.start(path);
-    GameControl.startTimer();
+    
     Prompt.initializePrompt();
 
     window.submitAnswer = submitAnswer;
