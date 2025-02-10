@@ -317,7 +317,18 @@ permalink: /student/sagai/QNA
   });
 
   function populateQuestion(row){
-        const questionContainer = document.getElementById('questions-container');
+        let questionContainer;
+        let container = "questions-container"
+        if(row.subject){
+            container = container+ "-"+row.subject;
+            questionContainer = document.getElementById(container);
+        }else{
+            questionContainer = document.getElementById('questions-container-other');
+        }
+        if(!questionContainer){
+           questionContainer = document.getElementById('questions-container-other');
+        }
+       
         // Create the reply box (hidden by default)
         const replyDiv = returnReplyDiv(row);
        // Create the new question element
