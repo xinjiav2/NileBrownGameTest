@@ -116,24 +116,6 @@ const GameControl = {
         });
     },
 
-    startMiniLevel(path) {
-        if (this.currentLevelIndex === -1) return; // Prevent restarting mini-level if already in it
-        this.currentLevelIndex = -1; // Mark as being in a mini-level
-        GameEnv.clear(); // Clear the current game environment
-        this.currentLevel = new MiniLevel(path);
-        GameEnv.create(this.currentLevel.objects);
-    },
-    
-    returnToMainLevel(path) {
-        if (this.currentLevelIndex !== -1) return; // Check if not in mini-level
-        this.currentLevelIndex = 0; // Reset to main level
-        GameEnv.clear();
-        this.currentLevel = new GameLevelDesert(path);
-        GameEnv.create(this.currentLevel.objects);
-    },
-    
-
-
     // Initialize UI for game stats
     initStatsUI: function() {
         const statsContainer = document.createElement('div');
