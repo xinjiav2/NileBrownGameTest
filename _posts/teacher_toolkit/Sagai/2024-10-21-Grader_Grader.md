@@ -2,7 +2,6 @@
 toc: false
 layout: post
 title: Grader
-description: Grade your work
 permalink: /student/sagai/grader
 ---
 
@@ -128,11 +127,6 @@ permalink: /student/sagai/grader
     </style>
 </head>
 <body>
-
-    <!-- Sign out link -->
-    <div class="signout">
-        <a href="#" style="color: white; text-decoration: none;">Sign out</a>
-    </div>
 
     <!-- SAGAI Header -->
     <h1>SAGAI</h1>
