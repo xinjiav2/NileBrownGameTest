@@ -46,7 +46,7 @@ const GameControl = {
     },
     
     loadLevelObjects: function(gameInstance) {
-        this.initStatsUI();
+ 
         // Instantiate the game objects
         for (let object of gameInstance.objects) {
             if (!object.data) object.data = {};
@@ -54,7 +54,7 @@ const GameControl = {
         }
         // Start the game loop
         this.gameLoop();
-        getStats();
+     
     },
 
     gameLoop: function() {
@@ -116,25 +116,20 @@ const GameControl = {
         });
     },
 
-    // Initialize UI for game stats
-    initStatsUI: function() {
-        const statsContainer = document.createElement('div');
-        statsContainer.id = 'stats-container';
-        statsContainer.style.position = 'fixed';
-        statsContainer.style.top = '75px'; 
-        statsContainer.style.right = '10px';
-        statsContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-        statsContainer.style.color = 'white';
-        statsContainer.style.padding = '10px';
-        statsContainer.style.borderRadius = '5px';
-        statsContainer.innerHTML = `
-            <div>Balance: <span id="balance">0</span></div>
-            <div>Chat Score: <span id="chatScore">0</span></div>
-            <div>Questions Answered: <span id="questionsAnswered">0</span></div>
-        `;
-        document.body.appendChild(statsContainer);
+    startMiniLevel: function(npcInstance) {
+        this.handleLevelEnd();
+        // Store current level state
+        this.savedLevelState = {
+            currentLevelIndex: this.currentLevelIndex,
+            path: this.path
+        };
+        // Create the mini-level instance
+        const miniLevelInstance = new MiniLevel(this.path);
+        // Clear current game objects
+        GameEnv.gameObjects = [];
+        // Load mini-level objects
+        this.loadLevelObjects(miniLevelInstance);
     },
-
 };
 
 // Detect window resize events and call the resize function.

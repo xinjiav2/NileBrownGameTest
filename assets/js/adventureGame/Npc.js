@@ -56,11 +56,10 @@ class Npc extends Character {
      */
     handleKeyInteract() {
         const players = GameEnv.gameObjects.filter(obj => obj.state.collisionEvents.includes(this.spriteData.id));
-        const hasQuestions = this.questions.length > 0;
-        if (players.length > 0 && hasQuestions) {
+        if (players.length > 0 && this.questions.length > 0) {
             players.forEach(player => {
                 if (!Prompt.isOpen) {
-                    console.log("log");
+                    console.log("NPC interaction detected. Launching MiniLevel...");
                     GameControl.startMiniLevel(this);
                 }
             });
