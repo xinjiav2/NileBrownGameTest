@@ -7,7 +7,7 @@ courses: {}
 menu: nav/kasm_cloud.html
 toc: true
 comments: true
-permalink: /kasm/installer/guide
+permalink: /kasm/multiserver/install
 ---
 
 {% raw %}
