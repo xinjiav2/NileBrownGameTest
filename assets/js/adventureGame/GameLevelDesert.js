@@ -13,6 +13,13 @@ class GameLevelDesert {
     let height = GameEnv.innerHeight;
 
 
+
+
+
+
+
+    
+
     // Background data
     const image_src_desert = path + "/images/gamify/desert.png"; // be sure to include the path
     const image_data_desert = {
