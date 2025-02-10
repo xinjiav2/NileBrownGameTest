@@ -274,62 +274,49 @@ search_exclude: true
 
     // Function to fetch and display Java data
     function javaDatabase() {
-        const URL = `${javaURI}/api/person/get`;
-        const loginForm = document.getElementById('javaForm');
-        const dataTable = document.getElementById('javaTable');
-        const dataButton = document.getElementById('javaButton');
-        const resultContainer = document.getElementById("javaResult");
-        resultContainer.innerHTML = '';
+    const URL = `${javaURI}/api/person/get`;
+    const loginForm = document.getElementById('javaForm');
+    const dataTable = document.getElementById('javaTable');
+    const dataButton = document.getElementById('javaButton');
+    const resultContainer = document.getElementById("javaResult");
+    resultContainer.innerHTML = '';
 
-        fetch(URL, fetchOptions)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Spring server response: ${response.status}`);
+    fetch(URL, fetchOptions)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(person => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${person.name}</td>
+                    <td>${person.githubId}</td>
+                    <td>${person.email}</td>
+                    <td>${person.age}</td>
+                    <td>${person.roles}</td>
+                `;
+                resultContainer.appendChild(row);
+
+                // Check if email is set as default
+                const uid = document.getElementById("uid").value;
+                if (person.email === `${uid}@gmail.com`) {
+                    alert("Hey, you need to finish setting up your account! Please update your email and SID.");
                 }
-                return response.json();
-            })
-            .then(data => {
-                loginForm.style.display = 'none';
-                dataTable.style.display = 'block';
-                dataButton.style.display = 'block';
-
-                const tr = document.createElement("tr");
-                const name = document.createElement("td");
-                const ghid = document.createElement("td");
-                const id = document.createElement("td");
-                const age = document.createElement("td");
-                const roles = document.createElement("td");
-
-                name.textContent = data.name;
-                ghid.textContent = data.uid;
-                id.textContent = data.email;
-                age.textContent = data.age;
-                roles.textContent = data.roles.map(role => role.name).join(', ');
-
-                tr.appendChild(name);
-                tr.appendChild(ghid);
-                tr.appendChild(id);
-                tr.appendChild(age);
-                tr.appendChild(roles);
-                resultContainer.appendChild(tr);
-
-                // Redirect to the student calendar after successful data fetch
-                sessionStorage.setItem("loggedIn", "true");
-                setTimeout(() => {
-                    window.location.href = "{{ site.baseurl }}/student/calendar";
-                }, 5000);
-            })
-            .catch(error => {
-                console.error("Java Database Error:", error);
-                const errorMsg = `Java Database Error: ${error.message}`;
-                const tr = document.createElement("tr");
-                const td = document.createElement("td");
-                td.textContent = errorMsg;
-                td.colSpan = 4;
-                tr.appendChild(td);
-                resultContainer.appendChild(tr);
             });
-    }
+
+            loginForm.style.display = 'none';
+            dataTable.style.display = 'table';
+            dataButton.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            document.getElementById('java-message').textContent = 'Failed to fetch data.';
+        });
+}
+
 
     window.onload = function () {
         javaDatabase();
