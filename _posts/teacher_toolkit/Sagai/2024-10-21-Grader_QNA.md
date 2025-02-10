@@ -206,17 +206,17 @@ permalink: /student/sagai/QNA
             <textarea id="question-input" placeholder="Insert question here..."></textarea><br>
             <!--Drop down menu-->
               <select id="subject">
-              <option value="Other" selected="selected">Other</option>
-              <option value="PrimitiveType">Primitive Type</option>
-              <option value="Objects">Objects</option>
-              <option value="BooleanAndIf">Boolean Expressions and if Statements</option>
-              <option value="Iteration">Iteration</option>
-              <option value="Classes">Classes</option>
-              <option value="Array">Array</option>
-              <option value="ArrayList">ArrayList</option>
+              <option value="other" selected="selected">Other</option>
+              <option value="primitiveType">Primitive Type</option>
+              <option value="objects">Objects</option>
+              <option value="booleanAndIf">Boolean Expressions and if Statements</option>
+              <option value="iteration">Iteration</option>
+              <option value="classes">Classes</option>
+              <option value="array">Array</option>
+              <option value="arrayList">ArrayList</option>
               <option value="2DArray">2D Array</option>
-              <option value="Inheritance">Inheritance</option>
-              <option value="Recursion">Recursion</option>
+              <option value="inheritance">Inheritance</option>
+              <option value="recursion">Recursion</option>
             </select> <br>
             <button id="submit-button">Submit Question</button>
         </div>
