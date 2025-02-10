@@ -60,9 +60,7 @@ class Npc extends Character {
         if (players.length > 0 && hasQuestions) {
             players.forEach(player => {
                 if (!Prompt.isOpen) {
-                    // Assign this NPC as the current NPC in the Prompt system
-                    
-                    // Open the Prompt panel with this NPC's details
+                    console.log("log");
                     GameControl.startMiniLevel(this);
                 }
             });
