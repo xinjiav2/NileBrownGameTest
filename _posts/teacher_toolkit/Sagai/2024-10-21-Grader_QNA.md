@@ -335,7 +335,7 @@ permalink: /student/sagai/QNA
         const questionDiv = returnQuestionDiv(row,replyDiv);
        
         // Add everything to the DOM
-        const questionsHeader = questionContainer.querySelector("h2");
+        const questionsHeader = questionContainer.querySelector("h4");
         questionsHeader.insertAdjacentElement("afterend", questionDiv);
         questionDiv.insertAdjacentElement("afterend", replyDiv);           
   }
