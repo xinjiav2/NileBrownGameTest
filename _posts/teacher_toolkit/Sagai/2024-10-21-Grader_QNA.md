@@ -225,6 +225,39 @@ permalink: /student/sagai/QNA
             <h2>Questions</h2>
             <!-- Questions will be dynamically inserted here -->
         </div>
+        <div id="questions-container-other">
+            <h4>other</h4>
+        </div>
+         <div id="questions-container-primitiveType">
+            <h4>primitiveType</h4>
+        </div>
+        <div id="questions-container-objects">
+            <h4>objects</h4>
+        </div>
+          <div id="questions-container-booleanAndIf">
+            <h4>booleanAndIf</h4>
+        </div>
+          <div id="questions-container-iteration">
+            <h4>iteration</h4>
+        </div>
+          <div id="questions-container-classes">
+            <h4>classes</h4>
+        </div>
+          <div id="questions-container-array">
+            <h4>array</h4>
+        </div>
+          <div id="questions-container-arrayList">
+            <h4>arrayList</h4>
+        </div>
+          <div id="questions-container-2DArray">
+            <h4>2DArray</h4>
+        </div>
+         <div id="questions-container-inheritance">
+            <h4>inheritance</h4>
+        </div>
+         <div id="questions-container-recursion">
+            <h4>recursion</h4>
+        </div>
         <table>
   <thead>
   </thead>
