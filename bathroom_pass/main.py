@@ -14,21 +14,32 @@ current_user = ""
 next_up = "Matthew Wakayama"
 
 def barcode_reader():
-    """Barcode scanner implementation using pyserial"""
-    ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)  # Adjust device path as needed
-    ser.flush()
+    ss = ""
+    print("Ready to scan a barcode. Please scan now.")
     
-    barcode = ""
     while True:
-        if ser.in_waiting > 0:
-            char = ser.read().decode('utf-8')
-            if char == '\n':  # Barcode scanner sends newline after scan
-                break
-            barcode += char
-    
-    name = get_name_by_sid(barcode.strip())
-    add_to_queue("jmort1021@gmail.com", name, javaURI)
-    return barcode.strip()
+        # Read the barcode input from the terminal directly as a string
+        barcode_input = input()  # This captures whatever is typed into the terminal (barcode)
+        
+        if barcode_input:
+            ss = barcode_input.strip()  # Capture the barcode input into ss
+            
+            print(f"Scanned barcode: {ss}")  # Print out the scanned barcode
+            
+            # Simulate finishing the scan (i.e., sending the barcode when Enter is pressed)
+            print(f"Final scanned barcode: {ss}")
+            
+            # Assuming you need to do something with the scanned value:
+            name = get_name_by_sid(ss)  # Fetch the name using the scanned SID
+            
+            # Call a function to add to the queue or handle further logic
+            add_to_queue("jmort1021@gmail.com", name, javaURI)
+            
+            # Return the scanned barcode
+            return ss
+        else:
+            print("No input detected. Please scan again.")
+
 
 def send_barcode_to_server(student_id):
     """Send barcode data to Flask endpoint"""
