@@ -156,7 +156,7 @@ title: Blogs Post
                     const author = null;
                     const title = document.getElementById('title').value;
                     const body = document.getElementById('body').value;
-                    fetch('http://localhost:8085/forum/blog/post', {
+                    fetch('http://localhost:8085/blogs/blog/post', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -176,7 +176,7 @@ title: Blogs Post
                 const title = document.getElementById('title').value;
                 const body = document.getElementById('body').value;
                 const author = localStorage.getItem('ghid');
-                fetch('http://localhost:8085/forum/blog/post', {
+                fetch('http://localhost:8085/blogs/blog/post', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -191,6 +191,10 @@ title: Blogs Post
                     document.getElementById('response').innerText = 'Error: ' + error;
                 });
             };
+            //wait 3 seconds then send them back
+            setTimeout(function() {
+                window.location.href = "http://localhost:4100/portfolio_2025/blogs/";
+            }, 3000);
         });
     </script>
 </body>
