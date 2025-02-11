@@ -199,21 +199,25 @@ menu: nav/home.html
       event.preventDefault(); // prevent default browser action
       const touchX = event.touches[0].clientX;
       const screenWidth = window.innerWidth;
+      const centerThreshold = screenWidth * 0.1; // 10% of the screen width on either side of the center
 
-      if (touchX > screenWidth / 2) {
+      if (touchX > screenWidth / 2 + centerThreshold) {
           // move right
           if (mario.currentSpeed === 0) {
               mario.startWalking();
           } else if (mario.currentSpeed === 3) {
               mario.startRunning();
           }
-      } else {
+      } else if (touchX < screenWidth / 2 - centerThreshold) {
           // move left
           if (mario.currentSpeed === 0) {
               mario.startWalkingL();
           } else if (mario.currentSpeed === 3) {
               mario.startRunningL();
           }
+      } else {
+          // touch near the center, make Mario puff
+          mario.startPuffing();
       }
   });
 
