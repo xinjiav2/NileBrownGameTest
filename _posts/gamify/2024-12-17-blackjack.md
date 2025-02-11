@@ -35,6 +35,30 @@ permalink: /gamify/blackjack
         color: red;
         font-weight: bold;
     }
+
+
+    .card {
+        display: inline-block;
+        width: 50px;
+        height: 75px;
+        border-radius: 5px;
+        border: 2px solid white;
+        text-align: center;
+        line-height: 75px;
+        font-size: 20px;
+        font-weight: bold;
+        margin: 5px;
+        background-color: white;
+        color: black;
+        position: relative;
+    }
+    .hearts, .diamonds {
+        color: red;
+    }
+    .clubs, .spades {
+        color: black;
+    }
+
 </style>
 
 <div class="container">
@@ -55,6 +79,8 @@ permalink: /gamify/blackjack
 
 <script type="module">
     import { javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+
+
     const API_URL = `${javaURI}/api/casino/blackjack`;
     let uid = "";
 
@@ -63,7 +89,7 @@ permalink: /gamify/blackjack
         try {
             const response = await fetch(`${javaURI}/api/person/get`, fetchOptions);
             if (!response.ok) throw new Error(`Server response: ${response.status}`);
-            
+
             const data = await response.json();
             if (!data || !data.uid) throw new Error("UID not found in response");
 
@@ -89,7 +115,45 @@ permalink: /gamify/blackjack
 
             if (!response.ok) throw new Error("Failed to start game.");
             const data = await response.json();
+
             updateUI(data, bet);
+
+            updateUI(data);
+        } catch (error) {
+            document.getElementById("gameStatus").innerText = error.message;
+        }
+    });
+
+    document.getElementById("hit").addEventListener("click", async function () {
+        try {
+            const requestData = { uid };
+            const response = await fetch(`${API_URL}/hit`, {
+                ...fetchOptions,
+                method: "POST",
+                body: JSON.stringify(requestData)
+            });
+
+            if (!response.ok) throw new Error("Failed to hit.");
+            const data = await response.json();
+            updateUI(data);
+        } catch (error) {
+            document.getElementById("gameStatus").innerText = error.message;
+        }
+    });
+
+    document.getElementById("stand").addEventListener("click", async function () {
+        try {
+            const requestData = { uid };
+            const response = await fetch(`${API_URL}/stand`, {
+                ...fetchOptions,
+                method: "POST",
+                body: JSON.stringify(requestData)
+            });
+
+            if (!response.ok) throw new Error("Failed to stand.");
+            const data = await response.json();
+            updateUI(data);
+
         } catch (error) {
             document.getElementById("gameStatus").innerText = error.message;
         }
@@ -98,4 +162,72 @@ permalink: /gamify/blackjack
     function updateBetDisplay() {
         document.getElementById("betValue").innerText = `$${document.getElementById("betAmount").value}`;
     }
+
+
+    function updateUI(data) {
+        console.log("API Response:", data);
+
+        let gameState;
+        try {
+            gameState = typeof data.gameState === "string" ? JSON.parse(data.gameState) : data.gameState;
+        } catch (error) {
+            console.error("Failed to parse gameState:", error);
+            document.getElementById("gameStatus").innerText = "Error processing game state.";
+            return;
+        }
+
+        if (!gameState || !gameState.playerHand || !gameState.dealerHand) {
+            console.error("Invalid gameState format:", gameState);
+            document.getElementById("gameStatus").innerText = "Unexpected response format. Please check the API.";
+            return;
+        }
+
+        displayCards(gameState.playerHand, "playerHand");
+        displayCards(gameState.dealerHand, "dealerHand");
+
+        document.getElementById("gameStatus").innerText = `Player Score: ${gameState.playerScore} | Dealer Score: ${gameState.dealerScore}`;
+
+        if (data.status === "INACTIVE") {
+            let resultMessage;
+            if (gameState.playerScore > 21) {
+                resultMessage = "💥 You busted! Dealer wins.";
+            } else if (gameState.dealerScore > 21 || gameState.playerScore > gameState.dealerScore) {
+                resultMessage = "🎉 You win!";
+            } else if (gameState.playerScore < gameState.dealerScore) {
+                resultMessage = "Dealer wins! 😞";
+            } else {
+                resultMessage = "It's a draw! 🤝";
+            }
+            document.getElementById("gameStatus").innerText = resultMessage;
+        }
+
+        document.getElementById("hit").disabled = data.status === "INACTIVE";
+        document.getElementById("stand").disabled = data.status === "INACTIVE";
+    }
+
+    function displayCards(cards, elementId) {
+        const cardContainer = document.getElementById(elementId);
+        cardContainer.innerHTML = "";
+
+        cards.forEach(card => {
+            const cardElement = document.createElement("div");
+            cardElement.classList.add("card");
+
+            let rank = card.slice(0, -1);
+            let suit = card.slice(-1);
+
+            let suitSymbol = "";
+            let suitClass = "";
+            switch (suit) {
+                case "H": suitSymbol = "♥"; suitClass = "hearts"; break;
+                case "D": suitSymbol = "♦"; suitClass = "diamonds"; break;
+                case "C": suitSymbol = "♣"; suitClass = "clubs"; break;
+                case "S": suitSymbol = "♠"; suitClass = "spades"; break;
+            }
+
+            cardElement.innerHTML = `<span class="${suitClass}">${rank} ${suitSymbol}</span>`;
+            cardContainer.appendChild(cardElement);
+        });
+    }
+
 </script>

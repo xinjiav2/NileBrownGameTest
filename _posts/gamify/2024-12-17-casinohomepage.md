@@ -3,6 +3,7 @@ layout: post
 title: Casino Games
 permalink: /gamify/casinohomepage
 ---
+
 <style>
     body {
         text-align: center;
@@ -65,6 +66,26 @@ permalink: /gamify/casinohomepage
     .game-box p {
         font-size: 1.2em;
     }
+    .leaderboard {
+        margin-top: 40px;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 10px;
+        border: 2px solid #ffc107;
+    }
+    .leaderboard h2 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+    }
+    .leaderboard ul {
+        list-style: none;
+        padding: 0;
+    }
+    .leaderboard li {
+        font-size: 1.2em;
+        padding: 8px;
+        border-bottom: 1px solid #555;
+    }
 </style>
 <div class="container">
     <div class="game-boxes">
@@ -93,4 +114,32 @@ permalink: /gamify/casinohomepage
             <p>Challenge your skills in this classic card game.</p>
         </div>
     </div>
+
+    <div class="leaderboard" id="leaderboard">
+        <h2>Leaderboard</h2>
+        <ul id="leaderboard-list">
+            <li>Loading...</li>
+        </ul>
+    </div>
 </div>
+
+<script>
+    async function fetchLeaderboard() {
+        try {
+            const response = await fetch("http://localhost:8085/api/top5bybalance");
+            const data = await response.json();
+            const leaderboardList = document.getElementById("leaderboard-list");
+            leaderboardList.innerHTML = "";
+
+            data.forEach((player, index) => {
+                let listItem = document.createElement("li");
+                listItem.textContent = `#${index + 1} ${player.name} - $${player.balance}`;
+                leaderboardList.appendChild(listItem);
+            });
+        } catch (error) {
+            console.error("Error fetching leaderboard:", error);
+        }
+    }
+    
+    fetchLeaderboard();
+</script>
