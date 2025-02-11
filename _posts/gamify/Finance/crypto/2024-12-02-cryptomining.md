@@ -24,6 +24,12 @@ permalink: /crypto/mining
        border-radius: 5px;
        z-index: 1000; // Ensure it appears above other elements
    }
+   .shadow-red-glow {
+    box-shadow: 0 4px 15px -3px rgba(239, 68, 68, 0.3);
+    }
+    .shadow-green-glow {
+        box-shadow: 0 4px 15px -3px rgba(16, 185, 129, 0.3);
+    }
    /* GPU Inventory Styles */
    .dashboard-card {
        @apply bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-700;
@@ -352,12 +358,14 @@ body {
         <div class="dashboard-card mt-4 bg-gray-900 p-6 rounded-lg">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold">My GPU Inventory</h2>
-                <button id="gpu-shop" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded">
+                <button id="gpu-shop" 
+                        class="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-lg 
+                               font-medium transition-colors duration-200 flex items-center gap-2">
+                    <span>🛒</span>
                     GPU Shop
                 </button>
             </div>
-            <div id="gpu-inventory" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[200px]">
-                <!-- GPU inventory will be populated here -->
+            <div id="gpu-inventory" class="min-h-[400px]">
             </div>
         </div>
     </div>
@@ -392,96 +400,66 @@ body {
             }
         });
         function initializeCharts() {
-            const chartConfig = {
+            // Hashrate Chart
+            const hashrateCtx = document.getElementById('hashrate-chart').getContext('2d');
+            hashrateChart = new Chart(hashrateCtx, {
                 type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Hashrate (MH/s)',
+                        data: [],
+                        borderColor: '#3B82F6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderWidth: 3,
+                        fill: true
+                    }]
+                },
                 options: {
                     responsive: true,
-                    animation: {
-                        duration: 750,
-                        easing: 'easeInOutQuart'
-                    },
                     maintainAspectRatio: false,
-                    interaction: {
-                        mode: 'nearest',
-                        axis: 'x',
-                        intersect: false
-                    },
                     plugins: {
                         zoom: {
-                            pan: {
-                                enabled: true,
-                                mode: 'x',
-                                modifierKey: 'ctrl'
-                            },
                             zoom: {
-                                wheel: {
-                                    enabled: true,
-                                },
-                                pinch: {
-                                    enabled: true
-                                },
-                                mode: 'x',
-                            }
-                        },
-                        legend: {
-                            labels: { 
-                                color: 'rgba(255, 255, 255, 0.9)',
-                                font: { weight: 'bold' }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { 
-                                color: 'rgba(255, 255, 255, 0.1)',
-                                drawBorder: false
+                                wheel: { enabled: true },
+                                pinch: { enabled: true },
+                                mode: 'x'
                             },
-                            ticks: { color: 'rgba(255, 255, 255, 0.7)' }
-                        },
-                        y: {
-                            grid: { 
-                                color: 'rgba(255, 255, 255, 0.1)',
-                                drawBorder: false
-                            },
-                            ticks: { color: 'rgba(255, 255, 255, 0.7)' }
+                            pan: { enabled: true }
                         }
                     }
                 }
-            };
-            hashrateChart = new Chart(
-                document.getElementById('hashrate-chart').getContext('2d'),
-                {
-                    ...chartConfig,
-                    data: {
-                        labels: [],
-                        datasets: [{
-                            label: 'Hashrate (MH/s)',
-                            data: [],
-                            borderColor: '#b144ff',
-                            backgroundColor: 'rgba(177, 68, 255, 0.2)',
-                            borderWidth: 3,
-                            fill: true
-                        }]
+            });
+            // Profit Chart
+            const profitCtx = document.getElementById('profit-chart').getContext('2d');
+            profitChart = new Chart(profitCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Profit (USD)',
+                        data: [],
+                        borderColor: '#BE0102',
+                        backgroundColor: 'rgba(190, 1, 2, 0.2)',
+                        borderWidth: 3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        zoom: {
+                            zoom: {
+                                wheel: { enabled: true },
+                                pinch: { enabled: true },
+                                mode: 'x'
+                            },
+                            pan: { enabled: true }
+                        }
                     }
                 }
-            );
-            profitChart = new Chart(
-                document.getElementById('profit-chart').getContext('2d'),
-                {
-                    ...chartConfig,
-                    data: {
-                        labels: [],
-                        datasets: [{
-                            label: 'Profit (USD)',
-                            data: [],
-                            borderColor: '#BE0102',
-                            backgroundColor: 'rgba(190, 1, 2, 0.2)',
-                            borderWidth: 3,
-                            fill: true
-                        }]
-                    }
-                }
-            );
+            });
         }
         function setupEventListeners() {
             document.getElementById('start-mining').addEventListener('click', toggleMining);
@@ -546,6 +524,26 @@ body {
                     }
                 }
             }, 2000); // Update every 2 seconds
+            // 在startPeriodicUpdates中添加
+            setInterval(async () => {
+                const options = {
+                    ...fetchOptions,
+                    method: 'GET',
+                    cache: 'no-cache'
+                };
+                try {
+                    const response = await fetch(`${javaURI}/api/mining/stats`, options);
+                    const stats = await response.json();
+                    console.log('实时监控:', {
+                        time: new Date().toLocaleTimeString(),
+                        pending: stats.pendingBalance,
+                        hashrate: stats.hashrate,
+                        activeGPUs: stats.activeGPUs?.length || 0
+                    });
+                } catch (error) {
+                    console.error('实时监控错误:', error);
+                }
+            }, 5000); // 每5秒更新
         }
         // API Calls
         async function loadGPUs() {
@@ -598,7 +596,19 @@ body {
                 const result = await response.json();
                 if (result.success) {
                     showNotification(result.message);
-                    await updateMiningStats(); // Refresh the display
+                    // 局部更新GPU卡片
+                    const gpuCard = document.querySelector(`[data-gpu-id="${gpuId}"]`);
+                    if (gpuCard) {
+                        const button = gpuCard.querySelector('button');
+                        button.innerHTML = `
+                            <span class="text-lg">${result.isActive ? '⏸️' : '▶️'}</span>
+                            ${result.isActive ? 'Deactivate' : 'Activate'}
+                        `;
+                        button.className = `w-full ${result.isActive ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'} 
+                            px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2`;
+                    }
+                    // 只更新统计数字，不重新渲染整个列表
+                    await updateMiningStats();
                 } else {
                     showNotification(result.message || 'Failed to toggle GPU');
                 }
@@ -616,7 +626,6 @@ body {
                 };
                 const response = await fetch(`${javaURI}/api/mining/gpu/buy/${gpuId}`, options);
                 const result = await response.json();
-                
                 if (response.ok) {
                     showNotification(result.message);
                     await updateMiningStats(); // This will update the GPU inventory
@@ -655,46 +664,49 @@ body {
                 };
                 const response = await fetch(`${javaURI}/api/mining/stats`, options);
                 if (!response.ok) {
-                    throw new Error('Failed to fetch mining stats');
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const stats = await response.json();
-                // Debug logging
-                console.log('Full stats object:', stats);
-                console.log('GPUs in inventory:', stats.gpus);
-                
+                console.log('完整统计信息:', {
+                    pendingBalance: stats.pendingBalance,
+                    shares: stats.shares,
+                    hashrate: stats.hashrate,
+                    activeGPUs: stats.activeGPUs
+                });
+                if (!stats.gpus) {
+                    console.warn('API response missing gpus field', stats);
+                    stats.gpus = []; // Set default
+                }
                 updateDisplay(stats);
-                updateCharts(stats);
                 renderGpuInventory(stats);
+                updateCharts(stats);
             } catch (error) {
                 console.error('Error updating mining stats:', error);
+                showNotification('Failed to fetch mining data, check your connection');
             }
         }
         // UI Updates
         function updateDisplay(stats) {
             if (!stats) return;
-            
             // Add small random fluctuations to temperature and power
             const tempVariation = Math.random() * 2 - 1; // Random variation ±1°C
             const powerVariation = Math.random() * 10 - 5; // Random variation ±5W
-            
             // Get base values
             const baseTemp = parseFloat(stats.averageTemperature) || 0;
             const basePower = parseFloat(stats.powerConsumption) || 0;
-            
             // Calculate new values with fluctuations
             const newTemp = Math.max(30, Math.min(90, baseTemp + tempVariation)); // Keep between 30-90°C
             const newPower = Math.max(0, basePower + powerVariation); // Keep above 0W
-            
             // Update display elements
             document.getElementById('btc-balance').textContent = (parseFloat(stats.btcBalance) || 0).toFixed(8);
-            document.getElementById('pending-balance').textContent = (parseFloat(stats.pendingBalance) || 0).toFixed(8);
+            document.getElementById('pending-balance').textContent = 
+                (parseFloat(stats.pendingBalance) || 0).toFixed(8);
             document.getElementById('hashrate').textContent = `${(parseFloat(stats.hashrate) || 0).toFixed(2)} MH/s`;
             document.getElementById('shares').textContent = stats.shares || 0;
             document.getElementById('gpu-temp').textContent = `${newTemp.toFixed(1)}°C`;
             document.getElementById('power-draw').textContent = `${newPower.toFixed(0)}W`;
             document.getElementById('daily-revenue').textContent = `$${(typeof stats.dailyRevenue === 'number' ? stats.dailyRevenue : 0).toFixed(2)}`;
             document.getElementById('power-cost').textContent = `$${(typeof stats.powerCost === 'number' ? stats.powerCost : 0).toFixed(2)}`;
-            
             // Update current GPU display
             if (stats.gpus && stats.gpus.length > 0) {
                 const activeGpu = stats.gpus.find(gpu => gpu.isActive);
@@ -702,7 +714,6 @@ body {
             } else {
                 document.getElementById('current-gpu').textContent = 'No GPU';
             }
-
             // Add color indicators for temperature
             const tempElement = document.getElementById('gpu-temp');
             if (newTemp >= 80) {
@@ -714,53 +725,51 @@ body {
             }
         }
         function renderGpuInventory(stats) {
-            if (!stats || !stats.gpus) {
-                console.error('No GPUs array in stats');
-                return;
-            }
-            
+            console.log('Full stats data:', stats);
             const inventoryElement = document.getElementById('gpu-inventory');
             if (!inventoryElement) {
                 console.error('GPU inventory element not found');
                 return;
             }
-            
             inventoryElement.innerHTML = '';
-            
-            // Debug logging
-            console.log('Attempting to render GPUs:', stats.gpus);
-            
-            if (stats.gpus.length === 0) {
+            // Safely access gpus array
+            const gpus = stats?.gpus || [];
+            console.log('Valid GPU data:', gpus);
+            if (gpus.length === 0) {
                 inventoryElement.innerHTML = `
-                    <div class="text-gray-400 text-center p-8 bg-gray-800 rounded-lg w-full col-span-full">
-                        No GPUs in inventory. Visit the shop to buy some!
+                    <div class="text-gray-400 text-center p-8 bg-gray-800 rounded-lg w-full">
+                        <p class="mb-2">🛒 Inventory empty!</p>
+                        <p>Click the button above to visit the GPU shop</p>
                     </div>
                 `;
                 return;
             }
-
-            stats.gpus.forEach(gpu => {
-                // Debug logging
-                console.log('Processing GPU:', gpu);
-                
+            // Create card container
+            const container = document.createElement('div');
+            container.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4';
+            gpus.forEach(gpu => {
                 const gpuCard = document.createElement('div');
-                gpuCard.className = 'gpu-card transform transition-all duration-200 hover:scale-105';
-                
-                const efficiency = (gpu.hashrate / gpu.power).toFixed(3);
-                const dailyRevenue = gpu.hashrate * 86400 / (1e12);
-                const dailyPowerCost = (gpu.power * 24) / 1000 * 0.12;
+                gpuCard.className = 'bg-gray-800 rounded-xl p-6 shadow-2xl transform transition-all duration-300 hover:scale-[1.02] border border-gray-700';
+                gpuCard.dataset.gpuId = gpu.id;
+                // Safely access properties
+                const hashrate = gpu.hashrate || 0;
+                const power = gpu.power || 0;
+                const temp = gpu.temp || 0;
+                const isActive = !!gpu.isActive;
+                const efficiency = (hashrate / (power || 1)).toFixed(3);
+                const dailyRevenue = hashrate * 86400 / 1e12;
+                const dailyPowerCost = (power * 24) / 1000 * 0.12;
                 const dailyProfit = dailyRevenue - dailyPowerCost;
-                
                 gpuCard.innerHTML = `
-                    <div class="flex justify-between items-start">
+                    <div class="flex flex-col h-full">
                         <div class="flex-1">
-                            <h3 class="text-lg font-bold text-white">${gpu.name}</h3>
+                            <h3 class="text-xl font-bold text-white mb-4">${gpu.name}</h3>
                             <div class="grid grid-cols-2 gap-4 mt-2">
                                 <div class="text-sm">
                                     <p class="text-gray-400">Performance</p>
-                                    <p class="text-white">⚡ ${gpu.hashrate} MH/s</p>
-                                    <p class="text-white">🔌 ${gpu.power}W</p>
-                                    <p class="text-white">🌡️ ${gpu.temp}°C</p>
+                                    <p class="text-white">⚡ ${hashrate.toFixed(2)} MH/s</p>
+                                    <p class="text-white">🔌 ${power.toFixed(0)}W</p>
+                                    <p class="text-white">🌡️ ${temp.toFixed(1)}°C</p>
                                     <p class="text-white">📊 ${efficiency} MH/W</p>
                                 </div>
                                 <div class="text-sm">
@@ -771,53 +780,64 @@ body {
                                 </div>
                             </div>
                         </div>
-                        <div class="text-right ml-4">
+                        <div class="mt-6 border-t border-gray-700 pt-4">
                             <button onclick="toggleGPU(${gpu.id})" 
-                                    class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded mt-2">
-                                ${gpu.isActive ? 'Deactivate' : 'Activate'}
+                                    class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 
+                                         ${isActive ? 
+                                             'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 shadow-red-glow' : 
+                                             'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-green-glow'}
+                                         transform hover:scale-[1.02] active:scale-95 group">
+                                <span class="opacity-90 group-hover:opacity-100 transition-opacity">
+                                    ${isActive ? '⏸️' : '▶️'}
+                                </span>
+                                <span class="text-shadow">${isActive ? 'Deactivate' : 'Activate'}</span>
                             </button>
                         </div>
                     </div>
                 `;
-                
-                inventoryElement.appendChild(gpuCard);
+                container.appendChild(gpuCard);
             });
+            inventoryElement.appendChild(container);
         }
         function updateCharts(stats) {
-            if (!stats) return;
+            if (!stats) {
+                console.warn('updateCharts called without stats');
+                return;
+            }
+            console.log('Updating charts with:', {
+                hashrate: stats.hashrate,
+                dailyRevenue: stats.dailyRevenue,
+                powerCost: stats.powerCost
+            });
             const now = new Date().toLocaleTimeString();
             // Update hashrate chart
             if (hashrateChart) {
+                const numericHashrate = parseFloat(stats.hashrate) || 0;
+                console.log('Adding hashrate data point:', numericHashrate);
                 hashrateChart.data.labels.push(now);
-                hashrateChart.data.datasets[0].data.push(stats.hashrate || 0);
-                // Keep only last 50 points
+                hashrateChart.data.datasets[0].data.push(numericHashrate);
                 if (hashrateChart.data.labels.length > 50) {
                     hashrateChart.data.labels.shift();
                     hashrateChart.data.datasets[0].data.shift();
                 }
                 hashrateChart.update('none');
+                console.log('Hashrate chart updated');
             }
             // Update profit chart
             if (profitChart) {
-                profitChart.data.labels.push(now);
-                // Calculate profit from daily revenue and power cost
-                const dailyRevenue = parseFloat(stats.dailyRevenue) || 0;
-                const powerCost = parseFloat(stats.powerCost) || 0;
+                const dailyRevenue = typeof stats.dailyRevenue === 'number' ? stats.dailyRevenue : 0;
+                const powerCost = typeof stats.powerCost === 'number' ? stats.powerCost : 0;
                 const profit = dailyRevenue - powerCost;
+                console.log('Calculated profit:', { dailyRevenue, powerCost, profit });
+                profitChart.data.labels.push(now);
                 profitChart.data.datasets[0].data.push(profit);
-                // Keep only last 50 points
                 if (profitChart.data.labels.length > 50) {
                     profitChart.data.labels.shift();
                     profitChart.data.datasets[0].data.shift();
                 }
                 profitChart.update('none');
+                console.log('Profit chart updated');
             }
-            console.log('Chart Data:', {
-                hashrate: stats.hashrate,
-                dailyRevenue: stats.dailyRevenue,
-                powerCost: stats.powerCost,
-                profit: profit
-            });
         }
         function updateMiningButton(isActive) {
             const button = document.getElementById('start-mining');
