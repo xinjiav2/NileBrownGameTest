@@ -131,28 +131,35 @@ menu: nav/home.html
 
   ////////// event control /////////
 
+// Add event listener for keydown events
   window.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowRight") {
-      event.preventDefault();
-      if (event.repeat) {
-        mario.startCheering();
-      } else {
-        if (mario.currentSpeed === 0) {
-          mario.startWalking();
-        } else if (mario.currentSpeed === 3) {
-          mario.startRunning();
-        }
+      if (event.key === "ArrowRight" || event.key === "d" || event.key === "D") {
+          event.preventDefault();
+          if (event.repeat) {
+              mario.startCheering();
+          } else {
+              if (mario.currentSpeed === 0) {
+                  mario.startWalking();
+              } else if (mario.currentSpeed === 3) {
+                  mario.startRunning();
+              }
+          }
+      } else if (event.key === "ArrowLeft" || event.key === "a" || event.key === "A") {
+          event.preventDefault();
+          if (event.repeat) {
+              mario.stopAnimate();
+          } else {
+              mario.startPuffing();
+          }
+      } else if (event.key === "ArrowUp" || event.key === "w" || event.key === "W") {
+          event.preventDefault();
+          mario.startFlipping();
+      } else if (event.key === "ArrowDown" || event.key === "s" || event.key === "S") {
+          event.preventDefault();
+          mario.startResting();
       }
-    } else if (event.key === "ArrowLeft") {
-      event.preventDefault();
-      if (event.repeat) {
-        mario.stopAnimate();
-      } else {
-        mario.startPuffing();
-      }
-    }
   });
-
+  
   //touch events that enable animations
   window.addEventListener("touchstart", (event) => {
     event.preventDefault(); // prevent default browser action
@@ -287,4 +294,3 @@ AP Computer Science A is an in-depth course that focuses on programming, algorit
 
 ![csa]({{site.baseurl}}/images/course-brag/csa24.png)
 
-![foundation]({{site.baseurl}}/images/course-brag/foundation.png)
