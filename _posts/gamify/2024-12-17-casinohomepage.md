@@ -87,7 +87,14 @@ permalink: /gamify/casinohomepage
         border-bottom: 1px solid #555;
     }
 </style>
-
+<div class="container">
+    <div class="game-boxes">
+        <div class="game-box" onclick="location='./moneyprofile'">
+            <h2>Money Profile</h2>
+            <p>Keep track of your balance while you gamble!</p>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="game-boxes">
         <div class="game-box" onclick="location='./blackjack'">
