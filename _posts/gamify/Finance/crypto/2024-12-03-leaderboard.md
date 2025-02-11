@@ -1,5 +1,5 @@
 ---
-layout: none
+layout: base
 permalink: /stocks/leaderboard
 title: Leaderboard
 ---
@@ -17,14 +17,12 @@ title: Leaderboard
       box-sizing: border-box;
       font-family: Arial, sans-serif;
     }
-
     body {
       background-color: #F4F4F9;
       color: #333;
       margin: 0;
       padding: 0;
     }
-
     /* Navbar Styling */
     .navbar {
       display: flex;
@@ -54,7 +52,6 @@ title: Leaderboard
     .navbar .nav-buttons a:hover {
       background-color: #FF8C00;
     }
-
     /* Dashboard Layout */
     .dashboard {
       display: flex;
@@ -70,53 +67,43 @@ title: Leaderboard
       flex-direction: column;
       gap: 20px;
     }
-
     /* Leaderboard Table Styling */
     section {
-      background: #fff;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       padding: 20px;
       margin: 20px 0;
     }
-
     h1, h2 {
       text-align: center;
       margin-bottom: 20px;
       color: #2c3e50;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
     }
-
     thead {
       background-color: #001F3F;
       color: #fff;
     }
-
     th, td {
       padding: 12px 15px;
       text-align: center;
       border-bottom: 1px solid #ddd;
     }
-
     tbody tr:nth-child(even) {
       background-color: #f9f9f9;
     }
-
     tbody tr:hover {
       background-color: #f1f7ff;
       cursor: pointer;
     }
-
     td:first-child {
       font-weight: bold;
       color: #e67e22;
     }
-
     tbody tr:nth-child(1) td:first-child {
       color: #f1c40f;
       font-size: 1.2em;
@@ -127,7 +114,6 @@ title: Leaderboard
     tbody tr:nth-child(3) td:first-child {
       color: #cd7f32;
     }
-
     /* Search Bar */
     .search-container {
       margin-bottom: 20px;
@@ -154,7 +140,6 @@ title: Leaderboard
     .search-button:hover {
       background-color: #E07B00;
     }
-
     /* Summary Cards */
     .summary-cards {
       display: flex;
@@ -173,23 +158,20 @@ title: Leaderboard
     .card-orange { background-color: #FF8C00; }
     .card-purple { background-color: #6A0DAD; }
     .card-darkblue { background-color: #001F3F; }
-
     .card h2 { font-size: 20px; }
     .card p { font-size: 36px; font-weight: bold; }
   </style>
 </head>
 <body>
-
   <!-- Navbar -->
   <div class="navbar">
     <div class="logo">Leaderboard</div>
     <div class="nav-buttons">
-      <a href="#">Home</a>
+      <a href="{{site.baseurl}}/stocks/home">Home</a>
       <a href="#">Rankings</a>
       <a href="#">Profile</a>
     </div>
   </div>
-
   <!-- Dashboard -->
   <div class="dashboard">
     <div class="dashboard-content">
@@ -197,16 +179,6 @@ title: Leaderboard
         <input type="text" placeholder="Search for a user..." />
         <button class="search-button">Search</button>
       </div>
-
-      <div class="navbar">
-        <div class="links">
-            <a href="/portfolio_2025/crypto/portfolio" id="portfolioLink">Investing Portfolio</a>
-            <a href="/portfolio_2025/crypto/mining" id="miningLink">Crypto Mining</a>
-            <a href="/portfolio_2025/crypto/team" id="TeamLink">Team Stats</a>
-            <a href="/portfolio_2025/crypto/leaderboard" id="leaderboardLink">Leaderboard</a>
-        </div>
-      </div>
-
       <!-- Summary Cards -->
       <div class="summary-cards">
         <div class="card card-orange">
@@ -222,7 +194,6 @@ title: Leaderboard
           <p>$12,345</p>
         </div>
       </div>
-
       <!-- Leaderboard Table -->
       <section>
         <h2>Top 10 Users by Balance</h2>
@@ -245,17 +216,14 @@ title: Leaderboard
 </html>
   <script type="module">
     import { javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
-
     // Fetch leaderboard data dynamically
     async function fetchLeaderboard() {
       try {
         const response = await fetch(`${javaURI}/api/rankings/leaderboard`, fetchOptions);
         if (!response.ok) throw new Error("Failed to fetch leaderboard data");
-
         const data = await response.json();
         const topUsersTable = document.querySelector("#top-users-table tbody");
         topUsersTable.innerHTML = ""; // Clear existing data
-
         data.forEach((user, index) => {
           const row = document.createElement("tr");
           row.innerHTML = `
@@ -269,6 +237,5 @@ title: Leaderboard
         console.error("Error fetching leaderboard data:", error);
       }
     }
-
     document.addEventListener("DOMContentLoaded", fetchLeaderboard);
   </script>
