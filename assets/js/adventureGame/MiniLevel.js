@@ -14,10 +14,10 @@ class MiniLevel {
     let height = GameEnv.innerHeight;
 
     // Background data
-    const image_src_water = path + "/images/gamify/deepseadungeon.jpeg";
-    const image_data_water = {
-        id: 'Water',
-        src: image_src_water,
+    const image_src_forest = path + "/images/gamify/forest.png";
+    const image__data_forest = {
+        id: 'Forest',
+        src: image_src_forest,
         pixels: {height: 597, width: 340}
     };
 
@@ -75,7 +75,7 @@ class MiniLevel {
 
     // List of objects definitions for this level
     this.objects = [
-      { class: Background, data: image_data_water },
+      { class: Background, data: image__data_forest },
       { class: Player, data: sprite_data_octopus },
       { class: Npc, data: sprite_data_nomad },
     ];
