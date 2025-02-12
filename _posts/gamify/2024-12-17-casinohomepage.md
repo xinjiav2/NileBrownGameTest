@@ -3,7 +3,6 @@ layout: post
 title: Casino Games
 permalink: /gamify/casinohomepage
 ---
-
 <style>
     body {
         text-align: center;
@@ -87,7 +86,6 @@ permalink: /gamify/casinohomepage
         border-bottom: 1px solid #555;
     }
 </style>
-
 <div class="container">
     <div class="game-boxes">
         <div class="game-box" onclick="location='./blackjack'">
@@ -107,7 +105,6 @@ permalink: /gamify/casinohomepage
             <p>Challenge your skills in this classic card game.</p>
         </div>
     </div>
-
     <div class="leaderboard" id="leaderboard">
         <h2>Leaderboard</h2>
         <ul id="leaderboard-list">
@@ -133,6 +130,5 @@ permalink: /gamify/casinohomepage
             console.error("Error fetching leaderboard:", error);
         }
     }
-    
     fetchLeaderboard();
 </script>
