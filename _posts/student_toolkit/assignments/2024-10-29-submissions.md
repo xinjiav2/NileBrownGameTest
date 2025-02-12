@@ -163,9 +163,16 @@ layout: post
         const assigmentId=assignments[assignIndex-1].id;
         urllink_submit+=assigmentId.toString();
         const data = new FormData();
+        let isLate=false;
+        const now = new Date();
+        const deadlineDate = new Date(assignments[assignIndex-1].dueDate);
+        console.log(now);
+        console.log(deadlineDate);
+        console.log(deadlineDate-now);
         data.append("studentId", student_id);
         data.append("content", submissionContent);
         data.append("comment", comment);
+        data.append("isLate",deadlineDate-now<0);
 
         fetch(urllink_submit, {
             method: 'POST',
