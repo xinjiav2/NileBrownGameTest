@@ -182,7 +182,6 @@ title: Stocks Home
             <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
             <a href="{{site.baseurl}}/stocks/leaderboard">Leaderboard</a>
             <a href="{{site.baseurl}}/stocks/game">Game</a>
-
         </div>
     </nav>
     <!-- Dashboard -->
