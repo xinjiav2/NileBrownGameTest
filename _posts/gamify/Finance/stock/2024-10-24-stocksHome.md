@@ -182,6 +182,7 @@ title: Stocks Home
             <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
             <a href="{{site.baseurl}}/stocks/leaderboard">Leaderboard</a>
             <a href="{{site.baseurl}}/stocks/game">Game</a>
+
         </div>
     </nav>
     <!-- Dashboard -->
@@ -218,49 +219,27 @@ title: Stocks Home
             <div id="output" style="color: red; padding-top: 10px;"></div>
         </div>
         <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="your-stocks">
-                <h3>Your Stocks</h3>
-                <table id="yourStocksTable">
-                    <tr>
-                        <th>Stock</th>
-                        <th>Price</th>
-                    </tr>
-                </table>
-            </div>
-            <div class="stock-table">
-                <h3>Stock Prices</h3>
-                <table>
-                    <tr>
-                        <th>Stock</th>
-                        <th>Price</th>
-                    </tr>
-                    <tr>
-                        <td>Spotify</td>
-                        <td id="SpotifyPrice">$297,408</td>
-                    </tr>
-                    <tr>
-                        <td>Apple</td>
-                        <td id="ApplePrice">$142,845</td>
-                    </tr>
-                    <tr>
-                        <td>Google</td>
-                        <td id="GooglePrice">$2,823,894</td>
-                    </tr>
-                    <tr>
-                        <td>Facebook</td>
-                        <td id="FacebookPrice">$208,123</td>
-                    </tr>
-                    <tr>
-                        <td>Microsoft</td>
-                        <td id="MicrosoftPrice">$330,456</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+        <!-- Sidebar -->
+<div class="sidebar">
+    <div class="your-stocks">
+        <h3>Your Stocks</h3>
+        <table id="yourStocksTable">
+            <tr>
+                <th>Stock</th>
+                <th>Price</th>
+            </tr>
+        </table>
     </div>
-</body>
-</html>
+    <div class="crypto-history">
+        <h3>Your Crypto Transaction History</h3>
+        <table id="cryptoHistoryTable">
+            <tr>
+                <th>Transaction</th>
+            </tr>
+        </table>
+    </div>
+</div>
+
 <script type="module">
     import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
     // Fetch user credentials and update the welcome message
@@ -278,26 +257,32 @@ title: Stocks Home
         }
     }
     // Fetch user credentials
-    function getCredentialsJava() {
-        const URL = javaURI + '/api/person/get';
-        return fetch(URL, fetchOptions)
-            .then(response => {
-                if (response.status !== 200) {
-                    console.error("HTTP status code: " + response.status);
-                    return null;
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data === null) return null;
-                console.log(data);
-                return data;
-            })
-            .catch(err => {
-                console.error("Fetch error: ", err);
-                return null;
-            });
+    async function getCredentialsJava() {
+    const URL = javaURI + '/api/person/get';
+    try {
+        const response = await fetch(URL, fetchOptions);
+        if (response.status !== 200) {
+            console.error("HTTP status code: " + response.status);
+            return null;
+        }
+
+        const data = await response.json();
+        if (!data) return null;
+
+        console.log("User Data:", data);
+
+        // Store user email for later use
+        if (data.email) {
+            localStorage.setItem("userEmail", data.email);
+        }
+
+        return data;
+    } catch (err) {
+        console.error("Fetch error: ", err);
+        return null;
     }
+}
+
    async function getUserStocks() {
     try {
         const credentials = await getCredentialsJava(); // Get user data
@@ -479,6 +464,73 @@ async function updateStockPrices() {
                 //console.log(counter);
             }
         }
+async function updateCryptoHistoryTable() {
+    try {
+        // Retrieve the stored email from localStorage
+        const email = localStorage.getItem("userEmail");
+
+        if (!email) {
+            console.warn("User email not found in localStorage.");
+            return;
+        }
+
+        console.log(`Fetching transaction history for email: ${email}`);
+
+        const response = await fetch(javaURI + `/api/crypto/history?email=${encodeURIComponent(email)}`);
+        console.log("Response status:", response.status);
+
+        if (!response.ok) {
+            throw new Error(`Error fetching transaction history: ${response.statusText}`);
+        }
+
+        const transactionData = await response.json();
+        console.log("Transaction History Response:", transactionData);
+
+        // Extract the cryptoHistory string
+        let cryptoHistoryString = transactionData.cryptoHistory;
+
+        // Check if cryptoHistoryString exists and is not empty
+        if (!cryptoHistoryString || cryptoHistoryString.trim() === "") {
+            console.warn("No transaction history found.");
+            return;
+        }
+
+        // Split the string into an array based on newlines
+        const transactionHistory = cryptoHistoryString.split("\n").filter(entry => entry.trim() !== "");
+
+        console.log("Parsed Transaction History:", transactionHistory);
+
+        const table = document.getElementById("cryptoHistoryTable");
+        if (!table) {
+            console.error("Table element 'cryptoHistoryTable' not found.");
+            return;
+        }
+
+        // Clear existing table rows (except header)
+        table.innerHTML = `
+            <tr>
+                <th>Transaction</th>
+            </tr>`;
+
+        // Populate the table
+        transactionHistory.forEach(transaction => {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${transaction}</td>`;
+            table.appendChild(row);
+        });
+
+    } catch (error) {
+        console.error("Error updating Crypto Transaction History:", error);
+    }
+}
+
+// ✅ Call function when page loads
+document.addEventListener("DOMContentLoaded", () => {
+    updateCryptoHistoryTable();
+});
+
+
+
 async function getPortfolioPerformance() {
     try {
         // Fetch user credentials
