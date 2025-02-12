@@ -1,5 +1,5 @@
 ---
-permalink: /issue/post
+permalink: /studentIssue/post
 title: Issues Post
 ---
 

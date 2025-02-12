@@ -1,5 +1,5 @@
 ---
-permalink: /blogs/post
+permalink: /studentBlogs/post
 title: Blogs Post
 ---
 
