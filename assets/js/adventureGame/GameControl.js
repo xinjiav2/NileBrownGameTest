@@ -3,6 +3,7 @@ import GameEnv from "./GameEnv.js";
 import GameLevelWater from "./GameLevelWater.js";
 import GameLevelDesert from "./GameLevelDesert.js";
 import MiniLevel from "./MiniLevel.js";
+import Stats from "./Stats.js";
 
 class GameControl {
     constructor() {
@@ -20,6 +21,8 @@ class GameControl {
         this.path = path;
         this.addExitKeyListener();
         this.loadLevel();
+        const stats = new Stats();
+        stats.fetchStats();
     }
 
     loadLevel() {
@@ -102,6 +105,11 @@ class GameControl {
             currentLevelIndex: this.currentLevelIndex,
             path: this.path
         };
+
+        for (let index = GameEnv.gameObjects.length - 1; index >= 0; index--) {
+            GameEnv.gameObjects[index].destroy();
+        }
+
         GameEnv.gameObjects = [];
         const miniLevelInstance = new MiniLevel(this.path);
         this.loadLevelObjects(miniLevelInstance);
