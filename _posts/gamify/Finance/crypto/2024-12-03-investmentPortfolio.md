@@ -4,16 +4,53 @@ title: Crypto Portfolio
 type: issues
 permalink: /crypto/portfolio
 ---
+
 <link rel="stylesheet" href="{{site.baseurl}}/assets/css/portfolio.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #001f3f; /* Dark blue background */
+        color: #fff;
+    }
+    .navbar .logo {
+        font-size: 24px;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+    .navbar .nav-buttons {
+        display: flex;
+        gap: 20px;
+    }
+    .navbar .nav-buttons a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 16px;
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+    .navbar .nav-buttons a:hover {
+        background-color: #ff8c00; /* Orange hover effect */
+    }
     h1 {
         color: #333;
         margin-top: 20px;
+        text-align: center;
     }
     .container {
         max-width: 1000px;
+        margin: auto;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -97,14 +134,18 @@ permalink: /crypto/portfolio
 </style>
 
 <!-- Navigation Bar -->
-<div class="navbar">
-    <div class="navbar-logo">Crypto Portfolio</div>
-    <div class="navbar-links">
-        <a href="/portfolio_2025/crypto/portfolio">Portfolio</a>
-        <a href="/portfolio_2025//crypto/mining">Mining</a>
-        <a href="/portfolio_2025/stocks/home">Stocks</a>
+<nav class="navbar">
+    <div class="logo">NITD</div>
+    <div class="nav-buttons">
+        <a href="{{site.baseurl}}/stocks/home">Home</a>
+        <a href="{{site.baseurl}}/crypto/portfolio">Crypto</a>
+        <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
+        <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
+        <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
+        <a href="{{site.baseurl}}/stocks/leaderboard">Leaderboard</a>
+        <a href="{{site.baseurl}}/stocks/game">Game</a>
     </div>
-</div>
+</nav>
 
 <div class="container">
     <h1>Current Balance: $<span id="user-balance">Loading...</span></h1>
