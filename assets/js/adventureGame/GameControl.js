@@ -2,7 +2,7 @@ import GameEnv from './GameEnv.js';
 import GameLevelWater from './GameLevelWater.js';
 import GameLevelDesert from './GameLevelDesert.js';
 import MiniLevel from "./MiniLevel.js";
-import { getStats } from "./StatsManager.js";
+
 
 /**
  * The GameControl object manages the game.
@@ -34,6 +34,7 @@ const GameControl = {
         this.path = path;
         this.addExitKeyListener();
         this.loadLevel();
+        
     },
     
     loadLevel: function() {
@@ -99,6 +100,24 @@ const GameControl = {
         this.loadLevel();
     },
     
+
+    handleMiniLevelEnd: function() {
+        // More levels to play 
+        if (this.currentLevelIndex < this.levelClasses.length - 1) {
+            alert("Mini Level ended.");
+        } else { // All levels completed
+            alert("Game over. All levels completed.");
+        }
+        // Tear down the game environment
+        for (let index = GameEnv.gameObjects.length - 1; index >= 0; index--) {
+            GameEnv.gameObjects[index].destroy();
+        }
+        // Move to the next level
+        this.currentLevelIndex++;
+        // Go back to the loadLevel function
+        this.loadLevel();
+    },
+
     resize: function() {
         // Resize the game environment
         GameEnv.resize();
@@ -117,14 +136,15 @@ const GameControl = {
     },
 
     startMiniLevel: function(npcInstance) {
-        this.handleLevelEnd();
+        this.handleMiniLevelEnd();
         // Store current level state
         this.savedLevelState = {
             currentLevelIndex: this.currentLevelIndex,
             path: this.path
         };
         // Create the mini-level instance
-        const miniLevelInstance = new MiniLevel(this.path);
+    
+        const miniLevelInstance = new MiniLevel(this.path, this.questions);
         // Clear current game objects
         GameEnv.gameObjects = [];
         // Load mini-level objects
