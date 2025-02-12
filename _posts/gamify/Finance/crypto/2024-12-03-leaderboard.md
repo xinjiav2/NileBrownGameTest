@@ -5,7 +5,6 @@ title: Leaderboard
 ---
 
 <html lang="en">
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leaderboard</title>
@@ -18,6 +17,7 @@ title: Leaderboard
       font-family: Arial, sans-serif;
     }
     body {
+      font-family: Arial, sans-serif;
       background-color: #F4F4F9;
       color: #333;
       margin: 0;
@@ -29,7 +29,7 @@ title: Leaderboard
       justify-content: space-between;
       align-items: center;
       padding: 10px 20px;
-      background-color: #001F3F;
+      background-color: #001F3F; /* Dark blue background */
       color: #fff;
     }
     .navbar .logo {
@@ -50,9 +50,9 @@ title: Leaderboard
       transition: background-color 0.3s;
     }
     .navbar .nav-buttons a:hover {
-      background-color: #FF8C00;
+      background-color: #FF8C00; /* Orange hover effect */
     }
-    /* Dashboard Layout */
+    /* Main Dashboard Layout */
     .dashboard {
       display: flex;
       gap: 20px;
@@ -161,24 +161,32 @@ title: Leaderboard
     .card h2 { font-size: 20px; }
     .card p { font-size: 36px; font-weight: bold; }
   </style>
-</head>
-<body>
   <!-- Navbar -->
   <div class="navbar">
     <div class="logo">Leaderboard</div>
     <div class="nav-buttons">
-      <a href="{{site.baseurl}}/stocks/home">Home</a>
+      <a href="#">Home</a>
       <a href="#">Rankings</a>
       <a href="#">Profile</a>
     </div>
   </div>
   <!-- Dashboard -->
   <div class="dashboard">
+    <!-- Main Content -->
     <div class="dashboard-content">
+      <!-- Search -->
       <div class="search-container">
         <input type="text" placeholder="Search for a user..." />
         <button class="search-button">Search</button>
       </div>
+    <div class="navbar">
+        <div class="links">
+            <a href="/portfolio_2025/crypto/portfolio" id="portfolioLink">Investing Portfolio</a>
+            <a href="/portfolio_2025/crypto/mining" id="miningLink">Crypto Mining</a>
+            <a href="/portfolio_2025/crypto/team" id="TeamLink">Team Stats</a>
+            <a href="/portfolio_2025/crypto/leaderboard" id="leaderboardLink">Leaderboard</a>
+        </div>
+    </div>
       <!-- Summary Cards -->
       <div class="summary-cards">
         <div class="card card-orange">
@@ -206,26 +214,31 @@ title: Leaderboard
             </tr>
           </thead>
           <tbody>
-            <!-- Data inserted dynamically -->
+            <!-- Data will be inserted dynamically -->
           </tbody>
         </table>
       </section>
     </div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="stock-table">
+        <h2>Your Stocks</h2>
+        <table>
+          <tr><th>Stock</th><th>Value</th></tr>
+          <tr><td>Apple</td><td>$150.00</td></tr>
+          <tr><td>Amazon</td><td>$3,200.00</td></tr>
+        </table>
+      </div>
+    </div>
   </div>
-</body>
-</html>
-  <script type="module">
-    import { javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
-    // Fetch leaderboard data dynamically
-    async function fetchLeaderboard() {
-      try {
-        const response = await fetch(`${javaURI}/api/rankings/leaderboard`, fetchOptions);
-        if (!response.ok) throw new Error("Failed to fetch leaderboard data");
-        const data = await response.json();
-        const topUsersTable = document.querySelector("#top-users-table tbody");
-        topUsersTable.innerHTML = ""; // Clear existing data
+  <script>
+    // Fetch leaderboard data from the server
+    fetch('http://localhost:8085/api/rankings/leaderboard')
+      .then(response => response.json())
+      .then(data => {
+        const topUsersTable = document.querySelector('#top-users-table tbody');
         data.forEach((user, index) => {
-          const row = document.createElement("tr");
+          const row = document.createElement('tr');
           row.innerHTML = `
             <td>${index + 1}</td>
             <td>$${Number(user.balance).toFixed(2)}</td>
@@ -233,9 +246,7 @@ title: Leaderboard
           `;
           topUsersTable.appendChild(row);
         });
-      } catch (error) {
-        console.error("Error fetching leaderboard data:", error);
-      }
-    }
-    document.addEventListener("DOMContentLoaded", fetchLeaderboard);
+      })
+      .catch(error => console.error('Error fetching leaderboard data:', error));
   </script>
+</html>

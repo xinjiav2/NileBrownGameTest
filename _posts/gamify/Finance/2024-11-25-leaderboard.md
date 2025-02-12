@@ -1,13 +1,11 @@
 ---
-layout: base
+layout: none
 permalink: /stocks/leaderboard
 title: Leaderboard
 ---
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leaderboard</title>
-  <style>
+<title>Leaderboard</title>
+<style>
     /* General Reset */
     * {
       margin: 0;
@@ -15,6 +13,7 @@ title: Leaderboard
       box-sizing: border-box;
       font-family: Arial, sans-serif;
     }
+
     body {
       font-family: Arial, sans-serif;
       background-color: #F4F4F9;
@@ -22,6 +21,7 @@ title: Leaderboard
       margin: 0;
       padding: 0;
     }
+
     /* Navbar Styling */
     .navbar {
       display: flex;
@@ -51,21 +51,25 @@ title: Leaderboard
     .navbar .nav-buttons a:hover {
       background-color: #FF8C00; /* Orange hover effect */
     }
+
     /* Main Dashboard Layout */
     .dashboard {
       display: flex;
       gap: 20px;
       padding: 20px;
     }
+
     .dashboard-content {
       flex: 3;
     }
+
     .sidebar {
       flex: 1;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
+
     /* Leaderboard Table Styling */
     section {
       background: #000;
@@ -75,35 +79,43 @@ title: Leaderboard
       padding: 20px;
       margin: 20px 0;
     }
+
     h1, h2 {
       text-align: center;
       margin-bottom: 20px;
       color: #2c3e50;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
     }
+
     thead {
       background-color: #001F3F;
       color: #fff;
     }
+
     th, td {
       padding: 12px 15px;
       text-align: center;
       border-bottom: 1px solid #ddd;
     }
+
     tbody tr:nth-child(even) {
       background-color: #f9f9f9;
     }
+
     tbody tr:hover {
       background-color: #f1f7ff;
       cursor: pointer;
     }
+
     td:first-child {
       font-weight: bold;
       color: #e67e22;
     }
+
     tbody tr:nth-child(1) td:first-child {
       color: #f1c40f;
       font-size: 1.2em;
@@ -114,6 +126,7 @@ title: Leaderboard
     tbody tr:nth-child(3) td:first-child {
       color: #cd7f32;
     }
+
     /* Search Bar */
     .search-container {
       margin-bottom: 20px;
@@ -140,6 +153,7 @@ title: Leaderboard
     .search-button:hover {
       background-color: #E07B00;
     }
+
     /* Summary Cards */
     .summary-cards {
       display: flex;
@@ -158,90 +172,95 @@ title: Leaderboard
     .card-orange { background-color: #FF8C00; }
     .card-purple { background-color: #6A0DAD; }
     .card-darkblue { background-color: #001F3F; }
+
     .card h2 { font-size: 20px; }
     .card p { font-size: 36px; font-weight: bold; }
-  </style>
-  <!-- Navbar -->
+</style>
+<!-- Navbar -->
 <nav class="navbar">
-  <div class="logo">NITD</div>
-  <div class="nav-buttons">
-    <a href="{{site.baseurl}}/stocks/home">Home</a>
-    <a href="{{site.baseurl}}/crypto/portfolio">Crypto</a>
-    <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
-    <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
-    <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
-    <a href="{{site.baseurl}}/stocks/leaderboard">Leaderboard</a>
-  </div>
+    <div class="logo">NITD</div>
+    <div class="nav-buttons">
+        <a href="{{site.baseurl}}/stocks/home">Home</a>
+        <a href="{{site.baseurl}}/crypto/portfolio">Crypto</a>
+        <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
+        <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
+        <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
+        <a href="{{site.baseurl}}/stocks/leaderboard">Leaderboard</a>
+    </div>
 </nav>
-  <!-- Dashboard -->
-  <div class="dashboard">
-    <!-- Main Content -->
-    <div class="dashboard-content">
-      <!-- Search -->
-      <div class="search-container">
-        <input type="text" placeholder="Search for a user..." />
-        <button class="search-button">Search</button>
-      </div>
-      <!-- Summary Cards -->
-      <div class="summary-cards">
-        <div class="card card-orange">
-          <h2>Top Rank</h2>
-          <p>#1</p>
-        </div>
-        <div class="card card-purple">
-          <h2>Users</h2>
-          <p>1500+</p>
-        </div>
-        <div class="card card-darkblue">
-          <h2>Average Balance</h2>
-          <p>$12,345</p>
-        </div>
-      </div>
-      <!-- Leaderboard Table -->
-      <section>
-        <h2>Top 10 Users by Balance</h2>
-        <table id="top-users-table">
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Balance</th>
-              <th>Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Data will be inserted dynamically -->
-          </tbody>
-        </table>
-      </section>
+<!-- Dashboard -->
+<div class="dashboard">
+  <!-- Main Content -->
+  <div class="dashboard-content">
+    <!-- Search -->
+    <div class="search-container">
+      <input type="text" placeholder="Search for a user..." />
+      <button class="search-button">Search</button>
     </div>
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="stock-table">
-        <h2>Your Stocks</h2>
-        <table>
-          <tr><th>Stock</th><th>Value</th></tr>
-          <tr><td>Apple</td><td>$150.00</td></tr>
-          <tr><td>Amazon</td><td>$3,200.00</td></tr>
-        </table>
+
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+      <div class="card card-orange">
+        <h2>Top Rank</h2>
+        <p>#1</p>
       </div>
+      <div class="card card-purple">
+        <h2>Users</h2>
+        <p>1500+</p>
+      </div>
+      <div class="card card-darkblue">
+        <h2>Average Balance</h2>
+        <p>$12,345</p>
+      </div>
+    </div>
+
+    <!-- Leaderboard Table -->
+    <section>
+      <h2>Top 10 Users by Balance</h2>
+      <table id="top-users-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Balance</th>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data will be inserted dynamically -->
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="stock-table">
+      <h2>Your Stocks</h2>
+      <table>
+        <tr><th>Stock</th><th>Value</th></tr>
+        <tr><td>Apple</td><td>$150.00</td></tr>
+        <tr><td>Amazon</td><td>$3,200.00</td></tr>
+      </table>
     </div>
   </div>
-  <script>
-    // Fetch leaderboard data from the server
-    fetch('http://localhost:8085/api/rankings/leaderboard')
-      .then(response => response.json())
-      .then(data => {
-        const topUsersTable = document.querySelector('#top-users-table tbody');
-        data.forEach((user, index) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>$${Number(user.balance).toFixed(2)}</td>
-            <td>${user.name}</td>
-          `;
-          topUsersTable.appendChild(row);
-        });
-      })
-      .catch(error => console.error('Error fetching leaderboard data:', error));
-  </script>
+</div>
+
+<script>
+  // Fetch leaderboard data from the server
+  fetch('http://localhost:8085/api/rankings/leaderboard')
+    .then(response => response.json())
+    .then(data => {
+      const topUsersTable = document.querySelector('#top-users-table tbody');
+      data.forEach((user, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>$${Number(user.balance).toFixed(2)}</td>
+          <td>${user.name}</td>
+        `;
+        topUsersTable.appendChild(row);
+      });
+    })
+    .catch(error => console.error('Error fetching leaderboard data:', error));
+</script>
 </html>
