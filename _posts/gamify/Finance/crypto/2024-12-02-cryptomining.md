@@ -492,45 +492,18 @@ body {
             }
         }
         async function startPeriodicUpdates() {
-            if (updateInterval) {
-                clearInterval(updateInterval);
-            }
-            // Update mining stats every minute
+            if (updateInterval) clearInterval(updateInterval);
             updateInterval = setInterval(async () => {
                 await updateMiningStats();
-            }, 60000);
-            // Add frequent updates for temperature and power
-            setInterval(() => {
-                const statsElement = document.getElementById('gpu-temp');
-                const powerElement = document.getElementById('power-draw');
-                if (statsElement && powerElement) {
-                    const currentTemp = parseFloat(statsElement.textContent);
-                    const currentPower = parseFloat(powerElement.textContent);
-                    if (!isNaN(currentTemp) && !isNaN(currentPower)) {
-                        const tempVariation = Math.random() * 2 - 1;
-                        const powerVariation = Math.random() * 10 - 5;
-                        const newTemp = Math.max(30, Math.min(90, currentTemp + tempVariation));
-                        const newPower = Math.max(0, currentPower + powerVariation);
-                        statsElement.textContent = `${newTemp.toFixed(1)}°C`;
-                        powerElement.textContent = `${newPower.toFixed(0)}W`;
-                        // Update temperature color
-                        if (newTemp >= 80) {
-                            statsElement.className = 'stat-value text-red-500';
-                        } else if (newTemp >= 70) {
-                            statsElement.className = 'stat-value text-yellow-500';
-                        } else {
-                            statsElement.className = 'stat-value text-green-500';
-                        }
-                    }
-                }
-            }, 2000); // Update every 2 seconds
-            // 在startPeriodicUpdates中添加
+            }, 5000);
+            // 添加options定义
+            const options = {
+                ...fetchOptions,
+                method: 'GET',
+                cache: 'no-cache'
+            };
+            // 实时监控
             setInterval(async () => {
-                const options = {
-                    ...fetchOptions,
-                    method: 'GET',
-                    cache: 'no-cache'
-                };
                 try {
                     const response = await fetch(`${javaURI}/api/mining/stats`, options);
                     const stats = await response.json();
@@ -541,9 +514,9 @@ body {
                         activeGPUs: stats.activeGPUs?.length || 0
                     });
                 } catch (error) {
-                    console.error('实时监控错误:', error);
+                    console.error('监控请求失败:', error);
                 }
-            }, 5000); // 每5秒更新
+            }, 5000);
         }
         // API Calls
         async function loadGPUs() {
@@ -638,23 +611,6 @@ body {
                 showNotification('Error buying GPU: ' + error.message);
             }
         }
-        async function switchPool(event) {
-            try {
-                const options = {
-                    ...fetchOptions,
-                    method: 'POST',
-                    cache: 'no-cache',
-                    body: JSON.stringify({ pool: event.target.value })
-                };
-                const response = await fetch(`${javaURI}/api/mining/pool`, options);
-                const result = await response.json();
-                if (result.success) {
-                    showNotification(`Switched to ${event.target.value}`);
-                }
-            } catch (error) {
-                console.error('Error switching pool:', error);
-            }
-        }
         async function updateMiningStats() {
             try {
                 const options = {
@@ -687,6 +643,15 @@ body {
         }
         // UI Updates
         function updateDisplay(stats) {
+            // 添加类型检查
+            console.log('接收到的数据:', {
+                btcBalance: typeof stats.btcBalance,
+                pendingBalance: typeof stats.pendingBalance,
+                hashrate: typeof stats.hashrate
+            });
+            // 强制转换为数字
+            const pending = parseFloat(stats.pendingBalance) || 0;
+            document.getElementById('pending-balance').textContent = pending.toFixed(8);
             if (!stats) return;
             // Add small random fluctuations to temperature and power
             const tempVariation = Math.random() * 2 - 1; // Random variation ±1°C
@@ -699,8 +664,6 @@ body {
             const newPower = Math.max(0, basePower + powerVariation); // Keep above 0W
             // Update display elements
             document.getElementById('btc-balance').textContent = (parseFloat(stats.btcBalance) || 0).toFixed(8);
-            document.getElementById('pending-balance').textContent = 
-                (parseFloat(stats.pendingBalance) || 0).toFixed(8);
             document.getElementById('hashrate').textContent = `${(parseFloat(stats.hashrate) || 0).toFixed(2)} MH/s`;
             document.getElementById('shares').textContent = stats.shares || 0;
             document.getElementById('gpu-temp').textContent = `${newTemp.toFixed(1)}°C`;
@@ -757,8 +720,8 @@ body {
                 const temp = gpu.temp || 0;
                 const isActive = !!gpu.isActive;
                 const efficiency = (hashrate / (power || 1)).toFixed(3);
-                const dailyRevenue = hashrate * 86400 / 1e12;
-                const dailyPowerCost = (power * 24) / 1000 * 0.12;
+                const dailyRevenue = hashrate * 86400 * 0.00000001;
+                const dailyPowerCost = (power * 24 / 1000 * 0.12);
                 const dailyProfit = dailyRevenue - dailyPowerCost;
                 gpuCard.innerHTML = `
                     <div class="flex flex-col h-full">
@@ -876,8 +839,8 @@ body {
             const card = document.createElement('div');
             card.className = `gpu-card mb-4 ${getCategoryClass(category)}`;
             // Calculate daily estimates
-            const dailyRevenue = (gpu.hashRate || 0) * 86400 / (1e12); // Ensure hashRate is defined
-            const dailyPowerCost = (gpu.powerConsumption || 0) * 24 / 1000 * 0.12; // Ensure powerConsumption is defined
+            const dailyRevenue = (gpu.hashRate || 0) * 86400 * 0.00000001;
+            const dailyPowerCost = (gpu.powerConsumption || 0) * 24 / 1000 * 0.12;
             const dailyProfit = dailyRevenue - dailyPowerCost;
             const roi = dailyProfit > 0 ? (gpu.price / dailyProfit) : Infinity; // Avoid division by zero
             card.innerHTML = `
