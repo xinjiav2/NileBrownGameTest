@@ -4,8 +4,6 @@ permalink: /stocks/leaderboard
 title: Leaderboard
 ---
 
-<html lang="en">
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leaderboard</title>
@@ -70,7 +68,7 @@ title: Leaderboard
     }
     /* Leaderboard Table Styling */
     section {
-      background: #fff;
+      background: #000;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       overflow: hidden;
@@ -163,8 +161,6 @@ title: Leaderboard
     .card h2 { font-size: 20px; }
     .card p { font-size: 36px; font-weight: bold; }
   </style>
-</head>
-<body>
   <!-- Navbar -->
 <nav class="navbar">
   <div class="logo">NITD</div>
@@ -248,5 +244,4 @@ title: Leaderboard
       })
       .catch(error => console.error('Error fetching leaderboard data:', error));
   </script>
-</body>
 </html>
