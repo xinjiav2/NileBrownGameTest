@@ -1,70 +1,61 @@
 import GameEnv from "./GameEnv.js";
 import Character from "./Character.js";
-import Prompt from "./Prompt.js";
-import GameControl from "./GameControl.js";
+import gameControlInstance from "./GameControl.js"; // Import the singleton
+
 class Npc extends Character {
     constructor(data = null) {
         super(data);
         this.quiz = data?.quiz?.title; // Quiz title
-        this.questions = Prompt.shuffleArray(data?.quiz?.questions || []); // Shuffle questions
-        this.currentQuestionIndex = 0; // Start from the first question
+        this.questions = this.shuffleArray(data?.quiz?.questions || []); // Shuffle questions
+        this.currentQuestionIndex = 0;
         this.alertTimeout = null;
         this.bindInteractKeyListeners();
     }
-    /**
-     * Override the update method to draw the NPC.
-     * This NPC is stationary, so the update method only calls the draw method.
-     */
+    
     update() {
         this.draw();
     }
-    /**
-     * Bind key event listeners for proximity interaction.
-     */
+    
     bindInteractKeyListeners() {
         addEventListener('keydown', this.handleKeyDown.bind(this));
         addEventListener('keyup', this.handleKeyUp.bind(this));
     }
-    /**
-     * Handle keydown events for interaction.
-     * @param {Object} event - The keydown event.
-     */
+    
     handleKeyDown({ key }) {
-        switch (key) {
-            case 'e': // Player 1 interaction
-            case 'u': // Player 2 interaction
-                this.handleKeyInteract();
-                break;
+        if (key === 'e' || key === 'u') {
+            this.handleKeyInteract();
         }
     }
-    /**
-     * Handle keyup events to stop player actions.
-     * @param {Object} event - The keyup event.
-     */
+    
     handleKeyUp({ key }) {
         if (key === 'e' || key === 'u') {
-            // Clear any active timeouts when the interaction key is released
             if (this.alertTimeout) {
                 clearTimeout(this.alertTimeout);
                 this.alertTimeout = null;
             }
         }
     }
- 
-    /**
-     * Handle proximity interaction and share a quiz.
-     */
+    
     handleKeyInteract() {
-        const players = GameEnv.gameObjects.filter(obj => obj.state.collisionEvents.includes(this.spriteData.id));
-        if (players.length > 0 && this.questions.length > 0) {
+        const players = GameEnv.gameObjects.filter(
+            obj => obj.state.collisionEvents.includes(this.spriteData.id)
+        );
+        const hasQuestions = this.questions.length > 0;
+        if (players.length > 0 && hasQuestions) {
             players.forEach(player => {
-                if (!Prompt.isOpen) {
-                    console.log("NPC interaction detected. Launching MiniLevel...");
-                    GameControl.startMiniLevel(this);
-                }
+                // Use the existing gameControlInstance instead of creating a new one
+                gameControlInstance.startMiniLevel(this);
             });
         }
     }
-
+    
+    shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
 }
+
 export default Npc;
