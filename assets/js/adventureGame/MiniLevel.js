@@ -18,7 +18,7 @@ class MiniLevel {
     const image__data_forest = {
         id: 'Forest',
         src: image_src_forest,
-        pixels: {height: 597, width: 340}
+        pixels: {height: 315, width: 250}
     };
 
     const sprite_src_octopus = path + "/images/gamify/octopus.png"; // be sure to include the path

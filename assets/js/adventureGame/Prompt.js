@@ -1,3 +1,4 @@
+import gameControlInstance from "./GameControl.js";
 class Prompt {
     constructor() {
         this.isOpen = false;
@@ -26,7 +27,9 @@ class Prompt {
             this.dim = false;
             console.log("REMOVE DIM");
             const dimDiv = document.getElementById("dim");
-            dimDiv.remove();
+            if (dimDiv) {
+                dimDiv.remove();
+            }
             this.isOpen = false;
             document.getElementById("promptTitle").style.display = "none";
             const promptDropDown = document.getElementById("promptDropDown");
@@ -35,6 +38,7 @@ class Prompt {
             promptDropDown.style.left = "-100%"; 
             promptDropDown.style.transition = "all 0.3s ease-in-out";
         },
+        
     };
 
     createPromptDisplayTable() {
@@ -114,11 +118,18 @@ class Prompt {
             answer: input.value.trim()
         }));
         console.log("Submitted Answers:", answers);
+    
         // Handle the submission logic (e.g., save answers, validate, etc.)
         alert("Your answers have been submitted!");
+    
+        // Close the prompt and go back to the main level
         this.isOpen = false;
         this.backgroundDim.remove();
+    
+        // Call a function to go back to the main level
+        gameControlInstance.handleMiniLevelEnd(); // Assuming you have such a method in GameControl
     }
+    
 
     updatePromptDisplay() {
         const table = document.getElementsByClassName("table scores")[0];
@@ -200,13 +211,6 @@ class Prompt {
         document.getElementById("promptDropDown").appendChild(promptTitle);
     }
 
-    shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
 }
 
 export default Prompt;

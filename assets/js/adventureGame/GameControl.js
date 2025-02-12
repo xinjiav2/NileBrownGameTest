@@ -4,6 +4,7 @@ import GameLevelWater from "./GameLevelWater.js";
 import GameLevelDesert from "./GameLevelDesert.js";
 import MiniLevel from "./MiniLevel.js";
 import Stats from "./Stats.js";
+import Prompt from "./Prompt.js";
 
 class GameControl {
     constructor() {
@@ -24,6 +25,8 @@ class GameControl {
         this.loadLevel();
         const stats = new Stats();
         stats.fetchStats();
+        const promptInstance = new Prompt();
+        promptInstance.initializePrompt();
     }
 
     loadLevel() {
