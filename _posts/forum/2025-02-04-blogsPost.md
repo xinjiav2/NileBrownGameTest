@@ -193,7 +193,7 @@ title: Blogs Post
             };
             //wait 3 seconds then send them back
             setTimeout(function() {
-                window.location.href = "http://localhost:4100/portfolio_2025/blogs/";
+                window.location.href = "http://localhost:4100/portfolio_2025/studentBlogs/";
             }, 3000);
         });
     </script>
