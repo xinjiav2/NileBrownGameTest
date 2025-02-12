@@ -248,6 +248,110 @@ body {
 .search-button:hover {
     background-color: #e07b00;
 }
+/* ===== Mining Button Effects ===== */
+#start-mining {
+    background: linear-gradient(135deg, 
+        rgba(147, 51, 234, 0.1) 0%,    /* Purple */
+        rgba(59, 130, 246, 0.1) 50%,  /* Blue */
+        rgba(239, 68, 68, 0.1) 100%   /* Red */
+    );
+    border: 2px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(
+        45deg,
+        #9333ea,  /* Purple */
+        #3b82f6,  /* Blue */
+        #ef4444   /* Red */
+    );
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+}
+/* Hover effect with chromatic aberration */
+#start-mining:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 25px rgba(147, 51, 234, 0.4),
+                0 0 15px rgba(59, 130, 246, 0.4),
+                0 0 5px rgba(239, 68, 68, 0.4);
+}
+/* Active state with particle effect */
+#start-mining.active {
+    background: linear-gradient(135deg,
+        rgba(147, 51, 234, 0.2) 0%,
+        rgba(59, 130, 246, 0.2) 50%,
+        rgba(239, 68, 68, 0.2) 100%
+    );
+    box-shadow: 0 0 40px rgba(147, 51, 234, 0.6),
+                inset 0 0 20px rgba(59, 130, 246, 0.4);
+}
+/* RGB Cyclic Animation */
+@keyframes chromatic-pulse {
+    0% {
+        border-color: #9333ea;  /* Purple */
+        box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
+    }
+    33% {
+        border-color: #3b82f6;   /* Blue */
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+    }
+    66% {
+        border-color: #ef4444;  /* Red */
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+    }
+    100% {
+        border-color: #9333ea;  /* Purple */
+        box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
+    }
+}
+#start-mining:not(.active) {
+    animation: chromatic-pulse 3s ease-in-out infinite;
+}
+/* Holographic overlay effect */
+#start-mining::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 25%,
+        rgba(147, 51, 234, 0.1) 33%,
+        rgba(59, 130, 246, 0.1) 66%,
+        transparent 75%
+    );
+    transform: rotate(45deg);
+    animation: prismatic-flow 4s infinite linear;
+    mix-blend-mode: screen;
+}
+@keyframes prismatic-flow {
+    0% { transform: translateX(-150%) rotate(45deg); }
+    100% { transform: translateX(150%) rotate(45deg); }
+}
+/* Text glow with color transition */
+#start-mining span {
+    position: relative;
+    z-index: 2;
+    animation: text-glow 2s ease-in-out infinite alternate;
+}
+@keyframes text-glow {
+    from {
+        text-shadow: 0 0 5px rgba(147, 51, 234, 0.5),
+                     0 0 10px rgba(59, 130, 246, 0.5),
+                     0 0 15px rgba(239, 68, 68, 0.5);
+    }
+    to {
+        text-shadow: 0 0 10px rgba(147, 51, 234, 0.8),
+                     0 0 20px rgba(59, 130, 246, 0.8),
+                     0 0 30px rgba(239, 68, 68, 0.8);
+    }
+}
 </style>
 <body class="bg-gray-900 text-white min-h-screen p-6">
     <div class="text-center mb-4 text-yellow-400">
@@ -337,8 +441,8 @@ body {
         <!-- Mining Controls -->
         <div class="flex justify-center mt-8 mb-8">
             <div class="flex justify-between items-center">
-                <button id="start-mining" class="mining-button">
-                    Start Mining
+                <button id="start-mining" onclick="toggleMining()">
+                    <span>Start Mining</span>
                 </button>
             </div>
         </div>
