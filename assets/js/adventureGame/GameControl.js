@@ -12,6 +12,7 @@ class GameControl {
         this.levelClasses = [];
         this.path = '';
         this.savedLevelState = null;
+        this.currentLevel = null;
     }
 
     start(path) {
@@ -76,6 +77,16 @@ class GameControl {
     }
 
     handleMiniLevelEnd() {
+        // Clear game objects from the mini-level
+        for (let index = GameEnv.gameObjects.length - 1; index >= 0; index--) {
+            GameEnv.gameObjects[index].destroy();
+        }
+
+        // Reset game state if necessary
+        GameEnv.continueLevel = true;
+        GameEnv.gameObjects = [];
+        
+        // Restore the main level's state and load it
         if (this.savedLevelState) {
             this.currentLevelIndex = this.savedLevelState.currentLevelIndex;
             this.path = this.savedLevelState.path;
@@ -101,21 +112,26 @@ class GameControl {
     }
 
     startMiniLevel(npcInstance) {
+        // Save the current level state
         this.savedLevelState = {
             currentLevelIndex: this.currentLevelIndex,
             path: this.path
         };
 
+        // Destroy current game objects
         for (let index = GameEnv.gameObjects.length - 1; index >= 0; index--) {
             GameEnv.gameObjects[index].destroy();
         }
-
         GameEnv.gameObjects = [];
-        const miniLevelInstance = new MiniLevel(this.path);
+
+        const miniLevelInstance = new MiniLevel(this.path, () => {
+            this.handleMiniLevelEnd();
+        });
+
+        this.currentLevel = miniLevelInstance;  
         this.loadLevelObjects(miniLevelInstance);
     }
 }
 
-// Create a single instance and export it
 const gameControlInstance = new GameControl();
 export default gameControlInstance;

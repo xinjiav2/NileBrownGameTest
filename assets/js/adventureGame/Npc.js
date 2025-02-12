@@ -1,6 +1,7 @@
 import GameEnv from "./GameEnv.js";
 import Character from "./Character.js";
-import gameControlInstance from "./GameControl.js"; // Import the singleton
+import gameControlInstance from "./GameControl.js";
+import MiniLevel from "./MiniLevel.js"; 
 
 class Npc extends Character {
     constructor(data = null) {
@@ -43,8 +44,14 @@ class Npc extends Character {
         const hasQuestions = this.questions.length > 0;
         if (players.length > 0 && hasQuestions) {
             players.forEach(player => {
-                // Use the existing gameControlInstance instead of creating a new one
-                gameControlInstance.startMiniLevel(this);
+                // Check if the current level is a mini-level
+                if (gameControlInstance.currentLevel instanceof MiniLevel) {
+                    // We are in a mini-level so complete it
+                    gameControlInstance.currentLevel.complete();
+                } else {
+                    // Otherwise, start the mini-level
+                    gameControlInstance.startMiniLevel(this);
+                }
             });
         }
     }

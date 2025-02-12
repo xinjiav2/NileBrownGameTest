@@ -1,7 +1,7 @@
 import GameEnv from './GameEnv.js';
 import Background from './Background.js';
 import Npc from './Npc.js';
-import Character from './Character.js';
+import gameControlInstance from './GameControl.js';
 import Player from './Player.js';
 
 class MiniLevel {
@@ -80,6 +80,11 @@ class MiniLevel {
       { class: Npc, data: sprite_data_nomad },
     ];
   }
+  complete() {
+    // Any clean-up logic or resetting state if needed
+    alert("Mini-level completed! Returning to the main level.");
+    gameControlInstance.handleMiniLevelEnd();
+}
 }
 
 export default MiniLevel;
