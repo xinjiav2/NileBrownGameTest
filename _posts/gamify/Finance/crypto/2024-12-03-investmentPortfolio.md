@@ -89,6 +89,35 @@ permalink: /crypto/portfolio
         width: 120px;
         transition: transform 0.2s;
     }
+    .balance-container {
+        background-color: #ffad00; /* Gold background */
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s;
+    }
+
+    .balance-container:hover {
+        transform: scale(1.05);
+    }
+
+    .balance-title {
+        font-size: 1.2em;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .balance-amount {
+        font-size: 2em;
+        font-weight: 700;
+    }
 
     .crypto-item:hover {
         transform: scale(1.05);
@@ -179,7 +208,11 @@ permalink: /crypto/portfolio
 </nav>
 
 <div class="container">
-    <h1>Current Balance: $<span id="user-balance">Loading...</span></h1>
+    <div class="balance-container">
+        <div class="balance-title">Current Balance</div>
+        <div class="balance-amount" id="user-balance">Loading...</div>
+    </div>
+
     <div class="crypto-list" id="crypto-list-container"></div>
 </div>
 
