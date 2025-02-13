@@ -178,14 +178,14 @@ layout: post
         formData.append('studentId', studentId);
         formData.append('content', submissionContent);
         formData.append('comment', comment);
-        formData.append('isLate', isLate);
+        formData.append('isLate', deadlineDate-now<0);
 
         // console.log(dataRequest);
 
         fetch(urllink_submit, {
                 fetchOptions,
                 method: "POST",
-                body: formData
+                 body: formData
             })
         .then(response => {
             const outputBox = document.getElementById('outputBox');
