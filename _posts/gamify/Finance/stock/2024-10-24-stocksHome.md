@@ -304,24 +304,7 @@ title: Stocks Home
     <div class="dashboard">
         <div class="dashboard-content">
             <h1 id="userIDName" class="welcome">Hi, Welcome Back</h1>
-            <p>Invest your money with small risk!</p>
-            <div class="summary-cards">
-                <div class="card card-orange">
-                    <h2>Today's Dollar</h2>
-                    <h2>Change</h2>
-                    <p id="totalGain">NA</p>
-                </div>
-                <div class="card card-purple">
-                    <h2>Today's Percent</h2>
-                    <h2>Change</h2>
-                    <p id="percentIncrease">NA</p>
-                </div>
-                <div class="card card-darkblue">
-                    <h2>Revenue</h2>
-                    <h2>Return</h2>
-                    <p id="portfolioValue">NA</p>
-                </div>
-            </div>
+            <p>Invest your money today!</p>
             <div class="search-container">
                 <input type="text" id="searchBar" placeholder="Search...">
                 <button class="search-button" onclick="getStockData()">Search</button>

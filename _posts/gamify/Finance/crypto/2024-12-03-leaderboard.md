@@ -49,6 +49,7 @@ title: Leaderboard
     .dashboard {
         padding: 20px;
     }
+    
     /* Button Style for Title */
     .button {
         margin: 0;
@@ -58,7 +59,6 @@ title: Leaderboard
         border: none;
         cursor: pointer;
     }
-
     .button {
         --border-right: 6px;
         --text-stroke-color: rgba(255,255,255,0.6);
@@ -73,7 +73,6 @@ title: Leaderboard
         color: transparent;
         -webkit-text-stroke: 1px var(--text-stroke-color);
     }
-
     .hover-text {
         position: absolute;
         box-sizing: border-box;
@@ -86,12 +85,12 @@ title: Leaderboard
         transition: 0.5s;
         -webkit-text-stroke: 1px var(--animation-color);
     }
-
     .button:hover .hover-text {
         width: 100%;
-        filter: drop-shadow(0 0 23px var(--animation-color))
+        filter: drop-shadow(0 0 23px var(--animation-color));
     }
 
+    /* Leaderboard Table */
     table {
         width: 100%;
         border-collapse: collapse;
@@ -113,10 +112,8 @@ title: Leaderboard
         color: #333;
         font-size: 16px;
         border-bottom: 1px solid #ddd;
-    }
-    tr:hover td {
-        background-color: #f1f1f1;
-    }
+      }
+
     .rank {
         font-weight: bold;
         color: #ff8c00;
@@ -138,12 +135,13 @@ title: Leaderboard
           <a href="{{site.baseurl}}/stocks/home">Home</a>
           <a href="{{site.baseurl}}/crypto/portfolio">Crypto</a>
           <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
-          <a href="{{site.baseurl}}/crypto/mining">Mining</a>
+          <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
           <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
           <a href="{{site.baseurl}}/stocks/leaderboard">Leaderboard</a>
           <a href="{{site.baseurl}}/stocks/game">Game</a>
       </div>
   </nav>
+  
   <!-- Dashboard -->
   <div class="dashboard">
     <!-- Leaderboard Title -->
@@ -169,6 +167,7 @@ title: Leaderboard
 
 <script type="module">
   import { javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+  
   async function fetchLeaderboard() {
     try {
       const response = await fetch(`${javaURI}/api/rankings/leaderboard`, fetchOptions);
@@ -176,10 +175,11 @@ title: Leaderboard
       const data = await response.json();
       const topUsersTable = document.querySelector("#top-users-table tbody");
       topUsersTable.innerHTML = "";
+      
       data.forEach((user, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td class="rank">${index + 1}</td>
+          <td class="rank shadow__btn">${index + 1}</td>
           <td class="balance">$${Number(user.balance).toFixed(2)}</td>
           <td class="name">${user.name}</td>
         `;
@@ -189,5 +189,6 @@ title: Leaderboard
       console.error("Error fetching leaderboard data:", error);
     }
   }
+  
   document.addEventListener("DOMContentLoaded", fetchLeaderboard);
 </script>
