@@ -168,6 +168,104 @@ title: Stocks Home
         .search-button:hover {
             background-color: #e07b00;
         }
+        /* Crypto History Table */
+    .crypto-history table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+    .crypto-history th, .crypto-history td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #444;
+        word-wrap: break-word;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .crypto-history th {
+        background-color: #222;
+        font-weight: bold;
+    }
+    /* Even Column Spacing */
+    .crypto-history td:first-child { width: 20%; }
+    .crypto-history td:nth-child(2) { width: 30%; }
+    .crypto-history td:nth-child(3) { width: 25%; }
+    .crypto-history td:nth-child(4) { width: 25%; }
+    /* View Full History Button */
+    .view-full-history-btn {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #444;
+        color: white;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+    .view-full-history-btn:hover {
+        background-color: #666;
+    }
+    /* Modal Styling */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        overflow: auto;
+    }
+    .modal-content {
+        background-color: #121212;
+        color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    /* Close Button */
+    .close {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .close:hover {
+        color: red;
+    }
+    /* Modal Table */
+    .modal table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .modal th, .modal td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #444;
+    }
+    .modal th {
+        background-color: #333;
+        font-weight: bold;
+    }
+    .crypto-chart-container {
+    background-color: #121212;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    }
+    .crypto-chart-container h3 {
+        color: white;
+        margin-bottom: 10px;
+    }
     </style>
 </head>
 <body>
@@ -216,6 +314,10 @@ title: Stocks Home
                     <canvas id="stockChart" width="475" height="375">[Graph Placeholder]</canvas>
                 </div>
             </div>
+            <div class="crypto-chart-container">
+                <h3> Portfolio Balance History</h3>
+                <canvas id="cryptoBalanceChart"></canvas>
+            </div>
             <div id="output" style="color: red; padding-top: 10px;"></div>
         </div>
         <!-- Sidebar -->
@@ -230,14 +332,35 @@ title: Stocks Home
             </tr>
         </table>
     </div>
-    <div class="crypto-history">
-        <h3>Your Crypto Transaction History</h3>
-        <table id="cryptoHistoryTable">
+<div class="crypto-history">
+    <h3>Your Crypto Transaction History</h3>
+    <table id="cryptoHistoryTable">
+        <tr>
+            <th>Type</th>
+            <th>Crypto Amount</th>
+            <th>Dollar Value</th>
+            <th>Timestamp</th>
+        </tr>
+    </table>
+    <button class="view-full-history-btn" onclick="openHistoryModal()">View Full History</button>
+</div>
+
+<!-- Modal for Full History -->
+<div id="historyModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeHistoryModal()">&times;</span>
+        <h3>Full Crypto Transaction History</h3>
+        <table id="fullCryptoHistoryTable">
             <tr>
-                <th>Transaction</th>
+                <th>Type</th>
+                <th>Crypto Amount</th>
+                <th>Dollar Value</th>
+                <th>Timestamp</th>
             </tr>
         </table>
     </div>
+</div>
+
 </div>
 
 <script type="module">
@@ -466,9 +589,8 @@ async function updateStockPrices() {
         }
 async function updateCryptoHistoryTable() {
     try {
-        // Retrieve the stored email from localStorage
+        // Retrieve stored email from localStorage
         const email = localStorage.getItem("userEmail");
-
         if (!email) {
             console.warn("User email not found in localStorage.");
             return;
@@ -477,8 +599,6 @@ async function updateCryptoHistoryTable() {
         console.log(`Fetching transaction history for email: ${email}`);
 
         const response = await fetch(javaURI + `/api/crypto/history?email=${encodeURIComponent(email)}`);
-        console.log("Response status:", response.status);
-
         if (!response.ok) {
             throw new Error(`Error fetching transaction history: ${response.statusText}`);
         }
@@ -486,37 +606,44 @@ async function updateCryptoHistoryTable() {
         const transactionData = await response.json();
         console.log("Transaction History Response:", transactionData);
 
-        // Extract the cryptoHistory string
+        // Extract and split crypto history
         let cryptoHistoryString = transactionData.cryptoHistory;
-
-        // Check if cryptoHistoryString exists and is not empty
         if (!cryptoHistoryString || cryptoHistoryString.trim() === "") {
             console.warn("No transaction history found.");
             return;
         }
 
-        // Split the string into an array based on newlines
         const transactionHistory = cryptoHistoryString.split("\n").filter(entry => entry.trim() !== "");
-
         console.log("Parsed Transaction History:", transactionHistory);
 
         const table = document.getElementById("cryptoHistoryTable");
-        if (!table) {
-            console.error("Table element 'cryptoHistoryTable' not found.");
+        const fullTable = document.getElementById("fullCryptoHistoryTable");
+
+        if (!table || !fullTable) {
+            console.error("Table elements not found.");
             return;
         }
 
         // Clear existing table rows (except header)
         table.innerHTML = `
             <tr>
-                <th>Transaction</th>
+                <th>Type</th>
+                <th>Crypto Amount</th>
+                <th>Dollar Value</th>
+                <th>Timestamp</th>
             </tr>`;
 
-        // Populate the table
+        fullTable.innerHTML = table.innerHTML; // Clone structure for modal
+
+        // Populate both tables
         transactionHistory.forEach(transaction => {
-            const row = document.createElement("tr");
-            row.innerHTML = `<td>${transaction}</td>`;
-            table.appendChild(row);
+            const rowData = parseTransaction(transaction);
+
+            if (rowData) {
+                const row = createTransactionRow(rowData);
+                table.appendChild(row);
+                fullTable.appendChild(row.cloneNode(true)); // Copy row for full history modal
+            }
         });
 
     } catch (error) {
@@ -524,12 +651,50 @@ async function updateCryptoHistoryTable() {
     }
 }
 
+/* 🛠️ Function to Parse Transaction Details */
+function parseTransaction(transaction) {
+    const regex = /(Bought|Sold)\s([\d.]+)\s([A-Z]+)\sfor\s\$([\d.]+)\sat\s([\d-:\s]+)/;
+    const match = transaction.match(regex);
+
+    if (match) {
+        return {
+            type: match[1],
+            amount: match[2] + " " + match[3], // Example: "0.5 BTC"
+            value: `$${parseFloat(match[4]).toFixed(2)}`, // Format dollar amount
+            timestamp: match[5]
+        };
+    }
+    return null;
+}
+
+/* 🛠️ Function to Create Table Row */
+function createTransactionRow({ type, amount, value, timestamp }) {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td>${type}</td>
+        <td>${amount}</td>
+        <td>${value}</td>
+        <td>${timestamp}</td>
+    `;
+    return row;
+}
+
+/* 🖼️ Modal Functions */
+// Open Modal Function
+window.openHistoryModal = function() {
+    document.getElementById("historyModal").style.display = "block";
+}
+
+// Close Modal Function
+window.closeHistoryModal = function() {
+    document.getElementById("historyModal").style.display = "none";
+}
+
+
 // ✅ Call function when page loads
 document.addEventListener("DOMContentLoaded", () => {
     updateCryptoHistoryTable();
 });
-
-
 
 async function getPortfolioPerformance() {
     try {
