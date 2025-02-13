@@ -490,8 +490,39 @@ body {
     </div>
     <script type="module">
         import { login, pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js'; //imports config.js
+        
+        // Make toggleMining globally available
+        window.toggleMining = async function() {
+            try {
+                const options = {
+                    ...fetchOptions,
+                    method: 'POST',
+                    cache: 'no-cache'
+                };
+                const response = await fetch(`${javaURI}/api/mining/toggle`, options);
+                const result = await response.json();
+                console.log('Mining toggle result:', result);
+                
+                // Update UI
+                updateMiningButton(result.isMining);
+                if (result.isMining) {
+                    startPeriodicUpdates();
+                    showNotification('Mining started successfully');
+                } else {
+                    stopPeriodicUpdates();
+                    showNotification('Mining stopped');
+                }
+                await updateMiningStats();
+            } catch (error) {
+                console.error('Error toggling mining:', error);
+                showNotification('Error toggling mining state');
+            }
+        };
+
+        // Rest of your existing code...
         let hashrateChart, profitChart;
         let updateInterval;
+
         // Initialize charts and setup
         document.addEventListener('DOMContentLoaded', async () => {
             try {
@@ -503,6 +534,13 @@ body {
                 console.error('Error during initialization:', error);
             }
         });
+
+        function setupEventListeners() {
+            // Remove this line since we're using onclick in HTML
+            // document.getElementById('start-mining').addEventListener('click', toggleMining);
+            document.getElementById('gpu-shop').addEventListener('click', openGpuShop);
+        }
+
         function initializeCharts() {
             // Hashrate Chart
             const hashrateCtx = document.getElementById('hashrate-chart').getContext('2d');
@@ -564,10 +602,6 @@ body {
                     }
                 }
             });
-        }
-        function setupEventListeners() {
-            document.getElementById('start-mining').addEventListener('click', toggleMining);
-            document.getElementById('gpu-shop').addEventListener('click', openGpuShop);
         }
         async function initializeMiningState() {
             try {
@@ -636,30 +670,6 @@ body {
                 renderGpuShop(gpus);
             } catch (error) {
                 console.error('Error loading GPUs:', error);
-            }
-        }
-        async function toggleMining() {
-            try {
-                const options = {
-                    ...fetchOptions,
-                    method: 'POST',
-                    cache: 'no-cache'
-                };
-                const response = await fetch(`${javaURI}/api/mining/toggle`, options);
-                const result = await response.json();
-                console.log('Mining toggle result:', result);
-                updateMiningButton(result.isMining);
-                if (result.isMining) {
-                    startPeriodicUpdates();
-                    showNotification('Mining started successfully');
-                } else {
-                    stopPeriodicUpdates();
-                    showNotification('Mining stopped');
-                }
-                await updateMiningStats();
-            } catch (error) {
-                console.error('Error toggling mining:', error);
-                showNotification('Error toggling mining state');
             }
         }
         window.toggleGPU = async function(gpuId) {
@@ -747,16 +757,37 @@ body {
         }
         // UI Updates
         function updateDisplay(stats) {
-            // 添加类型检查
-            console.log('接收到的数据:', {
-                btcBalance: typeof stats.btcBalance,
-                pendingBalance: typeof stats.pendingBalance,
-                hashrate: typeof stats.hashrate
+            // Log incoming data
+            console.log('Updating display with stats:', stats);
+
+            // Parse BTC values
+            const btcBalance = parseFloat(stats.btcBalance) || 0;
+            const pendingBalance = parseFloat(stats.pendingBalance) || 0;
+            const totalBTC = btcBalance + pendingBalance;
+
+            // Update BTC displays
+            document.getElementById('btc-balance').textContent = btcBalance.toFixed(8);
+            document.getElementById('pending-balance').textContent = pendingBalance.toFixed(8);
+
+            // Calculate and update USD value
+            let usdValue;
+            if (stats.totalBalanceUSD) {
+                // Use API-provided USD value if available
+                usdValue = stats.totalBalanceUSD;
+            } else {
+                // Calculate USD value using BTC_PRICE constant
+                usdValue = (totalBTC * 45000).toFixed(2);
+            }
+            document.getElementById('usd-value').textContent = `$${usdValue}`;
+
+            // Log the values being displayed
+            console.log('Display values:', {
+                btcBalance: btcBalance.toFixed(8),
+                pendingBalance: pendingBalance.toFixed(8),
+                totalBTC: totalBTC.toFixed(8),
+                usdValue: usdValue
             });
-            // 强制转换为数字
-            const pending = parseFloat(stats.pendingBalance) || 0;
-            document.getElementById('pending-balance').textContent = pending.toFixed(8);
-            if (!stats) return;
+
             // Add small random fluctuations to temperature and power
             const tempVariation = Math.random() * 2 - 1; // Random variation ±1°C
             const powerVariation = Math.random() * 10 - 5; // Random variation ±5W
@@ -767,7 +798,6 @@ body {
             const newTemp = Math.max(30, Math.min(90, baseTemp + tempVariation)); // Keep between 30-90°C
             const newPower = Math.max(0, basePower + powerVariation); // Keep above 0W
             // Update display elements
-            document.getElementById('btc-balance').textContent = (parseFloat(stats.btcBalance) || 0).toFixed(8);
             document.getElementById('hashrate').textContent = `${(parseFloat(stats.hashrate) || 0).toFixed(2)} MH/s`;
             document.getElementById('shares').textContent = stats.shares || 0;
             document.getElementById('gpu-temp').textContent = `${newTemp.toFixed(1)}°C`;
