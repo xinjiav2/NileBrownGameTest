@@ -332,7 +332,7 @@ layout: post
         }
     }
 
-    function populateSubmissionsTable(submissions) {
+    async function populateSubmissionsTable(submissions) {
         const tableBody = document.getElementById('submissions-table').getElementsByTagName('tbody')[0];
         tableBody.innerHTML = ''; 
     
