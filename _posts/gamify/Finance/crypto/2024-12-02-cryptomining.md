@@ -352,6 +352,114 @@ body {
                      0 0 30px rgba(239, 68, 68, 0.8);
     }
 }
+/* GPU Shop Modal */
+.gpu-shop-modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+/* GPU Shop Content */
+.gpu-shop-content {
+    background-color: #1F2937;
+    width: 90%;
+    max-width: 900px;
+    max-height: 80vh;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    position: relative;
+}
+/* GPU List Container (with scrollbar) */
+.gpu-list-container {
+    overflow-y: auto;
+    max-height: calc(80vh - 4rem);
+    padding-right: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: #4B5563 #1F2937;
+}
+/* Scrollbar Style */
+.gpu-list-container::-webkit-scrollbar {
+    width: 8px;
+}
+.gpu-list-container::-webkit-scrollbar-track {
+    background: #1F2937;
+}
+.gpu-list-container::-webkit-scrollbar-thumb {
+    background-color: #4B5563;
+    border-radius: 4px;
+}
+/* GPU Card Base Style */
+.gpu-card {
+    background: rgba(26, 31, 46, 0.95);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
+    backdrop-filter: blur(5px);
+}
+/* Different price GPU Hover Effect */
+.gpu-card.starter:hover { /* Free GPU */
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+    border-color: rgba(34, 197, 94, 0.5);
+}
+.gpu-card.budget:hover { /* Entry-level */
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    border-color: rgba(59, 130, 246, 0.5);
+}
+.gpu-card.mid-range:hover { /* Mid-range */
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+    border-color: rgba(147, 51, 234, 0.5);
+}
+.gpu-card.high-end:hover { /* High-end */
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(251, 146, 60, 0.3);
+    border-color: rgba(251, 146, 60, 0.5);
+}
+.gpu-card.premium:hover { /* Premium */
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.5);
+}
+/* difference color = different category */
+.gpu-card.starter h3 { color: #22C55E; }  /* Green */
+.gpu-card.budget h3 { color: #3B82F6; }   /* Blue */
+.gpu-card.mid-range h3 { color: #9333EA; } /* Purple */
+.gpu-card.high-end h3 { color: #FB923C; } /* Orange */
+.gpu-card.premium h3 { color: #EF4444; }  /* Red */
+/* Buy Button Style */
+.gpu-card button {
+    background: rgba(39, 39, 42, 0.9);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+}
+.gpu-card button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px currentColor;
+}
+/* Performance Metrics Style */
+.gpu-card .performance-metrics {
+    color: #A1A1AA;
+    font-size: 0.875rem;
+}
+.gpu-card .performance-metrics span {
+    color: white;
+    font-weight: 500;
+}
+/* ROI Display Style */
+.gpu-card .roi-indicator {
+    color: #FACC15;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(250, 204, 21, 0.3);
+}
 </style>
 <body class="bg-gray-900 text-white min-h-screen p-6">
     <div class="text-center mb-4 text-yellow-400">
