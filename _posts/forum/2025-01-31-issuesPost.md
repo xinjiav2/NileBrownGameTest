@@ -138,7 +138,7 @@ title: Issues Post
     </form>
     <div id="response"></div>
     <script>
-        const javaURI = "http://localhost:8085";
+        const javaURI = "https://spring2025.nighthawkcodingsociety.com";
         function isLoggedIn() {
             //get the cookie jwt_java_spring
             const token = document.cookie.split('; ').find(row => row.startsWith('jwt_java_spring='));
