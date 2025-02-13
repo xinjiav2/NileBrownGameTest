@@ -456,13 +456,8 @@ body {
 }
 </style>
 <body class="bg-gray-900 text-white min-h-screen p-6">
-    <div class="text-center mb-4 text-yellow-400">
-        *** note: If the stats number are not showing, try to stop the mining and start again... <br>
-        *** note: If it says "Error loading mining state. Please try again.", please check if you are logged in or no...
-    </div>
     <!-- Navigation Bar -->
     <nav class="navbar">
-        <div class="logo">NITD</div>
         <div class="nav-buttons">
             <a href="{{site.baseurl}}/stocks/home">Home</a>
             <a href="{{site.baseurl}}/crypto/portfolio">Crypto</a>
@@ -473,6 +468,10 @@ body {
             <a href="{{site.baseurl}}/stocks/game">Game</a>
         </div>
     </nav>
+    <div class="text-center mb-4 text-yellow-400">
+        *** note: If the stats number are not showing, try to stop the mining and start again... <br>
+        *** note: If it says "Error loading mining state. Please try again.", please check if you are logged in or no...
+    </div>
     <div class="container mx-auto">
         <!-- Core Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

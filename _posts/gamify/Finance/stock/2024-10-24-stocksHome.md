@@ -288,8 +288,7 @@ title: Stocks Home
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar">
-        <div class="logo">NITD</div>
-        <div class="nav-buttons">
+          <div class="nav-buttons">
             <a href="{{site.baseurl}}/stocks/home">Home</a>
             <a href="{{site.baseurl}}/crypto/portfolio">Crypto</a>
             <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
