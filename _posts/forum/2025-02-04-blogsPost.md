@@ -194,7 +194,7 @@ title: Blogs Post
             };
             //wait 3 seconds then send them back
             setTimeout(function() {
-                window.location.href = "http://localhost:4100/portfolio_2025/studentBlogs/";
+                window.location.href = "{javaURI}/CSA_Combined_Frontend_Fork/studentBlogs/";
             }, 3000);
         });
     </script>
