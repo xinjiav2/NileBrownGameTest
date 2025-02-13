@@ -138,6 +138,7 @@ title: Issues Post
     </form>
     <div id="response"></div>
     <script>
+        const javaURI = "http://localhost:8085";
         function isLoggedIn() {
             //get the cookie jwt_java_spring
             const token = document.cookie.split('; ').find(row => row.startsWith('jwt_java_spring='));
@@ -156,7 +157,7 @@ title: Issues Post
                     const author = null;
                     const title = document.getElementById('title').value;
                     const context = document.getElementById('problem').value;
-                    fetch('http://localhost:8085/forum/issue/post', {
+                    fetch('{javaURI}/forum/issue/post', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -176,7 +177,7 @@ title: Issues Post
                 const title = document.getElementById('title').value;
                 const context = document.getElementById('problem').value;
                 const author = localStorage.getItem('ghid');
-                fetch('http://localhost:8085/forum/issue/post', {
+                fetch('{javaURI}/forum/issue/post', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

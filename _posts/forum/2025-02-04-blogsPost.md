@@ -138,6 +138,7 @@ title: Blogs Post
     </form>
     <div id="response"></div>
     <script>
+        const javaURI = "http://localhost:8085";
         function isLoggedIn() {
             //get the cookie jwt_java_spring
             const token = document.cookie.split('; ').find(row => row.startsWith('jwt_java_spring='));
@@ -156,7 +157,7 @@ title: Blogs Post
                     const author = null;
                     const title = document.getElementById('title').value;
                     const body = document.getElementById('body').value;
-                    fetch('http://localhost:8085/blogs/blog/post', {
+                    fetch('{javaURI}/blogs/blog/post', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -176,7 +177,7 @@ title: Blogs Post
                 const title = document.getElementById('title').value;
                 const body = document.getElementById('body').value;
                 const author = localStorage.getItem('ghid');
-                fetch('http://localhost:8085/blogs/blog/post', {
+                fetch('{javaURI}/blogs/blog/post', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
