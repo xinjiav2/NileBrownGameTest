@@ -140,7 +140,7 @@ permalink: /crypto/portfolio
         <a href="{{site.baseurl}}/stocks/home">Home</a>
         <a href="{{site.baseurl}}/crypto/portfolio">Crypto</a>
         <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
-        <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
+        <a href="{{site.baseurl}}/crypto/mining">Mining</a>
         <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
         <a href="{{site.baseurl}}/stocks/leaderboard">Leaderboard</a>
         <a href="{{site.baseurl}}/stocks/game">Game</a>
