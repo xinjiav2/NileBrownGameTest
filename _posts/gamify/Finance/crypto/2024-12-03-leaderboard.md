@@ -12,118 +12,106 @@ title: Leaderboard
   <link rel="stylesheet" href="{{site.baseurl}}/assets/css/portfolio.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    /* General Styles */
     body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f9;
+        font-family: 'Poppins', sans-serif;
+        background-color: #121212;
+        color: #ffffff;
         margin: 0;
         padding: 0;
     }
+
+    /* Navigation Bar */
     .navbar {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
-        padding: 10px 20px;
-        background-color: #001f3f;
-        color: #fff;
+        padding: 15px 0;
+        background-color: #1c1c1c;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
-    .navbar .logo {
-        font-size: 24px;
-        font-weight: bold;
-        letter-spacing: 2px;
-    }
-    .navbar .nav-buttons {
+    .nav-buttons {
         display: flex;
-        gap: 20px;
+        gap: 15px;
     }
-    .navbar .nav-buttons a {
-        color: #fff;
+    .nav-buttons a {
+        color: #ffffff;
         text-decoration: none;
         font-size: 16px;
-        padding: 8px 16px;
-        border-radius: 4px;
-        transition: background-color 0.3s;
+        padding: 10px 20px;
+        border-radius: 6px;
+        transition: 0.3s;
     }
-    .navbar .nav-buttons a:hover {
-        background-color: #ff8c00;
+    .nav-buttons a:hover {
+        background-color: #ff9800;
+        transform: scale(1.1);
     }
+
+    /* Leaderboard Container */
     .dashboard {
-        padding: 20px;
+        padding: 40px;
+        text-align: center;
     }
-    
-    /* Button Style for Title */
-    .button {
-        margin: 0;
-        height: auto;
-        background: transparent;
-        padding: 0;
-        border: none;
-        cursor: pointer;
-    }
-    .button {
-        --border-right: 6px;
-        --text-stroke-color: rgba(255,255,255,0.6);
-        --animation-color: #37FF8B;
-        --fs-size: 2em;
-        letter-spacing: 3px;
-        text-decoration: none;
-        font-size: var(--fs-size);
-        font-family: "Arial";
-        position: relative;
+
+    /* Title Button Effect */
+    .leaderboard-title {
+        font-size: 32px;
+        font-weight: bold;
         text-transform: uppercase;
-        color: transparent;
-        -webkit-text-stroke: 1px var(--text-stroke-color);
-    }
-    .hover-text {
-        position: absolute;
-        box-sizing: border-box;
-        content: attr(data-text);
-        color: var(--animation-color);
-        width: 0%;
-        inset: 0;
-        border-right: var(--border-right) solid var(--animation-color);
-        overflow: hidden;
-        transition: 0.5s;
-        -webkit-text-stroke: 1px var(--animation-color);
-    }
-    .button:hover .hover-text {
-        width: 100%;
-        filter: drop-shadow(0 0 23px var(--animation-color));
+        background: linear-gradient(90deg, #ff8c00, #ff22a6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #ff22a6;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
     }
 
     /* Leaderboard Table */
-    table {
+    .leaderboard-table {
         width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
         border-collapse: collapse;
-        background-color: #fff;
+        background: #1f1f1f;
         border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 0px 15px rgba(255, 136, 0, 0.5);
+        overflow: hidden;
     }
     th, td {
-        padding: 12px 20px;
+        padding: 15px 20px;
         text-align: left;
     }
     th {
-        background-color: #001f3f;
-        color: #fff;
+        background-color: #ff9800;
+        color: #000;
         font-size: 18px;
+        text-transform: uppercase;
     }
     td {
-        background-color: #f9f9f9;
-        color: #333;
+        background-color: #2a2a2a;
         font-size: 16px;
-        border-bottom: 1px solid #ddd;
-      }
+        border-bottom: 1px solid #444;
+        transition: background 0.3s;
+    }
+    tr:hover td {
+        background-color: #ff22a6;
+        color: #ffffff;
+    }
 
+    /* Rank, Balance & Name Effects */
     .rank {
         font-weight: bold;
-        color: #ff8c00;
+        color: #ffcc00;
     }
     .balance {
-        color: #28a745;
+        color: #00ff7f;
         font-weight: bold;
     }
     .name {
-        color: #f1f1f1;
+        font-weight: bold;
+        color: #ffffff;
     }
   </style>
 </head>
@@ -138,47 +126,44 @@ title: Leaderboard
           <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
           <a href="{{site.baseurl}}/stocks/leaderboard">Leaderboard</a>
           <a href="{{site.baseurl}}/stocks/game">Game</a>
+          <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
       </div>
   </nav>
-  
+
   <!-- Dashboard -->
   <div class="dashboard">
-    <!-- Leaderboard Title -->
-    <section>
-      <button class="button">
-        <span class="hover-text" data-text="Top 10 Users by Balance"></span>Top 10 Users by Balance
-      </button>
-      <table id="top-users-table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Balance</th>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
-    </section>
+    <h1 class="leaderboard-title">Top 10 Users by Balance</h1>
+    <table class="leaderboard-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Balance</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody id="top-users-table">
+        <!-- Leaderboard Data Populated Here -->
+      </tbody>
+    </table>
   </div>
 </body>
 </html>
 
 <script type="module">
   import { javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
-  
+
   async function fetchLeaderboard() {
     try {
       const response = await fetch(`${javaURI}/api/rankings/leaderboard`, fetchOptions);
       if (!response.ok) throw new Error("Failed to fetch leaderboard data");
       const data = await response.json();
-      const topUsersTable = document.querySelector("#top-users-table tbody");
+      const topUsersTable = document.querySelector("#top-users-table");
       topUsersTable.innerHTML = "";
-      
+
       data.forEach((user, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td class="rank shadow__btn">${index + 1}</td>
+          <td class="rank">${index + 1}</td>
           <td class="balance">$${Number(user.balance).toFixed(2)}</td>
           <td class="name">${user.name}</td>
         `;
@@ -188,6 +173,6 @@ title: Leaderboard
       console.error("Error fetching leaderboard data:", error);
     }
   }
-  
+
   document.addEventListener("DOMContentLoaded", fetchLeaderboard);
 </script>

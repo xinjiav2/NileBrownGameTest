@@ -372,6 +372,7 @@ title: Stocks Home
             <a href="{{site.baseurl}}/crypto/mining">Mining</a>
             <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
             <a href="{{site.baseurl}}/stocks/leaderboard">Leaderboard</a>
+            
         </div>
     </nav>
     <!-- Dashboard -->

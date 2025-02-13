@@ -204,6 +204,7 @@ permalink: /crypto/portfolio
         <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
         <a href="{{site.baseurl}}/stocks/leaderboard">Leaderboard</a>
         <a href="{{site.baseurl}}/stocks/game">Game</a>
+        <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
     </div>
 </nav>
 
