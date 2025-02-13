@@ -10,7 +10,6 @@ comments: true
 permalink: /kasm/multiserver/development
 ---
 
-{% raw %}
 
 ## Initialization Guide
 
@@ -821,6 +820,8 @@ The `install_kasm.yml` file contains the head of the kasm install script. It pas
   any_errors_fatal: true
 ```
 
+{% raw %}
+
 ```yml
 - include_tasks: 
     file: default_credentials.yml
@@ -1082,6 +1083,7 @@ At the end, the installer runs some cleanup jobs and outputs relevant informatio
     - init_remote_db
     - database_hostname
 ```
+
 
 Once the system is finished, it will be complete with the installation. You can now access your Kasm multi-server instance at `https://{your-web-ip}`, which can be found by the command:
 
@@ -1622,5 +1624,4 @@ For `patch_os.yml`, apt is just upgraded and all packages are brought online. Fi
   when: ansible_pkg_mgr == "apt"
   become: true
 ```
-
 {% endraw %}
