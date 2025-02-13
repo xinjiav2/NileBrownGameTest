@@ -59,45 +59,39 @@ permalink: /crypto/mining
        @apply bg-gray-800 rounded-lg p-4 shadow-lg mb-4;
        border: 1px solid rgba(255, 255, 255, 0.1);
    }
-    /* Navigation Bar */
-    .navbar-logo {
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-    .navbar-links {
-        display: flex;
-        gap: 15px;
-    }
-    .navbar-links a:hover {
-        background-color: #575757;
-    }
+    /* Updated Navigation Bar Styles */
     .navbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 20px;
-        background-color: #001f3f; /* Dark blue background */
+        padding: 10px 15px; /* Reduced horizontal padding */
+        background-color: #001f3f;
         color: #fff;
+        width: 100%;
     }
     .navbar .logo {
         font-size: 24px;
         font-weight: bold;
         letter-spacing: 2px;
+        margin-right: 20px; /* Add margin to separate logo from nav buttons */
     }
     .navbar .nav-buttons {
         display: flex;
-        gap: 20px;
+        gap: 15px; /* Reduced gap between buttons */
+        flex-wrap: nowrap; /* Prevent wrapping */
+        align-items: center;
     }
     .navbar .nav-buttons a {
         color: #fff;
         text-decoration: none;
-        font-size: 16px;
-        padding: 8px 16px;
+        font-size: 15px; /* Slightly smaller font size */
+        padding: 6px 12px; /* Reduced padding */
         border-radius: 4px;
         transition: background-color 0.3s;
+        white-space: nowrap; /* Prevent text wrapping */
     }
     .navbar .nav-buttons a:hover {
-        background-color: #ff8c00; /* Orange hover effect */
+        background-color: #ff8c00;
     }
 body {
     font-family: Arial, sans-serif;
@@ -467,14 +461,19 @@ body {
         *** note: If it says "Error loading mining state. Please try again.", please check if you are logged in or no...
     </div>
     <!-- Navigation Bar -->
-    <div class="navbar">
-        <div class="navbar-logo">Crypto Mining</div>
-        <div class="navbar-links">
-            <a href="/portfolio_2025/crypto/portfolio">Portfolio</a>
-            <a href="/portfolio_2025/crypto/mining">Mining</a>
-            <a href="/portfolio_2025/stocks/home">Stocks</a>
+    <nav class="navbar">
+        <div class="logo">NITD</div>
+        <div class="nav-buttons">
+            <a href="{{site.baseurl}}/stocks/home">Home</a>
+            <a href="{{site.baseurl}}/crypto/portfolio">Crypto</a>
+            <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
+            <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
+            <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
+            <a href="{{site.baseurl}}/stocks/leaderboard">Leaderboard</a>
+            <a href="{{site.baseurl}}/stocks/game">Game</a>
+            <a href="{{site.baseurl}}/crypto/mining">Mining</a>
         </div>
-    </div>
+    </nav>
     <div class="container mx-auto">
         <!-- Core Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
