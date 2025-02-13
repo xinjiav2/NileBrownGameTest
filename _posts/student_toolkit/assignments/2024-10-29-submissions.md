@@ -337,7 +337,7 @@ layout: post
     
         submissions.forEach(submission => {
             const row = document.createElement('tr');
-            //console.log(submission.assignmentid+" "+assignIndex);
+            console.log(submission.assignmentid+" "+assignIndex);
             if(submission.assignmentid==assignIndex){
                 const contentCell = document.createElement('td');
                 contentCell.textContent = submission.content || 'N/A'; 
