@@ -346,6 +346,7 @@ layout: post
                 const gradeCell = document.createElement('td');
                 gradeCell.textContent = submission.grade || 'Ungraded'; 
                 row.appendChild(gradeCell);
+                console.log(submission.grade);
     
                 const feedbackCell = document.createElement('td');
                 feedbackCell.textContent = submission.feedback || 'No feedback yet'; 
