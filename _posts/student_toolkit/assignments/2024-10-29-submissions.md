@@ -324,9 +324,8 @@ layout: post
         const theUserId=await getUserId();
         try {
             const response = await fetch(`${urllink}/${userId}`, fetchOptions);
-            console.log(response.json());
-            const Submissions=await response.json();
-            console.log(Submissions);
+            console.log(response);
+            const Submissions=await response;
             populateSubmissionsTable(Submissions);
         } catch (error) {
             console.error('Error fetching submissions:', error);
