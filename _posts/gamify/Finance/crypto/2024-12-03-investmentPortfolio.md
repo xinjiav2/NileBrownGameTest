@@ -15,6 +15,7 @@ permalink: /crypto/portfolio
         margin: 0;
         padding: 0;
     }
+
     .navbar {
         display: flex;
         justify-content: space-between;
@@ -23,15 +24,18 @@ permalink: /crypto/portfolio
         background-color: #001f3f; /* Dark blue background */
         color: #fff;
     }
+
     .navbar .logo {
         font-size: 24px;
         font-weight: bold;
         letter-spacing: 2px;
     }
+
     .navbar .nav-buttons {
         display: flex;
         gap: 20px;
     }
+
     .navbar .nav-buttons a {
         color: #fff;
         text-decoration: none;
@@ -40,14 +44,17 @@ permalink: /crypto/portfolio
         border-radius: 4px;
         transition: background-color 0.3s;
     }
+
     .navbar .nav-buttons a:hover {
         background-color: #ff8c00; /* Orange hover effect */
     }
+
     h1 {
         color: #333;
         margin-top: 20px;
         text-align: center;
     }
+
     .container {
         max-width: 1000px;
         margin: auto;
@@ -56,6 +63,7 @@ permalink: /crypto/portfolio
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         text-align: center;
     }
+
     .crypto-list {
         display: flex;
         flex-wrap: wrap;
@@ -69,6 +77,7 @@ permalink: /crypto/portfolio
         box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
     }
+
     .crypto-item {
         background-color: #333;
         color: #fff;
@@ -80,10 +89,12 @@ permalink: /crypto/portfolio
         width: 120px;
         transition: transform 0.2s;
     }
+
     .crypto-item:hover {
         transform: scale(1.05);
         background-color: #444;
     }
+
     .modal {
         display: none;
         position: fixed;
@@ -96,6 +107,7 @@ permalink: /crypto/portfolio
         align-items: center;
         justify-content: center;
     }
+
     .modal-content {
         background-color: #fff;
         padding: 20px;
@@ -107,10 +119,12 @@ permalink: /crypto/portfolio
         position: relative;
         color: #333;
     }
+
     .chart-container {
         height: 300px;
         margin: 20px 0;
     }
+
     .modal-close {
         position: absolute;
         top: 10px;
@@ -119,6 +133,7 @@ permalink: /crypto/portfolio
         font-size: 18px;
         color: #333;
     }
+
     .btn {
         padding: 10px 20px;
         margin: 10px;
@@ -128,9 +143,26 @@ permalink: /crypto/portfolio
         color: #fff;
         font-size: 1em;
     }
-    .btn-buy { background-color: #4CAF50; }
-    .btn-sell { background-color: #f44336; }
-    .btn-close { background-color: #555; }
+
+    .btn-buy {
+        background-color: #4CAF50;
+    }
+
+    .btn-sell {
+        background-color: #f44336;
+    }
+
+    .btn-close {
+        background-color: #555;
+    }
+
+    input[type="number"], input[type="text"] {
+        width: 80%;
+        padding: 8px;
+        margin: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
 </style>
 
 <!-- Navigation Bar -->
@@ -161,8 +193,14 @@ permalink: /crypto/portfolio
         <div class="chart-container">
             <canvas id="crypto-chart"></canvas>
         </div>
+        <label for="buy-amount">Amount in USD to buy:</label>
+        <input type="number" id="buy-amount" placeholder="Enter amount in USD">
         <button class="btn btn-buy" onclick="buyCrypto()">Buy</button>
+
+        <label for="sell-amount">Amount to sell (in crypto):</label>
+        <input type="number" id="sell-amount" placeholder="Enter amount in crypto">
         <button class="btn btn-sell" onclick="sellCrypto()">Sell</button>
+
         <button class="btn btn-close" onclick="closeModal()">Close</button>
     </div>
 </div>
@@ -218,7 +256,6 @@ permalink: /crypto/portfolio
     setInterval(fetchUserBalance, 5000);
 
     fetchUser();
-
 
     async function fetchCryptos() {
         try {
@@ -279,9 +316,10 @@ permalink: /crypto/portfolio
     window.closeModal = function () {
         document.getElementById('crypto-modal').style.display = 'none';
     };
+
     window.buyCrypto = async function () {
         const cryptoId = document.getElementById('modal-crypto-name').innerText;
-        const usdAmount = prompt("Enter USD amount to buy:");
+        const usdAmount = document.getElementById('buy-amount').value;
         if (usdAmount) {
             try {
                 const response = await fetch(`${javaURI}/api/crypto/buy`, {
@@ -300,7 +338,7 @@ permalink: /crypto/portfolio
 
     window.sellCrypto = async function () {
         const cryptoId = document.getElementById('modal-crypto-name').innerText;
-        const cryptoAmount = prompt("Enter crypto amount to sell:");
+        const cryptoAmount = document.getElementById('sell-amount').value;
         if (cryptoAmount) {
             try {
                 const response = await fetch(`${javaURI}/api/crypto/sell`, {
