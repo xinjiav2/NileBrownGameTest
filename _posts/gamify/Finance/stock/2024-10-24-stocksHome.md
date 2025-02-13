@@ -266,6 +266,23 @@ title: Stocks Home
         color: white;
         margin-bottom: 10px;
     }
+    /* 🔹 Crypto Chart Container */
+    .crypto-chart-container {
+        width: 100%; /* Ensures it doesn't overflow */
+        max-width: 700px; /* Limits the chart width */
+        height: 400px; /* Set a reasonable height */
+        margin: 0 auto; /* Centers the chart */
+        padding: 10px;
+        background-color: #121212;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    /* 🔹 Chart Canvas */
+    #cryptoBalanceChart {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
     </style>
 </head>
 <body>
@@ -589,7 +606,6 @@ async function updateStockPrices() {
         }
 async function updateCryptoHistoryTable() {
     try {
-        // Retrieve stored email from localStorage
         const email = localStorage.getItem("userEmail");
         if (!email) {
             console.warn("User email not found in localStorage.");
@@ -606,7 +622,6 @@ async function updateCryptoHistoryTable() {
         const transactionData = await response.json();
         console.log("Transaction History Response:", transactionData);
 
-        // Extract and split crypto history
         let cryptoHistoryString = transactionData.cryptoHistory;
         if (!cryptoHistoryString || cryptoHistoryString.trim() === "") {
             console.warn("No transaction history found.");
@@ -618,7 +633,6 @@ async function updateCryptoHistoryTable() {
 
         const table = document.getElementById("cryptoHistoryTable");
         const fullTable = document.getElementById("fullCryptoHistoryTable");
-
         if (!table || !fullTable) {
             console.error("Table elements not found.");
             return;
@@ -632,24 +646,38 @@ async function updateCryptoHistoryTable() {
                 <th>Dollar Value</th>
                 <th>Timestamp</th>
             </tr>`;
-
         fullTable.innerHTML = table.innerHTML; // Clone structure for modal
 
-        // Populate both tables
+        // 🟢 **Balance Tracking Fix**
+        let runningBalance = 100000; // ✅ Start at $100,000
+        let labels = [];
+        let balances = [];
+
         transactionHistory.forEach(transaction => {
             const rowData = parseTransaction(transaction);
-
             if (rowData) {
                 const row = createTransactionRow(rowData);
                 table.appendChild(row);
-                fullTable.appendChild(row.cloneNode(true)); // Copy row for full history modal
+                fullTable.appendChild(row.cloneNode(true));
+
+                // 🟢 **Apply transaction to running balance**
+                const transactionAmount = parseFloat(rowData.value.replace("$", ""));
+                runningBalance += rowData.type === "Bought" ? -transactionAmount : transactionAmount;
+
+                // Store for graph plotting
+                labels.push(rowData.timestamp);
+                balances.push(runningBalance);
             }
         });
+
+        // Render updated chart with correct running balance
+        renderCryptoBalanceChart(labels, balances);
 
     } catch (error) {
         console.error("Error updating Crypto Transaction History:", error);
     }
 }
+
 
 /* 🛠️ Function to Parse Transaction Details */
 function parseTransaction(transaction) {
@@ -679,6 +707,59 @@ function createTransactionRow({ type, amount, value, timestamp }) {
     return row;
 }
 
+function renderCryptoBalanceChart(labels, balances) {
+    const ctx = document.getElementById("cryptoBalanceChart").getContext("2d");
+
+    // ✅ Ensure previous chart exists before destroying
+    if (window.cryptoBalanceChart instanceof Chart) {
+        window.cryptoBalanceChart.destroy();
+    }
+
+    // ✅ Set correct Y-axis range
+    const yMin = 0;  // 🔥 Start at $100,000
+    const yMax = Math.ceil((Math.max(200000, Math.max(...balances) + 5000)) / 30000) * 30000; // Round up to nearest 30,000
+
+    // ✅ Create new chart instance
+    window.cryptoBalanceChart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Crypto Portfolio Balance (USD)",
+                data: balances,
+                borderColor: "#FF8C00",
+                borderWidth: 2,
+                fill: true,
+                backgroundColor: "rgba(255, 140, 0, 0.2)",
+                pointRadius: 5, // Dots to make changes visible
+                tension: 0.2 // Smooth line
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Ensures proper fit
+            scales: {
+                x: { 
+                    title: { display: true, text: "Date" }, 
+                    ticks: { autoSkip: true, maxTicksLimit: 10 } // Avoids overcrowding
+                },
+                y: { 
+                    title: { display: true, text: "Portfolio Balance (USD)" },
+                    min: yMin, // 🔥 Start at $100,000
+                    max: yMax,  // 🔥 Adjust dynamically if needed
+                    ticks: { stepSize: 30000 } // **🔥 Increments of 30,000**
+                }
+            },
+            plugins: {
+                legend: { display: true, position: "top" },
+                tooltip: { enabled: true, mode: "index", intersect: false }
+            }
+        }
+    });
+}
+
+
+
 /* 🖼️ Modal Functions */
 // Open Modal Function
 window.openHistoryModal = function() {
@@ -689,7 +770,6 @@ window.openHistoryModal = function() {
 window.closeHistoryModal = function() {
     document.getElementById("historyModal").style.display = "none";
 }
-
 
 // ✅ Call function when page loads
 document.addEventListener("DOMContentLoaded", () => {
