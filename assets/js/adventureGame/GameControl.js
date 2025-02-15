@@ -14,10 +14,10 @@ class GameControl {
 
     start() {
         this.addExitKeyListener();
-        this.loadLevel();
+        this.transitionToLevel();
     }
 
-    loadLevel() {
+    transitionToLevel() {
         const GameLevelClass = this.levelClasses[this.currentLevelIndex];
         this.currentLevel = new GameLevel(this.path);
         this.currentLevel.create(GameLevelClass);
@@ -49,7 +49,7 @@ class GameControl {
         }
         this.currentLevel.destroy();
         this.currentLevelIndex++;
-        this.loadLevel();
+        this.transitionToLevel();
     }
 
     addExitKeyListener() {
