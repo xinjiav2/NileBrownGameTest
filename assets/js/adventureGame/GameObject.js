@@ -36,21 +36,21 @@ class GameObject {
     }
 
     /**
-     * Draws the object on the canvas.
-     * This method must be implemented by subclasses.
-     * @abstract
-     */
-    draw() {
-        throw new Error("Method 'draw()' must be implemented.");
-    }
-
-    /**
      * Updates the object's state.
      * This method must be implemented by subclasses.
      * @abstract
      */
     update() {
         throw new Error("Method 'update()' must be implemented.");
+    }
+
+    /**
+     * Draws the object on the canvas.
+     * This method must be implemented by subclasses.
+     * @abstract
+     */
+    draw() {
+        throw new Error("Method 'draw()' must be implemented.");
     }
 
     /**

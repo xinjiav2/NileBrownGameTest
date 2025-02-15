@@ -15,6 +15,13 @@ export class Background extends GameObject {
         }
     }
 
+    /** For primary background, update is the same as draw
+     * 
+     */
+    update() {
+        this.draw();
+    }
+
     /** This method draws to GameEnv context, primary background
      * 
      */
@@ -31,13 +38,6 @@ export class Background extends GameObject {
             ctx.fillStyle = '#87CEEB';
             ctx.fillRect(0, 0, width, height);
         }
-    }
-
-    /** For primary background, update is the same as draw
-     * 
-     */
-    update() {
-        this.draw();
     }
 
     /** For primary background, resize is the same as draw

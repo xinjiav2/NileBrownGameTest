@@ -99,6 +99,17 @@ class Character extends GameObject {
 
 
     /**
+     * Manages the object's look, state, and movement. 
+     * 
+     */
+    update() {
+        this.draw();
+        this.collisionChecks();
+        this.move();
+    }
+
+
+    /**
      * Draws the object on the canvas.
      * 
      * This method renders the object using the sprite sheet if provided, otherwise a red square.
@@ -148,19 +159,15 @@ class Character extends GameObject {
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         }
     }
-    
+
+
     /**
-     * Updates the object's position and ensures it stays within the canvas boundaries.
+     * Move the object and ensures it stays within the canvas boundaries.
      * 
-     * This method updates the object's position based on its velocity and ensures that the object
+     * This method changes the object's position based on its velocity and ensures that the object
      * stays within the boundaries of the canvas.
      */
-    update() {
-        // Update begins by drawing the object object
-        this.draw();
-
-        this.collisionChecks();
-
+    move() {
         // Update or change position according to velocity events
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
@@ -187,6 +194,7 @@ class Character extends GameObject {
             this.velocity.x = 0;
         }
     }
+    
 
     /**
      * Resizes the object based on the game environment.
