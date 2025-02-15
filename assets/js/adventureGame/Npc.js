@@ -1,12 +1,11 @@
-import GameEnv from "./GameEnv.js";
 import Character from "./Character.js";
 import gameControlInstance from "./GameControl.js";
 import MiniLevel from "./MiniLevel.js"; 
 import Prompt from "./Prompt.js"; // Import the Prompt class
 
 class Npc extends Character {
-    constructor(data = null) {
-        super(data);
+    constructor(data = null, gameEnv = null) {
+        super(data, gameEnv);
         this.quiz = data?.quiz?.title; // Quiz title
         this.questions = this.shuffleArray(data?.quiz?.questions || []); // Shuffle questions
         this.currentQuestionIndex = 0;
@@ -40,24 +39,9 @@ class Npc extends Character {
     }
 
     handleKeyInteract() {
-        const players = GameEnv.gameObjects.filter(
+        const players = this.gameEnv.gameObjects.filter(
             obj => obj.state.collisionEvents.includes(this.spriteData.id)
         );
-        const hasQuestions = this.questions.length > 0;
-
-        if (players.length > 0) {
-            // Case 1: If we are in a main level, move the player to the mini level and don't ask questions
-            if (!(gameControlInstance.currentLevel instanceof MiniLevel)) {
-                if (hasQuestions) {
-                    gameControlInstance.startMiniLevel(this);
-                    // Do not ask questions yet, only start the mini-level
-                }
-            }
-            // Case 2: If we are in a mini level, use the Prompt class to ask the questions
-            else if (gameControlInstance.currentLevel instanceof MiniLevel) {
-                this.prompt.openPromptPanel(this); // Open the prompt panel with the questions
-            }
-        }
     }
 
     askNextQuestion() {

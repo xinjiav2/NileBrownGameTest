@@ -74,7 +74,7 @@ class GameLevelWater {
 
 
     // List of objects definitions for this level
-    this.objects = [
+    this.classes = [
       { class: Background, data: image_data_water },
       { class: Player, data: sprite_data_octopus },
       { class: Npc, data: sprite_data_nomad },

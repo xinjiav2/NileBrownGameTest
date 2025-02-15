@@ -1,4 +1,3 @@
-import GameEnv from './GameEnv.js';
 import GameObject from './GameObject.js';
 
 // Define non-mutable constants as defaults
@@ -43,8 +42,8 @@ class Character extends GameObject {
      * 
      * @param {Object|null} data - The sprite data for the object. If null, a default red square is used.
      */
-    constructor(data = null) {
-        super();
+    constructor(data = null, gameEnv = null) {
+        super(gameEnv);
         this.state = {
             ...this.state,
             animation: 'idle',
@@ -68,7 +67,7 @@ class Character extends GameObject {
         this.frame = 0;
         
         // Initialize the object's scale based on the game environment
-        this.scale = { width: GameEnv.innerWidth, height: GameEnv.innerHeight };
+        this.scale = { width: this.gameEnv.innerWidth, height: this.gameEnv.innerHeight };
         
         // Check if sprite data is provided
         if (data && data.src) {
@@ -92,9 +91,6 @@ class Character extends GameObject {
 
         // Initialize the object's position and velocity
         this.velocity = { x: 0, y: 0 };
-
-        // Add this object to the gameLoop
-        GameEnv.gameObjects.push(this);
 
         // Set the initial size and velocity of the object
         this.resize();
@@ -129,7 +125,7 @@ class Character extends GameObject {
             this.canvas.style.height = `${this.height}px`;
             this.canvas.style.position = 'absolute';
             this.canvas.style.left = `${this.position.x}px`;
-            this.canvas.style.top = `${GameEnv.top+this.position.y}px`;
+            this.canvas.style.top = `${this.gameEnv.top+this.position.y}px`;
     
             // Clear the canvas before drawing
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -171,8 +167,8 @@ class Character extends GameObject {
 
         // Ensure the object stays within the canvas boundaries
         // Bottom of the canvas
-        if (this.position.y + this.height > GameEnv.innerHeight) {
-            this.position.y = GameEnv.innerHeight - this.height;
+        if (this.position.y + this.height > this.gameEnv.innerHeight) {
+            this.position.y = this.gameEnv.innerHeight - this.height;
             this.velocity.y = 0;
         }
         // Top of the canvas
@@ -181,8 +177,8 @@ class Character extends GameObject {
             this.velocity.y = 0;
         }
         // Right of the canvas
-        if (this.position.x + this.width > GameEnv.innerWidth) {
-            this.position.x = GameEnv.innerWidth - this.width;
+        if (this.position.x + this.width > this.gameEnv.innerWidth) {
+            this.position.x = this.gameEnv.innerWidth - this.width;
             this.velocity.x = 0;
         }
         // Left of the canvas
@@ -200,7 +196,7 @@ class Character extends GameObject {
      */
     resize() {
         // Calculate the new scale resulting from the window resize
-        const newScale = { width: GameEnv.innerWidth, height: GameEnv.innerHeight };
+        const newScale = { width: this.gameEnv.innerWidth, height: this.gameEnv.innerHeight };
 
         // Adjust the object's position proportionally
         this.position.x = (this.position.x / this.scale.width) * newScale.width;
@@ -224,14 +220,14 @@ class Character extends GameObject {
 
     /* Destroy Game Object
      * remove canvas element of object
-     * remove object from GameEnv.gameObjects array
+     * remove object from this.gameEnv.gameObjects array
      */
     destroy() {
-        const index = GameEnv.gameObjects.indexOf(this);
+        const index = this.gameEnv.gameObjects.indexOf(this);
         if (index !== -1) {
             // Remove the canvas from the DOM
             this.canvas.parentNode.removeChild(this.canvas);
-            GameEnv.gameObjects.splice(index, 1);
+            this.gameEnv.gameObjects.splice(index, 1);
         }
     }
     

@@ -1,16 +1,15 @@
 // To build GameLevels, each contains GameObjects from below imports
-import GameEnv from './GameEnv.js';
 import Background from './Background.js';
 import Player from './Player.js';
 import Npc from './Npc.js';
 
 class GameLevelDesert {
-  constructor(path) {
+  constructor(path, gameEnv) {
     const header = document.querySelector('header');
     const footer = document.querySelector('footer');
-    // Values dependent on GameEnv.create()
-    let width = GameEnv.innerWidth;
-    let height = GameEnv.innerHeight;
+    // Values dependent on this.gameEnv.create()
+    let width = gameEnv.innerWidth;
+    let height = gameEnv.innerHeight;
 
     // Background data
     const image_src_desert = path + "/images/gamify/desert.png"; // be sure to include the path
@@ -171,7 +170,7 @@ const sprite_data_htmlhank = {
 }; */
 
     // List of objects defnitions for this level
-    this.objects = [
+    this.classes = [
       { class: Background, data: image_data_desert },
       { class: Player, data: sprite_data_chillguy },
       { class: Npc, data: sprite_data_tux },
