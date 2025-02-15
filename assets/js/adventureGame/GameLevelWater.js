@@ -5,13 +5,13 @@ import Character from './Character.js';
 import Player from './Player.js';
 
 class GameLevelWater {
-  constructor(path) {
+  constructor(path,gameEnv) {
     const header = document.querySelector('header');
     const footer = document.querySelector('footer');
 
     // Values dependent on GameEnv.create()
-    let width = GameEnv.innerWidth;
-    let height = GameEnv.innerHeight;
+    let width = gameEnv.innerWidth;
+    let height = gameEnv.innerHeight;
 
     // Background data
     const image_src_water = path + "/images/gamify/deepseadungeon.jpeg";

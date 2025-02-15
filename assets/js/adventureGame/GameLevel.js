@@ -7,7 +7,7 @@ class GameLevel {
         this.gameEnv = new GameEnv();
     }
 
-    loadLevelObjects(GameLevelClass) {
+    create(GameLevelClass) {
         this.continue = true;
         this.gameEnv.create();
         this.gameLevel = new GameLevelClass(this.path, this.gameEnv);
@@ -17,16 +17,26 @@ class GameLevel {
             let gameObject = new gameObjectClass.class(gameObjectClass.data, this.gameEnv);
             this.gameEnv.gameObjects.push(gameObject);
         }
+        // Add event listener for window resize
+        window.addEventListener('resize', this.resize.bind(this));
     }
 
-    updateLevelObjects() {
+    destroy() {
+        for (let index = this.gameEnv.gameObjects.length - 1; index >= 0; index--) {
+             this.gameEnv.gameObjects[index].destroy();
+        }
+        // Remove event listener for window resize
+        window.removeEventListener('resize', this.resize.bind(this));
+    }
+
+    update() {
         this.gameEnv.clear();
         for (let gameObject of this.gameEnv.gameObjects) {
             gameObject.update();
         }
     }
 
-    resizeLevel() {
+    resize() {
         this.gameEnv.resize();
         for (let gameObject of this.gameEnv.gameObjects) {
             gameObject.resize();

@@ -22,7 +22,7 @@ class GameControl {
     loadLevel() {
         const GameLevelClass = this.levelClasses[this.currentLevelIndex];
         this.currentLevel = new GameLevel(this.path);
-        this.currentLevel.loadLevelObjects(GameLevelClass);
+        this.currentLevel.create(GameLevelClass);
         this.gameLoop();
     }
 
@@ -31,7 +31,7 @@ class GameControl {
             this.handleLevelEnd();
             return;
         }
-        this.currentLevel.updateLevelObjects();
+        this.currentLevel.update();
         this.handleLevelStart();
         requestAnimationFrame(this.gameLoop.bind(this));
     }
@@ -49,15 +49,9 @@ class GameControl {
         } else {
             alert("Game over. All levels completed.");
         }
-        for (let index = this.currentLevel.gameObjects.length - 1; index >= 0; index--) {
-            this.currentLevel.gameObjects[index].destroy();
-        }
+        this.currentLevel.destroy();
         this.currentLevelIndex++;
         this.loadLevel();
-    }
-
-    resize() {
-        this.resizeLevel();
     }
 
     addExitKeyListener() {
