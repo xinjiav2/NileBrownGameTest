@@ -1,6 +1,5 @@
 import Character from "./Character.js";
 import gameControlInstance from "./GameControl.js";
-import MiniLevel from "./MiniLevel.js"; 
 import Prompt from "./Prompt.js"; // Import the Prompt class
 
 class Npc extends Character {
@@ -11,6 +10,7 @@ class Npc extends Character {
         this.currentQuestionIndex = 0;
         this.alertTimeout = null;
         this.prompt = new Prompt(); // Create a new Prompt instance
+        this.prompt.initializePrompt();
         this.bindInteractKeyListeners();
     }
 
@@ -42,7 +42,13 @@ class Npc extends Character {
         const players = this.gameEnv.gameObjects.filter(
             obj => obj.state.collisionEvents.includes(this.spriteData.id)
         );
+        const hasQuestions = this.questions.length > 0;
+
+        if (players.length > 0) {
+            this.prompt.openPromptPanel(this); // Open the prompt panel with the questions
+        }
     }
+
 
     askNextQuestion() {
         if (this.currentQuestionIndex < this.questions.length) {
