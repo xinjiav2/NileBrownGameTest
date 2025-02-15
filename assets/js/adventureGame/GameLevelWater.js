@@ -55,8 +55,13 @@ class GameLevelWater {
         down: {row: 1, start: 0, columns: 6 },  // This is the stationary npc, down is default 
         hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
         interact: function() {
+          // Pause GameControl on main game .pause() method
           let levelInLevel = [GameLevelWaterJavaNomad];
-          new GameControl(path,levelInLevel).start();
+          let gameInGame = new GameControl(path,levelInLevel);
+          gameInGame.start();
+          gameInGame.onLevelEnd = function() {
+            // Resume GameControl on main game .resume() method
+          }
         }
 
       };

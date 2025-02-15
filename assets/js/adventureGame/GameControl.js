@@ -10,6 +10,8 @@ class GameControl {
         this.currentLevel = null;
         this.currentLevelIndex = 0;
         this.currentPass = 0;
+        this.isPaused = false;
+        this.exitKeyListener = this.handleExitKey.bind(this);
     }
 
     start() {
@@ -27,6 +29,9 @@ class GameControl {
     gameLoop() {
         if (!this.currentLevel.continue) {
             this.handleLevelEnd();
+            return;
+        }
+        if (this.isPaused) {
             return;
         }
         this.currentLevel.update();
@@ -52,12 +57,23 @@ class GameControl {
         this.transitionToLevel();
     }
 
+    handleExitKey(event) {
+        if (event.key === 'Escape') {
+            this.currentLevel.continue = false;
+        }
+    }
+
     addExitKeyListener() {
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                this.currentLevel.continue = false;
-            }
-        });
+        document.addEventListener('keydown', this.exitKeyListener);
+    }
+
+    removeExitKeyListener() {
+        document.removeEventListener('keydown', this.exitKeyListener);
+    }
+
+    pause() {
+        this.isPaused = true;
+        this.removeExitKeyListener();
     }
 
 }
