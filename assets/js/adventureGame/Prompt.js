@@ -125,9 +125,6 @@ class Prompt {
         // Close the prompt and go back to the main level
         this.isOpen = false;
         this.backgroundDim.remove();
-    
-        // Call a function to go back to the main level
-        gameControlInstance.handleMiniLevelEnd(); // Assuming you have such a method in GameControl
     }
     
 
@@ -188,7 +185,7 @@ class Prompt {
         promptTitle.style.display = "block";
 
         // Add the new title
-        promptTitle.innerHTML = npc.quiz.title || "Questions";
+        promptTitle.innerHTML = npc?.title || "Questions";
         promptDropDown.appendChild(promptTitle);
 
         // Display the new questions

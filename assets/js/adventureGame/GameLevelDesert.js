@@ -2,6 +2,7 @@
 import Background from './Background.js';
 import Player from './Player.js';
 import Npc from './Npc.js';
+import Prompt from './Prompt.js';
 
 class GameLevelDesert {
   constructor(path, gameEnv) {
@@ -71,6 +72,11 @@ class GameLevelDesert {
             "Which command is used to search for text in a file?\n1. grep\n2. search\n3. find\n4. locate",
             "Which command is used to view the contents of a file?\n1. less\n2. more\n3. view\n4. cat" 
           ] 
+        },
+        interact: function() {
+          let prompt = new Prompt(); // Create a new Prompt instance
+          prompt.initializePrompt();
+          prompt.openPromptPanel(sprite_data_tux.quiz);
         }
       };
 
@@ -104,6 +110,11 @@ class GameLevelDesert {
             "Which command is used to merge branches?\n1. git merge\n2. git combine\n3. git join\n4. git integrate",
             "Which command is used to view the commit history?\n1. git log\n2. git history\n3. git commits\n4. git show"
           ] 
+        },
+        interact: function() {
+          let prompt = new Prompt(); // Create a new Prompt instance
+          prompt.initializePrompt();
+          prompt.openPromptPanel(sprite_data_octocat.quiz);
         }
     }
   
@@ -135,6 +146,11 @@ class GameLevelDesert {
             "Which shortcut interrupts the kernel?\n1. I, I\n2. Ctrl + C\n3. Shift + I\n4. Alt + I",
             "Which shortcut toggles line numbers in a cell?\n1. L\n2. N\n3. T\n4. G"
           ] 
+        },
+        interact: function() {
+          let prompt = new Prompt(); // Create a new Prompt instance
+          prompt.initializePrompt();
+          prompt.openPromptPanel(sprite_data_robot.quiz);
         }
       };
 
