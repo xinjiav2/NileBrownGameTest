@@ -1,6 +1,4 @@
 import Character from "./Character.js";
-import gameControlInstance from "./GameControl.js";
-import Prompt from "./Prompt.js"; // Import the Prompt class
 
 class Npc extends Character {
     constructor(data = null, gameEnv = null) {
