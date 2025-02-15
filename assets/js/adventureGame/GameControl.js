@@ -7,11 +7,9 @@ class GameControl {
     constructor(path, levelClasses=[GameLevelDesert, GameLevelWater]) {
         this.path = path;
         this.levelClasses = levelClasses; 
-        this.currentLevelIndex = 0;
-        this.currentGameLevel = null;
-        this.currentPass = 0;
-        this.savedLevelState = null;
         this.currentLevel = null;
+        this.currentLevelIndex = 0;
+        this.currentPass = 0;
     }
 
     start() {
