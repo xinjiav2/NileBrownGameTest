@@ -12,6 +12,7 @@ class GameControl {
         this.currentPass = 0;
         this.isPaused = false;
         this.exitKeyListener = this.handleExitKey.bind(this);
+        this.onLevelEnd = null; // Callback for when the level ends
     }
 
     start() {
@@ -21,7 +22,7 @@ class GameControl {
 
     transitionToLevel() {
         const GameLevelClass = this.levelClasses[this.currentLevelIndex];
-        this.currentLevel = new GameLevel(this.path);
+        this.currentLevel = new GameLevel(this);
         this.currentLevel.create(GameLevelClass);
         this.gameLoop();
     }
@@ -53,8 +54,13 @@ class GameControl {
             alert("Game over. All levels completed.");
         }
         this.currentLevel.destroy();
-        this.currentLevelIndex++;
-        this.transitionToLevel();
+        // Call the onLevelEnd callback if it exists
+        if (this.onLevelEnd) {
+            this.onLevelEnd();
+        } else {
+            this.currentLevelIndex++;
+            this.transitionToLevel();
+        }
     }
 
     handleExitKey(event) {
@@ -74,6 +80,12 @@ class GameControl {
     pause() {
         this.isPaused = true;
         this.removeExitKeyListener();
+    }
+
+    resume() {
+        this.isPaused = false;
+        this.addExitKeyListener();
+        this.gameLoop();
     }
 
 }

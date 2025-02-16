@@ -5,13 +5,15 @@ import GameControl from './GameControl.js';
 import GameLevelWaterJavaNomad from './GameLevelWaterJavaNomad.js';
 
 class GameLevelWater {
-  constructor(path,gameEnv) {
+  constructor(gameEnv) {
     const header = document.querySelector('header');
     const footer = document.querySelector('footer');
 
     // Values dependent on GameEnv.create()
     let width = gameEnv.innerWidth;
     let height = gameEnv.innerHeight;
+    let path = gameEnv.path;
+    let gameControl = gameEnv.gameControl;
 
     // Background data
     const image_src_water = path + "/images/gamify/deepseadungeon.jpeg";
@@ -56,11 +58,13 @@ class GameLevelWater {
         hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
         interact: function() {
           // Pause GameControl on main game .pause() method
-          let levelInLevel = [GameLevelWaterJavaNomad];
-          let gameInGame = new GameControl(path,levelInLevel);
+          gameControl.pause();
+          let level = [GameLevelWaterJavaNomad];
+          let gameInGame = new GameControl(path,level);
           gameInGame.start();
           gameInGame.onLevelEnd = function() {
             // Resume GameControl on main game .resume() method
+            gameControl.resume();
           }
         }
 

@@ -3,14 +3,16 @@ import Background from './Background.js';
 import Player from './Player.js';
 import Npc from './Npc.js';
 import Prompt from './Prompt.js';
+import GameEnv from './GameEnv.js';
 
 class GameLevelDesert {
-  constructor(path, gameEnv) {
+  constructor(gameEnv) {
     const header = document.querySelector('header');
     const footer = document.querySelector('footer');
     // Values dependent on this.gameEnv.create()
     let width = gameEnv.innerWidth;
     let height = gameEnv.innerHeight;
+    let path = gameEnv.path;
 
     // Background data
     const image_src_desert = path + "/images/gamify/desert.png"; // be sure to include the path

@@ -40,7 +40,6 @@ class Npc extends Character {
         const hasInteract = this.interact !== undefined;
 
         if (players.length > 0 && hasInteract) {
-            // Case 1: If the player is near the NPC and there are questions to ask
             this.interact();
         }
     }

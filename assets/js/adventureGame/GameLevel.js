@@ -2,15 +2,16 @@
 import GameEnv from "./GameEnv.js";
 
 class GameLevel {
-    constructor(path) {
-        this.path = path;
+    constructor(gameControl) {
         this.gameEnv = new GameEnv();
+        this.gameEnv.path = gameControl.path;
+        this.gameEnv.gameControl = gameControl;
     }
 
     create(GameLevelClass) {
         this.continue = true;
         this.gameEnv.create();
-        this.gameLevel = new GameLevelClass(this.path, this.gameEnv);
+        this.gameLevel = new GameLevelClass(this.gameEnv);
         this.gameObjectClasses = this.gameLevel.classes;
         for (let gameObjectClass of this.gameObjectClasses) {
             if (!gameObjectClass.data) gameObjectClass.data = {};

@@ -26,6 +26,8 @@ class GameEnv {
         this.innerHeight = 0;
         this.top = 0;
         this.bottom = 0;
+        this.path = '';
+        this.gameControl = null;
         this.gameObjects = [];
     }
 
