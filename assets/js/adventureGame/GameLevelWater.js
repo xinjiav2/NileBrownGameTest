@@ -2,7 +2,7 @@ import Background from './Background.js';
 import Npc from './Npc.js';
 import Player from './Player.js';
 import GameControl from './GameControl.js';
-import GameLevelWaterJavaNomad from './GameLevelWaterJavaNomad.js';
+import GameLevelStarWars from './GameLevelStarWars.js';
 
 class GameLevelWater {
   constructor(gameEnv) {
@@ -59,7 +59,7 @@ class GameLevelWater {
         interact: function() {
           // Pause GameControl on main game .pause() method
           gameControl.pause();
-          let level = [GameLevelWaterJavaNomad];
+          let level = [GameLevelStarWars];
           let gameInGame = new GameControl(path,level);
           gameInGame.start();
           gameInGame.onLevelEnd = function() {

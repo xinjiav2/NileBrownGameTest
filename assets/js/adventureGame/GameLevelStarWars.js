@@ -1,7 +1,7 @@
 import Background from './Background.js';
 import Player from './Player.js';
 
-class GameLevelWaterJavaNomad {
+class GameLevelStarWars {
   constructor(gameEnv) {
     const header = document.querySelector('header');
     const footer = document.querySelector('footer');
@@ -48,4 +48,4 @@ class GameLevelWaterJavaNomad {
   }
 }
 
-export default GameLevelWaterJavaNomad;
+export default GameLevelStarWars;
