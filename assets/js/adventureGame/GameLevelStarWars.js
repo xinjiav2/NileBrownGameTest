@@ -19,17 +19,17 @@ class GameLevelStarWars {
         pixels: {height: 570, width: 1025}
     };
 
-    // Player data for Chillguy
-    const sprite_src_chillguy = path + "/images/gamify/snowspeeder_sprite.png"; // be sure to include the path
-    const CHILLGUY_SCALE_FACTOR = 6;
-    const sprite_data_chillguy = {
-        id: 'Chill Guy',
-        greeting: "Hi I am Chill Guy, the desert wanderer. I am looking for wisdome and adventure!",
-        src: sprite_src_chillguy,
-        SCALE_FACTOR: CHILLGUY_SCALE_FACTOR,
+    // Player data for snowspeeder
+    const sprite_src_snowspeeder = path + "/images/gamify/snowspeeder_sprite.png"; // be sure to include the path
+    const SNOWSPEEDER_SCALE_FACTOR = 6;
+    const sprite_data_snowspeeder = {
+        id: 'Snowspeeder',
+        greeting: "Hi I am snowspeeder, the desert wanderer. I am trying to take donwn the empire's AT-ATs!",
+        src: sprite_src_snowspeeder,
+        SCALE_FACTOR: SNOWSPEEDER_SCALE_FACTOR,
         STEP_FACTOR: 1000,
         ANIMATION_RATE: 50,
-        INIT_POSITION: { x: 0, y: height - (height/CHILLGUY_SCALE_FACTOR) }, 
+        INIT_POSITION: { x: 0, y: height - (height/SNOWSPEEDER_SCALE_FACTOR) }, 
         pixels: {height: 577, width: 433},
         orientation: {rows: 1, columns: 1 },
         down: {row: 0, start: 0, columns: 1 },
@@ -43,7 +43,7 @@ class GameLevelStarWars {
     // List of objects definitions for this level
     this.classes = [
       { class: Background, data: image__data_atat },
-      { class: Player, data: sprite_data_chillguy },
+      { class: Player, data: sprite_data_snowspeeder },
     ];
   }
 }
