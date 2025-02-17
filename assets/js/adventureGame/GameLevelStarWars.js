@@ -32,10 +32,10 @@ class GameLevelStarWars {
         INIT_POSITION: { x: 0, y: height - (height/SNOWSPEEDER_SCALE_FACTOR) }, 
         pixels: {height: 577, width: 433},
         orientation: {rows: 1, columns: 1 },
-        down: {row: 0, start: 0, columns: 1 },
+        down: {row: 0, start: 0, columns: 1, transform: -Math.PI/2 },
         left: {row: 0, start: 0, columns: 1 },
-        right: {row: 0, start: 0, columns: 1 },
-        up: {row: 0, start: 0, columns: 1 },
+        right: {row: 0, start: 0, columns: 1, transform: Math.PI },
+        up: {row: 0, start: 0, columns: 1, transform: Math.PI/2 },
         hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 },
         keypress: { up: 87, left: 65, down: 83, right: 68 } // W, A, S, D
     };
