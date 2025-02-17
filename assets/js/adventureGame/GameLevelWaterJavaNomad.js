@@ -12,16 +12,16 @@ class GameLevelWaterJavaNomad {
     let path = gameEnv.path;
 
     // Background data
-    const image_src_forest = path + "/images/gamify/forest.png";
+    const image_src_forest = path + "/images/gamify/atat_background.png"; // be sure to include the path
     const image__data_forest = {
         id: 'Forest',
         src: image_src_forest,
-        pixels: {height: 315, width: 250}
+        pixels: {height: 570, width: 1025}
     };
 
     // Player data for Chillguy
-    const sprite_src_chillguy = path + "/images/gamify/chillguy.png"; // be sure to include the path
-    const CHILLGUY_SCALE_FACTOR = 5;
+    const sprite_src_chillguy = path + "/images/gamify/snowspeeder_sprite.png"; // be sure to include the path
+    const CHILLGUY_SCALE_FACTOR = 6;
     const sprite_data_chillguy = {
         id: 'Chill Guy',
         greeting: "Hi I am Chill Guy, the desert wanderer. I am looking for wisdome and adventure!",
@@ -30,12 +30,12 @@ class GameLevelWaterJavaNomad {
         STEP_FACTOR: 1000,
         ANIMATION_RATE: 50,
         INIT_POSITION: { x: 0, y: height - (height/CHILLGUY_SCALE_FACTOR) }, 
-        pixels: {height: 384, width: 512},
-        orientation: {rows: 3, columns: 4 },
-        down: {row: 0, start: 0, columns: 3 },
-        left: {row: 2, start: 0, columns: 3 },
-        right: {row: 1, start: 0, columns: 3 },
-        up: {row: 3, start: 0, columns: 3 },
+        pixels: {height: 577, width: 433},
+        orientation: {rows: 1, columns: 1 },
+        down: {row: 0, start: 0, columns: 1 },
+        left: {row: 0, start: 0, columns: 1 },
+        right: {row: 0, start: 0, columns: 1 },
+        up: {row: 0, start: 0, columns: 1 },
         hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 },
         keypress: { up: 87, left: 65, down: 83, right: 68 } // W, A, S, D
     };
