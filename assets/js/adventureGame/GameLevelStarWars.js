@@ -12,10 +12,10 @@ class GameLevelStarWars {
     let path = gameEnv.path;
 
     // Background data
-    const image_src_forest = path + "/images/gamify/atat_background.png"; // be sure to include the path
-    const image__data_forest = {
-        id: 'Forest',
-        src: image_src_forest,
+    const image_src_atat = path + "/images/gamify/atat_background.png"; // be sure to include the path
+    const image__data_atat = {
+        id: 'atat',
+        src: image_src_atat,
         pixels: {height: 570, width: 1025}
     };
 
@@ -42,7 +42,7 @@ class GameLevelStarWars {
 
     // List of objects definitions for this level
     this.classes = [
-      { class: Background, data: image__data_forest },
+      { class: Background, data: image__data_atat },
       { class: Player, data: sprite_data_chillguy },
     ];
   }
