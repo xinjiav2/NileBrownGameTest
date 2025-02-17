@@ -142,24 +142,20 @@ class Character extends GameObject {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
    
             if (directionData.transform) {
-                //this.ctx.save();
-                // Find the center of the canvas and rotate the sprite
+                // Translate context to the center of the sprite
                 this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
+                // Rotate from ceter context based on the direction provided
                 this.ctx.rotate(directionData.transform);
-                // Draw the current frame of the sprite sheet with transformation
-                this.ctx.drawImage(
-                    this.spriteSheet,
-                    frameX, frameY, frameWidth, frameHeight,
-                    -frameWidth / 2, -frameHeight / 2, frameWidth, frameHeight
-                );
-            } else {
-                // Draw the current frame of the sprite sheet
-                this.ctx.drawImage(
-                    this.spriteSheet,
-                    frameX, frameY, frameWidth, frameHeight, // Source rectangle
-                    0, 0, this.canvas.width, this.canvas.height // Destination rectangle
-                );
-            }
+                // Translate context back to the upper left corner
+                this.ctx.translate(-this.canvas.width / 2, -this.canvas.height / 2);
+            }                
+            // Draw the current frame of the sprite sheet
+            this.ctx.drawImage(
+                this.spriteSheet,
+                frameX, frameY, frameWidth, frameHeight, // Source rectangle
+                0, 0, this.canvas.width, this.canvas.height // Destination rectangle
+            );
+            
     
             // Update the frame index for animation at a slower rate
             this.frameCounter++;
