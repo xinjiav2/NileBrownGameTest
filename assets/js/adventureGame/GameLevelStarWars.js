@@ -29,7 +29,7 @@ class GameLevelStarWars {
         SCALE_FACTOR: SNOWSPEEDER_SCALE_FACTOR,
         STEP_FACTOR: 1000,
         ANIMATION_RATE: 50,
-        INIT_POSITION: { x: 0, y: height - (height/SNOWSPEEDER_SCALE_FACTOR) }, 
+        INIT_POSITION: { x: 0, y: 0 }, 
         pixels: {height: 577, width: 433},
         orientation: {rows: 1, columns: 1 },
         down: {row: 0, start: 0, columns: 1, transform: -Math.PI/2 },

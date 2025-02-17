@@ -141,15 +141,20 @@ class Character extends GameObject {
             // Clear the canvas before drawing
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
    
-            if (directionData.transform) {
-                // Translate context to the center of the sprite
+            if (directionData.transform || directionData.mirror) {
+                // Translate to the center of the sprite
                 this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
-                // Rotate from ceter context based on the direction provided
-                this.ctx.rotate(directionData.transform);
+                // Rotate based on the direction
+                if (directionData.transform) {
+                    this.ctx.rotate(directionData.transform);
+                }
+                // Apply mirror transform
+                if (directionData.mirror) {
+                    this.ctx.scale(-1, 1); // Flip horizontally
+                }
                 // Translate context back to the upper left corner
                 this.ctx.translate(-this.canvas.width / 2, -this.canvas.height / 2);
-            }                
-            // Draw the current frame of the sprite sheet
+            }            // Draw the current frame of the sprite sheet
             this.ctx.drawImage(
                 this.spriteSheet,
                 frameX, frameY, frameWidth, frameHeight, // Source rectangle
