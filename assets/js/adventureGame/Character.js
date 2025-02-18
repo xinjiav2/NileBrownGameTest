@@ -44,6 +44,7 @@ class Character extends GameObject {
      */
     constructor(data = null, gameEnv = null) {
         super(gameEnv);
+        this.data = data;
         this.state = {
             ...this.state,
             animation: 'idle',

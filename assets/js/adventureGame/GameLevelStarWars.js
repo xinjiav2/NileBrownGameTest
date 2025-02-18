@@ -49,12 +49,12 @@ class GameLevelStarWars {
         orientation: {rows: 8, columns: 11 }, // normalized rows and columns in the sprite
         // define size, position, adjustments for hitbox
         SCALE_FACTOR: 20,  // Start small 1/20 scale and grow
-        INIT_POSITION: { x: (width / 1.78), y: (height / 3.3)},
+        INIT_POSITION_RATIO: { x: 1 / 1.78, y: 1 / 3.3 }, // Ratios for initial position
         hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
         // define animation properties
         ANIMATION_RATE: 50, // 1/50th of the frame rate for redraw
         TRANSLATE_SCALE_FACTOR: 10, // Grow to 1/10 scale at end of translation
-        TRANSLATE_POSITION: { x: (width / 2.22), y: (height / 2.7)}, // destination position
+        TRANSLATE_POSITION_RATIO: { x: 1 / 2.22, y: 1 / 2.7 }, // Ratios for translate position
         TRANSLATE_SIMULATION: {miliseconds: 1000, steps: 10}, // 1 second, 10 steps
         down: {row: 0, start: 0, columns: 1 },  // This is the stationary bomb, down is default
      };
