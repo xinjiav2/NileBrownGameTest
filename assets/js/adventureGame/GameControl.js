@@ -84,15 +84,6 @@ class GameControl {
         this.savedCanvasState = Array.from(canvasElements).map(canvas => {
             return {
                 id: canvas.id,
-                width: canvas.width,
-                height: canvas.height,
-                style: {
-                    width: canvas.style.width,
-                    height: canvas.style.height,
-                    position: canvas.style.position,
-                    left: canvas.style.left,
-                    top: canvas.style.top
-                },
                 imageData: canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height)
             };
         });
@@ -110,11 +101,11 @@ class GameControl {
 
     showCanvasState() {
         const gameContainer = document.getElementById('gameContainer');
-        this.savedCanvasState.forEach(state => {
-            const canvas = document.getElementById(state.id);
+        this.savedCanvasState.forEach(hidden_canvas => {
+            const canvas = document.getElementById(hidden_canvas.id);
             if (canvas) {
-                canvas.style.display = state.style.display || 'block';
-                canvas.getContext('2d').putImageData(state.imageData, 0, 0);
+                canvas.style.display = 'block';
+                canvas.getContext('2d').putImageData(hidden_canvas.imageData, 0, 0);
             }
         });
     }
