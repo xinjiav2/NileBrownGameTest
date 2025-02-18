@@ -80,9 +80,9 @@ async function viewerOfferServer(messageData)
         sdp: answer.sdp,
         returnID: messageData["returnID"]
     }
-    peer.onnegotiationneeded = (e) => {
-        videoStreamGlobal.getTracks().forEach(track => peer.addTrack(track, videoStreamGlobal));
-    }
+    // peer.onnegotiationneeded = (e) => {
+    //     videoStreamGlobal.getTracks().forEach(track => peer.addTrack(track, videoStreamGlobal));
+    // }
     sendMessage(payload)
 }
 
@@ -93,7 +93,7 @@ async function captureScreen() {
             video: {
                 cursor: "always"
             },
-            audio: true
+            audio: false
         }); //get user video and audio as a media stream
         document.getElementById("streamOffline").style.display = "none"
         document.getElementById("mortStream").style.display = "block"
