@@ -12,7 +12,7 @@ class GameLevelStarWars {
     // Background data
     const image_src_atat = path + "/images/gamify/atat_background.png"; // be sure to include the path
     const image__data_atat = {
-        id: 'atat',
+        id: 'AT-AT-Background',
         src: image_src_atat,
         pixels: {height: 570, width: 1025}
     };
@@ -41,18 +41,22 @@ class GameLevelStarWars {
     // Bomb data, temporary sprite for testing
     const sprite_src_bomb = path + "/images/gamify/tux.png"; // be sure to include the path
     const sprite_data_bomb = {
-        id: 'Tux',
-        greeting: "Simulate explosive",
+        id: 'AT-AT-Bomb',
+        greeting: "Simulate explosive action!",
+        // define image/sprite data
         src: sprite_src_bomb,
+        pixels: {height: 256, width: 352}, // height and width of the image
+        orientation: {rows: 8, columns: 11 }, // normalized rows and columns in the sprite
+        // define size, position, adjustments for hitbox
         SCALE_FACTOR: 20,  // Start small 1/20 scale and grow
-        TRANSLATE_SCALE_FACTOR: 10, // Grow to 1/10 scale at end of translation
-        ANIMATION_RATE: 50,
-        pixels: {height: 256, width: 352},
         INIT_POSITION: { x: (width / 1.78), y: (height / 3.3)},
-        TRANSLATE_POSITION: { x: (width / 2.22), y: (height / 2.7)},
-        orientation: {rows: 8, columns: 11, translate: {miliseconds: 1000, steps: 10} },
-        down: {row: 0, start: 0, columns: 1 },  // This is the stationary npc, down is default 
         hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
+        // define animation properties
+        ANIMATION_RATE: 50, // 1/50th of the frame rate for redraw
+        TRANSLATE_SCALE_FACTOR: 10, // Grow to 1/10 scale at end of translation
+        TRANSLATE_POSITION: { x: (width / 2.22), y: (height / 2.7)}, // destination position
+        TRANSLATE_SIMULATION: {miliseconds: 1000, steps: 10}, // 1 second, 10 steps
+        down: {row: 0, start: 0, columns: 1 },  // This is the stationary bomb, down is default
      };
 
     // List of objects definitions for this level
