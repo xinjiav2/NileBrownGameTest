@@ -12,9 +12,7 @@ class GameLevelDesert {
     let width = gameEnv.innerWidth;
     let height = gameEnv.innerHeight;
     let path = gameEnv.path;
-
-    // Initialize gameControl
-    this.gameControl = new GameControl(path, [this]);
+    let gameControl = gameEnv.gameControl;
 
     // Background data
     const image_src_desert = path + "/images/gamify/desert.png"; // be sure to include the path
@@ -126,73 +124,71 @@ class GameLevelDesert {
 
     const sprite_src_robot = path + "/images/gamify/robot.png"; // be sure to include the path
     const sprite_data_robot = {
-        id: 'Robot',
-        greeting: "Hi I am Robot, the Jupyter Notebook mascot.  I am very happy to spend some linux shell time with you!",
-        src: sprite_src_robot,
-        SCALE_FACTOR: 10,  // Adjust this based on your scaling needs
-        ANIMATION_RATE: 100,
-        pixels: {height: 316, width: 627},
-        INIT_POSITION: { x: (width * 3 / 4), y: (height * 3 / 4)},
-        orientation: {rows: 3, columns: 6 },
-        down: {row: 1, start: 0, columns: 6 },  // This is the stationary npc, down is default 
-        hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
-        // Linux command quiz
-        quiz: { 
-          title: "Jupyter Notebook Command Quiz",
-          questions: [
-            "Which shortcut is used to run a cell in Jupyter Notebook?\n1. Shift + Enter\n2. Ctrl + Enter\n3. Alt + Enter\n4. Tab + Enter",
-            "Which shortcut adds a new cell above the current cell?\n1. A\n2. B\n3. C\n4. D",
-            "Which shortcut adds a new cell below the current cell?\n1. B\n2. A\n3. C\n4. D",
-            "Which shortcut changes a cell to Markdown format?\n1. M\n2. Y\n3. R\n4. K",
-            "Which shortcut changes a cell to Code format?\n1. Y\n2. M\n3. C\n4. D",
-            "Which shortcut deletes the current cell?\n1. D, D\n2. X\n3. Del\n4. Ctrl + D",
-            "Which shortcut saves the current notebook?\n1. Ctrl + S\n2. Alt + S\n3. Shift + S\n4. Tab + S",
-            "Which shortcut restarts the kernel?\n1. 0, 0\n2. R, R\n3. K, K\n4. Shift + R",
-            "Which shortcut interrupts the kernel?\n1. I, I\n2. Ctrl + C\n3. Shift + I\n4. Alt + I",
-            "Which shortcut toggles line numbers in a cell?\n1. L\n2. N\n3. T\n4. G"
-          ] 
-        },
-        interact: function() {
-          let quiz = new Quiz(); // Create a new Quiz instance
-          quiz.initialize();
-          quiz.openPanel(sprite_data_robot.quiz);
-        }
+      id: 'Robot',
+      greeting: "Hi I am Robot, the Jupyter Notebook mascot.  I am very happy to spend some linux shell time with you!",
+      src: sprite_src_robot,
+      SCALE_FACTOR: 10,  // Adjust this based on your scaling needs
+      ANIMATION_RATE: 100,
+      pixels: {height: 316, width: 627},
+      INIT_POSITION: { x: (width * 3 / 4), y: (height * 3 / 4)},
+      orientation: {rows: 3, columns: 6 },
+      down: {row: 1, start: 0, columns: 6 },  // This is the stationary npc, down is default 
+      hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
+      // Linux command quiz
+      quiz: { 
+        title: "Jupyter Notebook Command Quiz",
+        questions: [
+          "Which shortcut is used to run a cell in Jupyter Notebook?\n1. Shift + Enter\n2. Ctrl + Enter\n3. Alt + Enter\n4. Tab + Enter",
+          "Which shortcut adds a new cell above the current cell?\n1. A\n2. B\n3. C\n4. D",
+          "Which shortcut adds a new cell below the current cell?\n1. B\n2. A\n3. C\n4. D",
+          "Which shortcut changes a cell to Markdown format?\n1. M\n2. Y\n3. R\n4. K",
+          "Which shortcut changes a cell to Code format?\n1. Y\n2. M\n3. C\n4. D",
+          "Which shortcut deletes the current cell?\n1. D, D\n2. X\n3. Del\n4. Ctrl + D",
+          "Which shortcut saves the current notebook?\n1. Ctrl + S\n2. Alt + S\n3. Shift + S\n4. Tab + S",
+          "Which shortcut restarts the kernel?\n1. 0, 0\n2. R, R\n3. K, K\n4. Shift + R",
+          "Which shortcut interrupts the kernel?\n1. I, I\n2. Ctrl + C\n3. Shift + I\n4. Alt + I",
+          "Which shortcut toggles line numbers in a cell?\n1. L\n2. N\n3. T\n4. G"
+        ] 
+      },
+      interact: function() {
+        let quiz = new Quiz(); // Create a new Quiz instance
+        quiz.initialize();
+        quiz.openPanel(sprite_data_robot.quiz);
       }
+    }
 
   // NPC Data for Byte Nomad (Smaller Version)
   const sprite_src_nomad = path + "/images/gamify/animwizard.png"; // be sure to include the path
   const sprite_data_nomad = {
-      id: 'StarWarsNomad',
-      greeting: "Hi I am the Star Wars Portal.  Leave this world and go on an adventure to a galaxy far far away!",
-      src: sprite_src_nomad,
-      SCALE_FACTOR: 8,  // Adjust this based on your scaling needs
-      ANIMATION_RATE: 100,
-      pixels: {height: 307, width: 813},
-      INIT_POSITION: { x: (width * 1 / 4), y: (height * 3 / 4)}, // Adjusted position
-      orientation: {rows: 3, columns: 7 },
-      down: {row: 1, start: 0, columns: 6 },  // This is the stationary npc, down is default 
-      hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
-      /* Interact function
-      *  This function is called when the player interacts with the NPC
-      *  It pauses the main game, creates a new GameControl instance with the StarWars level,
-      */
-      interact: () => {
-        console.log('Nomad NPC interacted');
-        console.log('gameControl:', this.gameControl);
-        if (typeof this.gameControl !== 'undefined') {
-          this.gameControl.pause();
-          let levelArray = [GameLevelStarWars];
-          let gameInGame = new GameControl(path, levelArray);
-          gameInGame.start();
-          gameInGame.onLevelEnd = () => {
-            this.gameControl.resume();
-          }
-        } else {
-          console.error('gameControl is not defined');
-        }
+    id: 'StarWarsNomad',
+    greeting: "Hi I am the Star Wars Portal.  Leave this world and go on an adventure to a galaxy far far away!",
+    src: sprite_src_nomad,
+    SCALE_FACTOR: 8,  // Adjust this based on your scaling needs
+    ANIMATION_RATE: 100,
+    pixels: {height: 307, width: 813},
+    INIT_POSITION: { x: (width * 1 / 4), y: (height * 3 / 4)}, // Adjusted position
+    orientation: {rows: 3, columns: 7 },
+    down: {row: 1, start: 0, columns: 6 },  // This is the stationary npc, down is default 
+    hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
+    /* Interact function
+    *  This function is called when the player interacts with the NPC
+    *  It pauses the main game, creates a new GameControl instance with the StarWars level,
+    */
+    interact: function() {
+      // Call .pause to stop the underlying game 
+      gameControl.pause();
+      // Start the intreact requested game in game
+      let levelArray = [GameLevelStarWars];
+      let gameInGame = new GameControl(path,levelArray);
+      gameInGame.start();
+      // Setup "callback" function to allow transition from game in gaame to the underlying game
+      gameInGame.onLevelEnd = function() {
+        // Call .resume underlying game
+        gameControl.resume();
       }
+    }
 
-      };
+  };
 
   /*  // NPC data for HTML Hank
 const sprite_src_htmlhank = path + "/images/gamify/htmlhank.png"; // be sure to include the path
