@@ -2,8 +2,7 @@
 import Background from './Background.js';
 import Player from './Player.js';
 import Npc from './Npc.js';
-import Prompt from './Prompt.js';
-import GameEnv from './GameEnv.js';
+import Quiz from './Quiz.js';
 
 class GameLevelDesert {
   constructor(gameEnv) {
@@ -76,9 +75,9 @@ class GameLevelDesert {
           ] 
         },
         interact: function() {
-          let prompt = new Prompt(); // Create a new Prompt instance
-          prompt.initializePrompt();
-          prompt.openPromptPanel(sprite_data_tux.quiz);
+          let quiz = new Quiz(); // Create a new Quiz instance
+          quiz.initialize();
+          quiz.openPanel(sprite_data_tux.quiz);
         }
       };
 
@@ -114,9 +113,9 @@ class GameLevelDesert {
           ] 
         },
         interact: function() {
-          let prompt = new Prompt(); // Create a new Prompt instance
-          prompt.initializePrompt();
-          prompt.openPromptPanel(sprite_data_octocat.quiz);
+          let quiz = new Quiz(); // Create a new Quiz instance
+          quiz.initialize();
+          quiz.openPanel(sprite_data_octocat.quiz);
         }
     }
   
@@ -150,9 +149,9 @@ class GameLevelDesert {
           ] 
         },
         interact: function() {
-          let prompt = new Prompt(); // Create a new Prompt instance
-          prompt.initializePrompt();
-          prompt.openPromptPanel(sprite_data_robot.quiz);
+          let quiz = new Quiz(); // Create a new Quiz instance
+          quiz.initialize();
+          quiz.openPanel(sprite_data_robot.quiz);
         }
       };
 
