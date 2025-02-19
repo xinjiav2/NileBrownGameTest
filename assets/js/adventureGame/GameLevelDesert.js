@@ -8,8 +8,6 @@ import GameLevelStarWars from './GameLevelStarWars.js';
 
 class GameLevelDesert {
   constructor(gameEnv) {
-    const header = document.querySelector('header');
-    const footer = document.querySelector('footer');
     // Values dependent on this.gameEnv.create()
     let width = gameEnv.innerWidth;
     let height = gameEnv.innerHeight;
@@ -164,13 +162,13 @@ class GameLevelDesert {
   // NPC Data for Byte Nomad (Smaller Version)
   const sprite_src_nomad = path + "/images/gamify/animwizard.png"; // be sure to include the path
   const sprite_data_nomad = {
-      id: 'JavaWorld',
-      greeting: "Hi I am Java Portal.  Leave this world and go on a Java adventure!",
+      id: 'StarWarsNomad',
+      greeting: "Hi I am the Star Wars Portal.  Leave this world and go on an adventure to a galaxy far far away!",
       src: sprite_src_nomad,
-      SCALE_FACTOR: 10,  // Adjust this based on your scaling needs
+      SCALE_FACTOR: 8,  // Adjust this based on your scaling needs
       ANIMATION_RATE: 100,
       pixels: {height: 307, width: 813},
-      INIT_POSITION: { x: (width * 3 / 4), y: (height * 2 / 4)}, // Adjusted position
+      INIT_POSITION: { x: (width * 1 / 4), y: (height * 3 / 4)}, // Adjusted position
       orientation: {rows: 3, columns: 7 },
       down: {row: 1, start: 0, columns: 6 },  // This is the stationary npc, down is default 
       hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
