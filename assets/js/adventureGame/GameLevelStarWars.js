@@ -1,6 +1,6 @@
 import Background from './Background.js';
 import Player from './Player.js';
-import Bomb from './Bomb.js';
+import Bomb from './Projectile.js';
 
 class GameLevelStarWars {
   constructor(gameEnv) {
