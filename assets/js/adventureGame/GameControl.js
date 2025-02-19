@@ -18,7 +18,7 @@ class GameControl {
         this.gameLoopCounter = 0;
         this.isPaused = false;
         this.exitKeyListener = this.handleExitKey.bind(this);
-        this.onLevelEnd = null; // Callback for when the level ends
+        this.gameOver = null; // Callback for when the game is over 
         this.savedCanvasState = []; // Save the current levels game elements 
     }
 
@@ -82,7 +82,7 @@ class GameControl {
     /**
      * Handles the level end by
      * 1. Destroying the current level
-     * 2. Calling the onLevelEnd callback if it exists
+     * 2. Calling the gameOver callback if it exists
      * 3. Transitioning to the next level
      */
     handleLevelEnd() {
@@ -93,9 +93,9 @@ class GameControl {
             alert("All levels completed.");
         }
         this.currentLevel.destroy();
-        // Call the onLevelEnd callback if it exists
-        if (this.onLevelEnd) {
-            this.onLevelEnd();
+        // Call the gameOver callback if it exists
+        if (this.gameOver) {
+            this.gameOver();
         } else {
             this.currentLevelIndex++;
             this.transitionToLevel();

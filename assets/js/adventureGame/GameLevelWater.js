@@ -14,7 +14,6 @@ class GameLevelWater {
     let width = gameEnv.innerWidth;
     let height = gameEnv.innerHeight;
     let path = gameEnv.path;
-    let gameControl = gameEnv.gameControl;
 
     // Background data
     const image_src_water = path + "/images/gamify/deepseadungeon.jpeg";
@@ -63,19 +62,22 @@ class GameLevelWater {
         *  It pauses the main game, creates a new GameControl instance with the StarWars level,
         */
         interact: function() {
-          // Call .pause to stop the underlying game 
-          gameControl.pause();
-          // Start the intreact requested game in game
+          // Set a primary game reference from the game environment
+          let primaryGame = gameEnv.gameControl;
+          // Define the game in game level
           let levelArray = [GameLevelStarWars];
+          // Define a new GameControl instance with the StarWars level
           let gameInGame = new GameControl(path,levelArray);
+          // Pause the primary game 
+          primaryGame.pause();
+          // Start the game in game
           gameInGame.start();
           // Setup "callback" function to allow transition from game in gaame to the underlying game
-          gameInGame.onLevelEnd = function() {
-            // Call .resume underlying game
-            gameControl.resume();
+          gameInGame.gameOver = function() {
+            // Call .resume on primary game
+            primaryGame.resume();
           }
         }
-
       };
 
     // List of classes and supporting definitions to create the game level
