@@ -157,17 +157,17 @@ class GameLevelDesert {
     }
 
   // NPC Data for Byte Nomad (Smaller Version)
-  const sprite_src_nomad = path + "/images/gamify/animwizard.png"; // be sure to include the path
+  const sprite_src_nomad = path + "/images/gamify/r2_idle.png"; // be sure to include the path
   const sprite_data_nomad = {
     id: 'StarWarsNomad',
-    greeting: "Hi I am the Star Wars Portal.  Leave this world and go on an adventure to a galaxy far far away!",
+    greeting: "Hi I am the Star Wars Portal.  Leave this planet and help defent the rebel base on Hoth!",
     src: sprite_src_nomad,
     SCALE_FACTOR: 8,  // Adjust this based on your scaling needs
     ANIMATION_RATE: 100,
-    pixels: {height: 307, width: 813},
+    pixels: {height: 223, width: 505},
     INIT_POSITION: { x: (width * 1 / 4), y: (height * 3 / 4)}, // Adjusted position
-    orientation: {rows: 3, columns: 7 },
-    down: {row: 1, start: 0, columns: 6 },  // This is the stationary npc, down is default 
+    orientation: {rows: 1, columns: 3 },
+    down: {row: 0, start: 0, columns: 3 },  // This is the stationary npc, down is default 
     hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
     /* Interact function
     *  This function is called when the player interacts with the NPC
