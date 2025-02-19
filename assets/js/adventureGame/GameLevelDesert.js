@@ -164,7 +164,7 @@ class GameLevelDesert {
     src: sprite_src_nomad,
     SCALE_FACTOR: 8,  // Adjust this based on your scaling needs
     ANIMATION_RATE: 100,
-    pixels: {height: 223, width: 505},
+    pixels: {width: 505, height: 223},
     INIT_POSITION: { x: (width * 1 / 4), y: (height * 3 / 4)}, // Adjusted position
     orientation: {rows: 1, columns: 3 },
     down: {row: 0, start: 0, columns: 3 },  // This is the stationary npc, down is default 
