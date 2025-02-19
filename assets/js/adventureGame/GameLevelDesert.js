@@ -3,6 +3,8 @@ import Background from './Background.js';
 import Player from './Player.js';
 import Npc from './Npc.js';
 import Quiz from './Quiz.js';
+import GameControl from './GameControl.js';
+import GameLevelStarWars from './GameLevelStarWars.js';
 
 class GameLevelDesert {
   constructor(gameEnv) {
@@ -12,6 +14,9 @@ class GameLevelDesert {
     let width = gameEnv.innerWidth;
     let height = gameEnv.innerHeight;
     let path = gameEnv.path;
+
+    // Initialize gameControl
+    this.gameControl = new GameControl(path, [this]);
 
     // Background data
     const image_src_desert = path + "/images/gamify/desert.png"; // be sure to include the path
@@ -28,7 +33,7 @@ class GameLevelDesert {
     const CHILLGUY_SCALE_FACTOR = 5;
     const sprite_data_chillguy = {
         id: 'Chill Guy',
-        greeting: "Hi I am Chill Guy, the desert wanderer. I am looking for wisdome and adventure!",
+        greeting: "Hi I am Chill Guy, the desert wanderer. I am looking for wisdom and adventure!",
         src: sprite_src_chillguy,
         SCALE_FACTOR: CHILLGUY_SCALE_FACTOR,
         STEP_FACTOR: 1000,
@@ -78,7 +83,8 @@ class GameLevelDesert {
           let quiz = new Quiz(); // Create a new Quiz instance
           quiz.initialize();
           quiz.openPanel(sprite_data_tux.quiz);
-        }
+          }
+    
       };
 
 
@@ -153,6 +159,41 @@ class GameLevelDesert {
           quiz.initialize();
           quiz.openPanel(sprite_data_robot.quiz);
         }
+      }
+
+  // NPC Data for Byte Nomad (Smaller Version)
+  const sprite_src_nomad = path + "/images/gamify/animwizard.png"; // be sure to include the path
+  const sprite_data_nomad = {
+      id: 'JavaWorld',
+      greeting: "Hi I am Java Portal.  Leave this world and go on a Java adventure!",
+      src: sprite_src_nomad,
+      SCALE_FACTOR: 10,  // Adjust this based on your scaling needs
+      ANIMATION_RATE: 100,
+      pixels: {height: 307, width: 813},
+      INIT_POSITION: { x: (width * 3 / 4), y: (height * 2 / 4)}, // Adjusted position
+      orientation: {rows: 3, columns: 7 },
+      down: {row: 1, start: 0, columns: 6 },  // This is the stationary npc, down is default 
+      hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
+      /* Interact function
+      *  This function is called when the player interacts with the NPC
+      *  It pauses the main game, creates a new GameControl instance with the StarWars level,
+      */
+      interact: () => {
+        console.log('Nomad NPC interacted');
+        console.log('gameControl:', this.gameControl);
+        if (typeof this.gameControl !== 'undefined') {
+          this.gameControl.pause();
+          let levelArray = [GameLevelStarWars];
+          let gameInGame = new GameControl(path, levelArray);
+          gameInGame.start();
+          gameInGame.onLevelEnd = () => {
+            this.gameControl.resume();
+          }
+        } else {
+          console.error('gameControl is not defined');
+        }
+      }
+
       };
 
   /*  // NPC data for HTML Hank
@@ -193,6 +234,7 @@ const sprite_data_htmlhank = {
       { class: Npc, data: sprite_data_tux },
       { class: Npc, data: sprite_data_octocat },
       { class: Npc, data: sprite_data_robot },
+      { class: Npc, data: sprite_data_nomad },
      // { class: Npc, data: sprite_data_htmlhank }, 
     ];
   }
