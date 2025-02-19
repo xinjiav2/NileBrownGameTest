@@ -129,7 +129,7 @@ class GameLevelDesert {
       SCALE_FACTOR: 10,  // Adjust this based on your scaling needs
       ANIMATION_RATE: 100,
       pixels: {height: 316, width: 627},
-      INIT_POSITION: { x: (width * 3 / 4), y: (height * 3 / 4)},
+      INIT_POSITION: { x: (width * 3 / 4), y: (height * 1 / 4)},
       orientation: {rows: 3, columns: 6 },
       down: {row: 1, start: 0, columns: 6 },  // This is the stationary npc, down is default 
       hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
