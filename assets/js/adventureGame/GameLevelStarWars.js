@@ -1,6 +1,6 @@
 import Background from './Background.js';
 import Player from './Player.js';
-import Bomb from './Projectile.js';
+import Projectile from './Projectile.js';
 
 class GameLevelStarWars {
   constructor(gameEnv) {
@@ -38,13 +38,13 @@ class GameLevelStarWars {
         keypress: { up: 87, left: 65, down: 83, right: 68 } // W, A, S, D
     };
 
-    // Bomb data, temporary sprite for testing
-    const sprite_src_bomb = path + "/images/gamify/laser_bolt.png"; // be sure to include the path
-    const sprite_data_bomb = {
-        id: 'AT-AT-Bomb',
+    // Laser data, temporary sprite for testing
+    const sprite_src_laser = path + "/images/gamify/laser_bolt.png"; // be sure to include the path
+    const sprite_data_laser = {
+        id: 'AT-AT-Laser',
         greeting: "Simulate explosive action!",
         // define image/sprite data
-        src: sprite_src_bomb,
+        src: sprite_src_laser,
         pixels: {height: 500, width: 500}, // height and width of the image
         orientation: {rows: 1, columns: 1 }, // normalized rows and columns in the sprite
         // define size, position, adjustments for hitbox
@@ -56,14 +56,14 @@ class GameLevelStarWars {
         TRANSLATE_SCALE_FACTOR: 10, // Grow to 1/10 scale at end of translation
         TRANSLATE_POSITION_RATIO: { x: 1 / 2.22, y: 1 / 2.7 }, // Ratios for translate position
         TRANSLATE_SIMULATION: {miliseconds: 1000, steps: 10}, // 1 second, 10 steps
-        down: {row: 0, start: 0, columns: 1, rotate: Math.PI / 1.5},  // This is the stationary bomb, down is default
+        down: {row: 0, start: 0, columns: 1, rotate: Math.PI / 1.5},  // This is the stationary laser, down is default
      };
 
     // List of objects definitions for this level
     this.classes = [
       { class: Background, data: image__data_atat },
       { class: Player, data: sprite_data_snowspeeder },
-      { class: Bomb, data: sprite_data_bomb },
+      { class: Projectile, data: sprite_data_laser },
     ];
   }
 }
