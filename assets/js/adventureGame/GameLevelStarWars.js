@@ -54,7 +54,7 @@ class GameLevelStarWars {
         // define animation properties
         ANIMATION_RATE: 100, // 1/50th of the frame rate for redraw
         TRANSLATE_SCALE_FACTOR: 10, // Grow to this size at end translation
-        TRANSLATE_POSITION_RATIO: { x: 1 / 2.22, y: 1 / 2.7 }, // Ratios for translate position
+        TRANSLATE_POSITION_RATIO: { x: 1 / 2.78, y: 1 / 2.9 }, // Ratios for translate position
         TRANSLATE_SIMULATION: {miliseconds: 1000, steps: 10}, // 1 second, 10 steps
         down: {row: 0, start: 0, columns: 1, spin: 4},  // down is default
      };
@@ -74,7 +74,7 @@ class GameLevelStarWars {
         // define animation properties
         ANIMATION_RATE: 100, // 1/50th of the frame rate for redraw
         TRANSLATE_SCALE_FACTOR: 20, // Grow to this size at end translation
-        TRANSLATE_POSITION_RATIO: { x: 1 / 15, y: 1 / 1.85 }, // Ratios for translate position
+        TRANSLATE_POSITION_RATIO: { x: 1 / 20, y: 1 / 1.9 }, // Ratios for translate position
         TRANSLATE_SIMULATION: {miliseconds: 1000, steps: 10}, // 1 second, 10 steps
         down: {row: 0, start: 0, columns: 1, spin: 4},  // down is default
      };
