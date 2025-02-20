@@ -40,21 +40,41 @@ class GameLevelStarWars {
 
     // Laser data, temporary sprite for testing
     const sprite_src_laser = path + "/images/gamify/laser_bolt.png"; // be sure to include the path
-    const sprite_data_laser = {
-        id: 'AT-AT-Laser',
+    const sprite_data_laser1 = {
+        id: 'AT-AT-Laser-1',
         greeting: "Simulate explosive action!",
         // define image/sprite data
         src: sprite_src_laser,
         pixels: {height: 500, width: 500}, // height and width of the image
         orientation: {rows: 1, columns: 1 }, // normalized rows and columns in the sprite
         // define size, position, adjustments for hitbox
-        SCALE_FACTOR: 30,  // Start small 1/20 scale and grow
+        SCALE_FACTOR: 30,  // Start small
         INIT_POSITION_RATIO: { x: 1 / 1.78, y: 1 / 3.3 }, // Ratios for initial position
         hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
         // define animation properties
         ANIMATION_RATE: 100, // 1/50th of the frame rate for redraw
-        TRANSLATE_SCALE_FACTOR: 10, // Grow to 1/10 scale at end of translation
+        TRANSLATE_SCALE_FACTOR: 10, // Grow to this size at end translation
         TRANSLATE_POSITION_RATIO: { x: 1 / 2.22, y: 1 / 2.7 }, // Ratios for translate position
+        TRANSLATE_SIMULATION: {miliseconds: 1000, steps: 10}, // 1 second, 10 steps
+        down: {row: 0, start: 0, columns: 1, spin: 4},  // down is default
+     };
+
+     // Laser data, temporary sprite for testing
+    const sprite_data_laser2 = {
+        id: 'AT-AT-Laser-2',
+        greeting: "Simulate explosive action!",
+        // define image/sprite data
+        src: sprite_src_laser,
+        pixels: {height: 500, width: 500}, // height and width of the image
+        orientation: {rows: 1, columns: 1 }, // normalized rows and columns in the sprite
+        // define size, position, adjustments for hitbox
+        SCALE_FACTOR: 60,  // Start small 
+        INIT_POSITION_RATIO: { x: 1 / 8, y: 1 / 1.95 }, // Ratios for initial position
+        hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
+        // define animation properties
+        ANIMATION_RATE: 100, // 1/50th of the frame rate for redraw
+        TRANSLATE_SCALE_FACTOR: 20, // Grow to this size at end translation
+        TRANSLATE_POSITION_RATIO: { x: 1 / 15, y: 1 / 1.85 }, // Ratios for translate position
         TRANSLATE_SIMULATION: {miliseconds: 1000, steps: 10}, // 1 second, 10 steps
         down: {row: 0, start: 0, columns: 1, spin: 4},  // down is default
      };
@@ -63,7 +83,8 @@ class GameLevelStarWars {
     this.classes = [
       { class: Background, data: image__data_atat },
       { class: Player, data: sprite_data_snowspeeder },
-      { class: Projectile, data: sprite_data_laser },
+      { class: Projectile, data: sprite_data_laser1 },
+      { class: Projectile, data: sprite_data_laser2 },
     ];
   }
 }
