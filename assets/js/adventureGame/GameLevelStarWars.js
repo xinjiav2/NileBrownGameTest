@@ -56,7 +56,7 @@ class GameLevelStarWars {
         TRANSLATE_SCALE_FACTOR: 10, // Grow to 1/10 scale at end of translation
         TRANSLATE_POSITION_RATIO: { x: 1 / 2.22, y: 1 / 2.7 }, // Ratios for translate position
         TRANSLATE_SIMULATION: {miliseconds: 1000, steps: 10}, // 1 second, 10 steps
-        down: {row: 0, start: 0, columns: 1, rotate: Math.PI / 1.5},  // This is the stationary laser, down is default
+        down: {row: 0, start: 0, columns: 1, spin: 4},  // down is default
      };
 
     // List of objects definitions for this level

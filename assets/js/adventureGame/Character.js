@@ -143,7 +143,7 @@ class Character extends GameObject {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
    
             // Apply transformations for rotation and mirroring
-            if (directionData.rotate || directionData.mirror) {
+            if (directionData.rotate || directionData.mirror || directionData.spin) {
                 // Translate to the context to the center of the sprite
                 this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
                 // Apply rotation transformation
@@ -153,6 +153,9 @@ class Character extends GameObject {
                 // Apply mirror transformation
                 if (directionData.mirror) {
                     this.ctx.scale(-1, 1); // Flip horizontally
+                }
+                if (directionData.spin) {
+                    this.ctx.rotate(Math.PI / Math.floor(Math.random() * directionData.spin + 1));
                 }
                 // Translate the context back to the upper left corner
                 this.ctx.translate(-this.canvas.width / 2, -this.canvas.height / 2);
