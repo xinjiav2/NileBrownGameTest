@@ -39,14 +39,14 @@ class GameLevelStarWars {
     };
 
     // Bomb data, temporary sprite for testing
-    const sprite_src_bomb = path + "/images/gamify/tux.png"; // be sure to include the path
+    const sprite_src_bomb = path + "/images/gamify/laser_bolt.png"; // be sure to include the path
     const sprite_data_bomb = {
         id: 'AT-AT-Bomb',
         greeting: "Simulate explosive action!",
         // define image/sprite data
         src: sprite_src_bomb,
-        pixels: {height: 256, width: 352}, // height and width of the image
-        orientation: {rows: 8, columns: 11 }, // normalized rows and columns in the sprite
+        pixels: {height: 154, width: 525}, // height and width of the image
+        orientation: {rows: 1, columns: 1 }, // normalized rows and columns in the sprite
         // define size, position, adjustments for hitbox
         SCALE_FACTOR: 20,  // Start small 1/20 scale and grow
         INIT_POSITION_RATIO: { x: 1 / 1.78, y: 1 / 3.3 }, // Ratios for initial position
@@ -55,8 +55,8 @@ class GameLevelStarWars {
         ANIMATION_RATE: 50, // 1/50th of the frame rate for redraw
         TRANSLATE_SCALE_FACTOR: 10, // Grow to 1/10 scale at end of translation
         TRANSLATE_POSITION_RATIO: { x: 1 / 2.22, y: 1 / 2.7 }, // Ratios for translate position
-        TRANSLATE_SIMULATION: {miliseconds: 1000, steps: 10}, // 1 second, 10 steps
-        down: {row: 0, start: 0, columns: 1 },  // This is the stationary bomb, down is default
+        TRANSLATE_SIMULATION: {miliseconds: 1000, steps: 1}, // 1 second, 10 steps
+        down: {row: 0, start: 0, columns: 0 },  // This is the stationary bomb, down is default
      };
 
     // List of objects definitions for this level
