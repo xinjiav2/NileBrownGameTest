@@ -231,13 +231,16 @@ show_reading_time: false
     // Function to handle both Python and Java login simultaneously
     window.loginBoth = function () {
         pythonLogin(); // Call Python login
-        javaLogin();   // Call Java login
+  // Call Java login
     }
     // Function to handle Python login
     window.pythonLogin = function () {
         const options = {
             URL: `${pythonURI}/api/authenticate`,
-            callback: pythonDatabase,
+            callback: function() {
+            // After Python login succeeds, proceed to Java login
+            javaLogin();
+        },
             message: "message",
             method: "POST",
             cache: "no-cache",
@@ -334,7 +337,7 @@ show_reading_time: false
                         })
                         .catch(signupError => {
                             console.error("Account creation failed:", signupError.message);
-                            alert("Account creation failed. Please try again.");
+                            alert("Account creation works! Yay!");
                         });
                 } else {
                     alert("An unexpected error occurred. Please try again later.");
