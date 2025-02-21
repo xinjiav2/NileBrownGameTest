@@ -356,83 +356,83 @@ permalink: /student/sagai/QNA
   /**
    * Function for each message show with submit comment
    * */
-  function showMessage(row){
-        let questionContainer = getSubjectContainerBySubject(row.subject);
+  function showMessage(message){
+        let questionContainer = getSubjectContainerBySubject(message.subject);
 
        
         // Create the reply box (hidden by default)
-        const replyDiv = showSubmitComment(row);
+        const commentDiv = showSubmitComment(message);
        // Create the new question element
-        const questionDiv = showMessageHeader(row,replyDiv);
+        const messageDiv = showMessageHeader(message,commentDiv);
        
         // Add everything to the DOM
         const questionsHeader = questionContainer.querySelector("h4");
-        questionsHeader.insertAdjacentElement("afterend", questionDiv);
-        questionDiv.insertAdjacentElement("afterend", replyDiv);           
+        questionsHeader.insertAdjacentElement("afterend", messageDiv);
+        messageDiv.insertAdjacentElement("afterend", commentDiv);           
   }
   /**
    * function to show Message Header for a Message
    * */
-  function showMessageHeader(row,replyDiv){
-        const questionDiv = document.createElement('div');
-        questionDiv.classList.add('question');
-        questionDiv.id = `question-${row.id}`;
+  function showMessageHeader(message,commentDiv){
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('question');
+        messageDiv.id = `question-${message.id}`;
         const questionTextDiv = document.createElement('div');
-        questionTextDiv.innerHTML = row.content ;
+        questionTextDiv.innerHTML = message.content ;
 
         const deleteDiv = document.createElement('div');
         deleteDiv.classList.add('arrow');
         deleteDiv.innerHTML = '&#x1F5D1;'; // Down arrow symbol
-        deleteDiv.onclick = () => deleteMessage(row.id, replyDiv,  questionDiv);
+        deleteDiv.onclick = () => deleteMessage(message.id, commentDiv,  messageDiv, message.subject);
 
 
         const arrowDiv = document.createElement('div');
         arrowDiv.classList.add('arrow');
         arrowDiv.innerHTML = '&#9662;'; // Down arrow symbol
-        arrowDiv.onclick = () => toggleReplyBox(row.id);
-        questionDiv.appendChild(questionTextDiv);
-        questionDiv.appendChild(deleteDiv);
-        questionDiv.appendChild(arrowDiv);
-        return questionDiv;
+        arrowDiv.onclick = () => toggleReplyBox(message.id);
+        messageDiv.appendChild(questionTextDiv);
+        messageDiv.appendChild(deleteDiv);
+        messageDiv.appendChild(arrowDiv);
+        return messageDiv;
   } 
   /**
    * function to show Comment text and Submit button
    * */
-  function showSubmitComment(row){
-        const replyDiv = document.createElement('div');
-        replyDiv.classList.add('reply-box');
-        replyDiv.id = `reply-box-${row.id}`;
+  function showSubmitComment(message){
+        const commentDiv = document.createElement('div');
+        commentDiv.classList.add('reply-box');
+        commentDiv.id = `reply-box-${message.id}`;
 
        
         const replyTextArea = document.createElement('textarea');
         replyTextArea.placeholder = 'Insert your reply here...';
         const replyButton = document.createElement('button');
         replyButton.innerHTML = 'Submit Reply';
-        replyButton.onclick = () => createComment(row.id, replyTextArea, replyDiv);
-        replyDiv.appendChild(replyTextArea);
-        replyDiv.appendChild(replyButton);
+        replyButton.onclick = () => createComment(message.id, replyTextArea, commentDiv);
+        commentDiv.appendChild(replyTextArea);
+        commentDiv.appendChild(replyButton);
 
-         for (const comment of row.comments){
-            showCommentAndDelete(replyDiv, comment);
+         for (const comment of message.comments){
+            showCommentAndDelete(commentDiv, comment);
         }
-        return replyDiv;
+        return commentDiv;
   }
   /**
    * Function to show the comment and delete button
    * */
-  function showCommentAndDelete(replyDiv,comment){
-    const replyDivContainer = document.createElement('div');
-            replyDivContainer.classList.add('question');
-            const replyDivText = document.createElement('div');
-            replyDivText.classList.add('reply-text');
-            replyDivText.innerHTML = `<p>${comment.content}</p>`;
+  function showCommentAndDelete(commentDiv,comment){
+    const commentDivContainer = document.createElement('div');
+            commentDivContainer.classList.add('question');
+            const commentDivText = document.createElement('div');
+            commentDivText.classList.add('reply-text');
+            commentDivText.innerHTML = `<p>${comment.content}</p>`;
             const deleteDiv = document.createElement('div');
             deleteDiv.classList.add('arrow');
             deleteDiv.innerHTML = '&#x1F5D1;'; // Down arrow symbol
-            deleteDiv.onclick = () => deleteMessageReply(comment.id, replyDivContainer,  replyDiv);
-            replyDivContainer.appendChild(replyDivText);
-            replyDivContainer.appendChild(deleteDiv);
-            replyDiv.appendChild(replyDivContainer);
+            deleteDiv.onclick = () => deleteComment(comment.id, commentDivContainer,  commentDiv);
+            commentDivContainer.appendChild(commentDivText);
+            commentDivContainer.appendChild(deleteDiv);
+            commentDiv.appendChild(commentDivContainer);
   }
 
   /*
@@ -464,12 +464,12 @@ permalink: /student/sagai/QNA
       }else if (response.status != 201) {
           error("Post API response failure: " + response.status)
           return;  // api failure
-      }showMessage
+      }
       // valid response will have JSON data
       response.json().then(data => {
           console.log(data);
-            (data);
-            document.getElementById('question-input').value = "";
+          document.getElementById('question-input').value = "";
+          showMessage(data);
       })
     })
     // catch fetch errors (ie Nginx ACCESS to server blocked)
@@ -482,7 +482,7 @@ permalink: /student/sagai/QNA
   /**
    * function to create comments for Message
    * */
-  function createComment(questionId, replyTextArea, replyDiv) {
+  function createComment(questionId, replyTextArea, commentDiv) {
     const replyText = replyTextArea.value;
     if (replyText.trim() == "") {
         return;
@@ -511,7 +511,7 @@ permalink: /student/sagai/QNA
       // valid response will have JSON data
       response.json().then(data => {
           console.log(data);
-                showCommentAndDelete(replyDiv, data);
+                showCommentAndDelete(commentDiv, data);
       })
     })
     // catch fetch errors (ie Nginx ACCESS to server blocked)
@@ -521,8 +521,10 @@ permalink: /student/sagai/QNA
   
   }
 
-  // Reaction function to likes or jeers user actions
-  function deleteMessageReply(commentId, replyTextArea, replyDiv) {
+  /*
+  * function to delete comment 
+  */
+  function deleteComment(commentId, replyTextArea, commentDiv) {
     const postURL = `${javaURI}/api/sagai/comments/${commentId}`;
   // prepare fetch PUT options, clones with JS Spread Operator (...)
   const postOptions = {...fetchOptions,
@@ -537,9 +539,7 @@ permalink: /student/sagai/QNA
           error("Delete API response failure: " + response.status)
           return;  // api failure
       }
-    
-      replyDiv.removeChild(replyTextArea);
-         
+      commentDiv.removeChild(replyTextArea);
     })
     // catch fetch errors (ie Nginx ACCESS to server blocked)
     .catch(err => {
@@ -548,8 +548,10 @@ permalink: /student/sagai/QNA
   
   }
 
-    // Delete Message
-  function deleteMessage(commentId, replyDiv, questionDiv) {
+  /*
+  * function to delete Message
+  */
+  function deleteMessage(commentId, commentDiv, messageDiv, subject) {
     const postURL = `${javaURI}/api/sagai/messages/${commentId}`;
   // prepare fetch PUT options, clones with JS Spread Operator (...)
   const postOptions = {...fetchOptions,
@@ -564,9 +566,9 @@ permalink: /student/sagai/QNA
           error("Delete API response failure: " + response.status)
           return;  // api failure
       }
-      const questionContainer = document.getElementById('questions-container');
-      questionContainer.removeChild(replyDiv);
-       questionContainer.removeChild(questionDiv);        
+      const questionContainer = getSubjectContainerBySubject(subject);
+      questionContainer.removeChild(commentDiv);
+       questionContainer.removeChild(messageDiv);        
     })
     // catch fetch errors (ie Nginx ACCESS to server blocked)
     .catch(err => {
@@ -575,9 +577,12 @@ permalink: /student/sagai/QNA
   
   }
 
-  // Something went wrong with actions or responses
+  /*
+  * Helper function to show error to the User
+  */
   function error(err) {
     // log as Error in console
+    const resultContainer = document.getElementById("result");
     console.error(err);
     // append error to resultContainer
     const tr = document.createElement("tr");
