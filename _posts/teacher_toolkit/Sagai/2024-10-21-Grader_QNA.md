@@ -281,11 +281,29 @@ permalink: /student/sagai/QNA
     </div>
     <script>
         let questionCount = 0;
-        // Function to submit a new question and append it to the list of questions
-        // Function to toggle reply box visibility
+        /*
+        * Helper Function to toggle the arrow 
+        */
         function toggleReplyBox(questionId) {
             const replyBox = document.getElementById(`reply-box-${questionId}`);
             replyBox.style.display = replyBox.style.display === 'block' ? 'none' : 'block';
+        }
+        /*
+        * Helper Function to get the subject Container by subject string
+        */
+        function getSubjectContainerBySubject(subject) {
+             let subjectContainer;
+              let container = "questions-container"
+              if(subject){
+                  container = container+ "-"+subject;
+                  subjectContainer = document.getElementById(container);
+              }else{
+                  subjectContainer = document.getElementById('questions-container-other');
+              }
+              if(!subjectContainer){
+                subjectContainer = document.getElementById('questions-container-other');
+              }
+              return subjectContainer
         }
     </script>
   
@@ -339,17 +357,8 @@ permalink: /student/sagai/QNA
    * For each message show with submit comment
    * */
   function showMessage(row){
-        let questionContainer;
-        let container = "questions-container"
-        if(row.subject){
-            container = container+ "-"+row.subject;
-            questionContainer = document.getElementById(container);
-        }else{
-            questionContainer = document.getElementById('questions-container-other');
-        }
-        if(!questionContainer){
-           questionContainer = document.getElementById('questions-container-other');
-        }
+        let questionContainer = getSubjectContainerBySubject(row.subject);
+
        
         // Create the reply box (hidden by default)
         const replyDiv = returnReplyDiv(row);
