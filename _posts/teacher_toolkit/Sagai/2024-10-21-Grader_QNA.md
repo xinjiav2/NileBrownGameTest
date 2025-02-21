@@ -187,6 +187,18 @@ permalink: /student/sagai/QNA
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
+    .underline { 
+      background-color: #222;
+      border: 1px solid black;
+      /*outline: 4px; */
+      /* outline-offset: 10px; */
+      /* border-radius: 6px; */
+      border-bottom: 5px solid white; 
+    } 
+    h4 {
+      text-decoration: underline;
+      border-bottom: 5px solid white; 
+    }
 </style>
 
 </head>
@@ -226,16 +238,16 @@ permalink: /student/sagai/QNA
             <!-- Questions will be dynamically inserted here -->
         </div>
         <div id="questions-container-other">
-            <h4>other</h4>
+            <h4 class="underline">other</h4>
         </div>
          <div id="questions-container-primitiveType">
-            <h4>primitiveType</h4>
+            <h4>primitive Type</h4>
         </div>
         <div id="questions-container-objects">
             <h4>objects</h4>
         </div>
           <div id="questions-container-booleanAndIf">
-            <h4>booleanAndIf</h4>
+            <h4>boolean And If</h4>
         </div>
           <div id="questions-container-iteration">
             <h4>iteration</h4>
@@ -424,11 +436,11 @@ permalink: /student/sagai/QNA
       }else if (response.status != 201) {
           error("Post API response failure: " + response.status)
           return;  // api failure
-      }
+      }populateQuestion
       // valid response will have JSON data
       response.json().then(data => {
           console.log(data);
-            populateQuestion(data);
+            (data);
             document.getElementById('question-input').value = "";
       })
     })
