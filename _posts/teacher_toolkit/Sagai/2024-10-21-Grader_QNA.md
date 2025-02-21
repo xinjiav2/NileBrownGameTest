@@ -354,24 +354,26 @@ permalink: /student/sagai/QNA
   }
 
   /**
-   * For each message show with submit comment
+   * Function for each message show with submit comment
    * */
   function showMessage(row){
         let questionContainer = getSubjectContainerBySubject(row.subject);
 
        
         // Create the reply box (hidden by default)
-        const replyDiv = returnReplyDiv(row);
+        const replyDiv = showSubmitComment(row);
        // Create the new question element
-        const questionDiv = returnQuestionDiv(row,replyDiv);
+        const questionDiv = showMessageHeader(row,replyDiv);
        
         // Add everything to the DOM
         const questionsHeader = questionContainer.querySelector("h4");
         questionsHeader.insertAdjacentElement("afterend", questionDiv);
         questionDiv.insertAdjacentElement("afterend", replyDiv);           
   }
-
-  function returnQuestionDiv(row,replyDiv){
+  /**
+   * function to show Message Header for a Message
+   * */
+  function showMessageHeader(row,replyDiv){
         const questionDiv = document.createElement('div');
         questionDiv.classList.add('question');
         questionDiv.id = `question-${row.id}`;
@@ -393,8 +395,10 @@ permalink: /student/sagai/QNA
         questionDiv.appendChild(arrowDiv);
         return questionDiv;
   } 
-
-  function returnReplyDiv(row){
+  /**
+   * function to show Comment text and Submit button
+   * */
+  function showSubmitComment(row){
         const replyDiv = document.createElement('div');
         replyDiv.classList.add('reply-box');
         replyDiv.id = `reply-box-${row.id}`;
@@ -404,16 +408,19 @@ permalink: /student/sagai/QNA
         replyTextArea.placeholder = 'Insert your reply here...';
         const replyButton = document.createElement('button');
         replyButton.innerHTML = 'Submit Reply';
-        replyButton.onclick = () => submitMessageReply(row.id, replyTextArea, replyDiv);
+        replyButton.onclick = () => createComment(row.id, replyTextArea, replyDiv);
         replyDiv.appendChild(replyTextArea);
         replyDiv.appendChild(replyButton);
 
          for (const comment of row.comments){
-            addCommenttoReplyDiv(replyDiv, comment);
+            showCommentAndDelete(replyDiv, comment);
         }
         return replyDiv;
   }
-  function addCommenttoReplyDiv(replyDiv,comment){
+  /**
+   * Function to show the comment and delete button
+   * */
+  function showCommentAndDelete(replyDiv,comment){
     const replyDivContainer = document.createElement('div');
             replyDivContainer.classList.add('question');
             const replyDivText = document.createElement('div');
@@ -428,8 +435,10 @@ permalink: /student/sagai/QNA
             replyDiv.appendChild(replyDivContainer);
   }
 
-  // Reaction function to likes or jeers user actions
-  function submitMessage() {
+  /*
+  * function to submit and create Message to the backend service
+  */
+  function createMessage() {
     const questionText = document.getElementById('question-input').value;
     // Read value from list selected from user
     const subjectText = document.querySelector('#subject').value;
@@ -470,8 +479,10 @@ permalink: /student/sagai/QNA
   
   }
 
-  // Reaction function to likes or jeers user actions
-  function submitMessageReply(questionId, replyTextArea, replyDiv) {
+  /**
+   * function to create comments for Message
+   * */
+  function createComment(questionId, replyTextArea, replyDiv) {
     const replyText = replyTextArea.value;
     if (replyText.trim() == "") {
         return;
@@ -500,7 +511,7 @@ permalink: /student/sagai/QNA
       // valid response will have JSON data
       response.json().then(data => {
           console.log(data);
-                addCommenttoReplyDiv(replyDiv, data);
+                showCommentAndDelete(replyDiv, data);
       })
     })
     // catch fetch errors (ie Nginx ACCESS to server blocked)
@@ -575,7 +586,7 @@ permalink: /student/sagai/QNA
     tr.appendChild(td);
     resultContainer.appendChild(tr);
   }
-    document.getElementById('submit-button').addEventListener('click', submitMessage);
+    document.getElementById('submit-button').addEventListener('click', createMessage);
 </script>  
 
 </body>
