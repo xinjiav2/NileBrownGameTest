@@ -231,16 +231,14 @@ show_reading_time: false
     // Function to handle both Python and Java login simultaneously
     window.loginBoth = function () {
         pythonLogin(); // Call Python login
+        javaLogin();
   // Call Java login
     }
     // Function to handle Python login
     window.pythonLogin = function () {
         const options = {
             URL: `${pythonURI}/api/authenticate`,
-            callback: function() {
-            // After Python login succeeds, proceed to Java login
-            javaLogin();
-        },
+            callback: pythonDatabase,
             message: "message",
             method: "POST",
             cache: "no-cache",
