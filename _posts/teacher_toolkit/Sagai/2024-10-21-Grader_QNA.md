@@ -10,7 +10,7 @@ permalink: /student/sagai/QNA
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Q&A Page</title>
+    <title>Review Page</title>
     <style>
     body {
         background-color: black;
@@ -202,6 +202,7 @@ permalink: /student/sagai/QNA
 </style>
 
 </head>
+
 <body>
     <!-- Navigation buttons -->
     <div class="nav-buttons">
@@ -211,7 +212,7 @@ permalink: /student/sagai/QNA
     </div>
     <!-- Main Q&A Section -->
     <div class="container">
-        <h1 class="section-title">QNA</h1>
+        <h1 class="section-title">College Board Review</h1>
         <!-- Question submission section -->
         <div id="ask-question">
             <h2>Ask a Question:</h2>
@@ -290,45 +291,54 @@ permalink: /student/sagai/QNA
   
 <script type="module">
   import {javaURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
+  getMessages(javaURI, fetchOptions);
 
-  // prepare HTML defined "result" container for new outputj
-  const resultContainer = document.getElementById("result");
+  /**
+   *  Method to get all messages during startup
+   * */
+  function getMessages(javaURI, fetchOptions){ 
+    // prepare HTML defined "result" container for new outputj
+    const resultContainer = document.getElementById("result");
 
-  // prepare fetch urls
-  // const url = `${pythonURI}/api/jokes`;
-  const url = `${javaURI}/api/sagai/messages`;
-  const getURL = url +"/";
-  const likeURL = url + "/message";  // haha reaction
-  const jeerURL = url + "/jeer/";  // boohoo reaction
+    // prepare fetch urls
+    // const url = `${pythonURI}/api/jokes`;
+    const url = `${javaURI}/api/sagai/messages`;
+    const getURL = url +"/";
+    const likeURL = url + "/message";  // haha reaction
+    const jeerURL = url + "/jeer/";  // boohoo reaction
 
-  // prepare fetch PUT options, clones with JS Spread Operator (...)
-  const postOptions = {...fetchOptions,
-    method: 'POST',
-  }; // clones and replaces method
+    // prepare fetch PUT options, clones with JS Spread Operator (...)
+    const postOptions = {...fetchOptions,
+      method: 'POST',
+    }; // clones and replaces method
 
-  // fetch the API
-  fetch(getURL,fetchOptions)
-    // response is a RESTful "promise" on any successful fetch
-    .then(response => {
-      // check for response errors
-      if (response.status !== 200) {
-          error('GET API response failure: ' + response.status);
-          return;
-      }
-      // valid response will have JSON data
-      response.json().then(data => {
-          console.log(data);
-          for (const row of data) {
-              populateQuestion(row);
-          }
-      })
-  })
-  // catch fetch errors (ie Nginx ACCESS to server blocked)
-  .catch(err => {
-    error(err + ": " + getURL);
-  });
+    // fetch the API
+    fetch(getURL,fetchOptions)
+      // response is a RESTful "promise" on any successful fetch
+      .then(response => {
+        // check for response errors
+        if (response.status !== 200) {
+            error('GET API response failure: ' + response.status);
+            return;
+        }
+        // valid response will have JSON data
+        response.json().then(data => {
+            console.log(data);
+            for (const row of data) {
+                showMessage(row);
+            }
+        })
+    })
+    // catch fetch errors (ie Nginx ACCESS to server blocked)
+    .catch(err => {
+      error(err + ": " + getURL);
+    });
+  }
 
-  function populateQuestion(row){
+  /**
+   * For each message show with submit comment
+   * */
+  function showMessage(row){
         let questionContainer;
         let container = "questions-container"
         if(row.subject){
@@ -436,7 +446,7 @@ permalink: /student/sagai/QNA
       }else if (response.status != 201) {
           error("Post API response failure: " + response.status)
           return;  // api failure
-      }populateQuestion
+      }showMessage
       // valid response will have JSON data
       response.json().then(data => {
           console.log(data);
