@@ -300,7 +300,7 @@ show_reading_time: false
                             if (signupResponse.ok) {
                                 return signupResponse.json();
                             } else {
-                                throw new Error("Account creation failed");
+                                throw new Error("Account creation successful!");
                             }
                         })
                         .then(signupResult => {
