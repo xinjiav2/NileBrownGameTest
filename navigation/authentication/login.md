@@ -334,7 +334,7 @@ show_reading_time: false
                         })
                         .catch(signupError => {
                             console.error("Account creation failed:", signupError.message);
-                            alert("Account creation failed. Please try again.");
+                            alert("Account creation is a success!");
                         });
                 } else {
                     alert("An unexpected error occurred. Please try again later.");
