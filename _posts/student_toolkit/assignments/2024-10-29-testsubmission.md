@@ -24,6 +24,9 @@ layout: post
     </thead>
     <tbody id="namesTableBody"></tbody>
 </table>
+<div class="Review-Group" id="Review-Group">Review-Group</div>
+
+
 <script type="module">
     import { javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
     let people = [];
@@ -36,6 +39,8 @@ layout: post
         console.log("Added name:", name);
         listofpeople.push(name);
         console.log(listofpeople);
+        const reviewGroup = document.getElementById('Review-Group'); 
+        reviewGroup.textContent = listofpeople;
     };
     async function fetchAllStudents() {
         try {
