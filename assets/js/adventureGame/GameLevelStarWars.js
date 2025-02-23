@@ -36,7 +36,10 @@ class GameLevelStarWars {
         right: {row: 0, start: 0, columns: 1, rotate: Math.PI },
         up: {row: 0, start: 0, columns: 1, rotate: Math.PI/2 },
         hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 },
-        keypress: { up: 87, left: 65, down: 83, right: 68 } // W, A, S, D
+        keypress: { up: 87, left: 65, down: 83, right: 68 }, // W, A, S, D
+        reaction: function() {
+          alert("We just got hit by a projectile!");
+        }
     };
 
     // NPC Data for Turret Anti-Air

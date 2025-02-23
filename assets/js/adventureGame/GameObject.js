@@ -140,6 +140,7 @@ class GameObject {
             other: {
                 id: other.canvas.id,
                 greet: other.spriteData.greeting,
+                reaction: other.spriteData.reaction,
                 top: otherBottom > thisTop && otherTop < thisTop,
                 bottom: otherTop < thisBottom && otherBottom > thisBottom,
                 left: otherRight > thisLeft && otherLeft < thisLeft,
@@ -170,6 +171,10 @@ class GameObject {
      * @param {*} other 
      */
     handleCollisionReaction(other) {
+        if (other.reaction && typeof other.reaction === "function") {
+            other.reaction();
+            return;
+        }
         console.log(other.greet);
     }
 
