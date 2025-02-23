@@ -170,7 +170,7 @@ class GameObject {
      * @param {*} other 
      */
     handleCollisionReaction(other) {
-        alert(other.greet);
+        console.log(other.greet);
     }
 
     /**
