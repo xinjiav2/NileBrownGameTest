@@ -81,9 +81,9 @@ class Projectile extends Character {
         const explosionData = {
             ...this.data,
             ie: "Explosion-" + this.data.id,
-            down: {row: 0, start: 0, columns: 1},
+            down: {row: 0, start: 0, columns: 1, explode: true},
             SCALE_FACTOR: this.endScaleFactor,
-            EXPLOSION_SCALE_FACTOR: this.endScaleFactor * 8, // Adjust as needed
+            EXPLOSION_SCALE_FACTOR: this.endScaleFactor * 5, // Adjust as needed
             EXPLOSION_SIMULATION: { miliseconds: 1000 } // Adjust as needed
         };
         const explosion = newProjectileExplosion(explosionData, this.gameEnv);
