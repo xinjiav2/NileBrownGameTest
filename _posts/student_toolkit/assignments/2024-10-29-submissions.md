@@ -114,6 +114,24 @@ layout: post
     .shake {
         animation: shake 0.5s infinite;
     }
+    #prevPage, #nextPage {
+        font-size: 12px; /* Reduce font size */
+        padding: 4px 8px; /* Decrease padding to make them smaller */
+        margin: 0 5px; /* Space between the buttons */
+        height: 30px; /* Decrease height */
+        width: auto; /* Let the width adjust automatically */
+    }
+    #pageInfo {
+        font-size: 14px; /* Adjust the page info font size */
+        margin-right: 10px;
+    }
+    /* Container for page navigation */
+    #pagination-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px; /* Space between elements */
+    }
 </style>
 
 <div id="modal" class="modal">
@@ -141,6 +159,7 @@ layout: post
             <option value="50">50</option>
             <option value="100">100</option>
             <option value="200">200</option>
+            <option value="1000">1000</option>
         </select>
     </div>
     <table>
@@ -152,12 +171,12 @@ layout: post
         </thead>
         <tbody id="namesTableBody"></tbody>
     </table>
-<div>
-    <button id="prevPage" onclick="changePage('prev')">Previous</button>
-    <span id="pageInfo"></span>
-    <button id="nextPage" onclick="changePage('next')">Next</button>
+<div id="pagination-container">
+    <button id="prevPage" onclick="changePage(-1)">Previous</button>
+    <span id="pageInfo">Page 1 of 10</span>
+    <button id="nextPage" onclick="changePage(1)">Next</button>
 </div>
-<div class="Review-Group" id="Review-Group">Review-Group</div>
+<div class="Review-Group" id="Review-Group">Group Members: </div>
     <div>
         <label for="submissionContent" style="font-size: 18px;">Submission Content:</label>
         <input type="url" id="submissionContent" required />
@@ -200,8 +219,9 @@ layout: post
     let assignIndex = 0;
     let assignments;
     let userId=-1;
+    let StuName;
     let Student;
-     let people = [], filteredPeople = [], listofpeople = [], currentPage = 1, rowsPerPage = 5, totalPages = 1;
+     let people = [], filteredPeople = [], listofpeople = new Set(), currentPage = 1, rowsPerPage = 5, totalPages = 1;
 
     document.getElementById("submit-assignment").addEventListener("click", Submit);
     function Submit() {
@@ -361,6 +381,9 @@ layout: post
             })
             .then(data => {
                 userId=data.id;
+                console.log("here",data);
+                StuName=data.name;
+                addName(StuName);
 
 
             })
@@ -423,10 +446,10 @@ layout: post
 
     window.addName = function(name) {
         console.log("Added name:", name);
-        listofpeople.push(name);
+        listofpeople.add(name);
         console.log(listofpeople);
         const reviewGroup = document.getElementById('Review-Group');
-        reviewGroup.textContent = listofpeople.join(", ");
+        reviewGroup.textContent =  Array.from(listofpeople).join(", ");
     };
 
     async function fetchAllStudents() {
@@ -463,11 +486,12 @@ layout: post
     };
 
     window.updatePageInfo = function updatePageInfo() {
-        const pageInfo = document.getElementById("pageInfo");
-        pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-        document.getElementById("prevPage").disabled = currentPage === 1;
-        document.getElementById("nextPage").disabled = currentPage === totalPages;
-    };
+    const pageInfo = document.getElementById("pageInfo");
+    pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+    document.getElementById("prevPage").disabled = currentPage === 1;
+    document.getElementById("nextPage").disabled = currentPage === totalPages;
+};
+
 
     function populateTable(names) {
         const tableBody = document.getElementById("namesTableBody");
