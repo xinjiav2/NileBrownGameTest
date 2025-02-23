@@ -454,6 +454,57 @@ body {
     font-weight: bold;
     text-shadow: 0 0 8px rgba(250, 204, 21, 0.3);
 }
+/* Update the active-gpus-modal styles to match GPU Shop */
+.active-gpus-modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+}
+.active-gpus-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #1f2937;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 900px;
+    max-height: 80vh;
+}
+#active-gpus-list {
+    overflow-y: auto;
+    max-height: calc(80vh - 120px);
+    padding-right: 1rem;
+    margin-right: -1rem;
+    scrollbar-width: thin;
+    scrollbar-color: #4b5563 #1f2937;
+}
+#active-gpus-list::-webkit-scrollbar {
+    width: 8px;
+}
+#active-gpus-list::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+#active-gpus-list::-webkit-scrollbar-thumb {
+    background-color: #4b5563;
+    border-radius: 4px;
+}
+/* Update the GPU cards style */
+#active-gpus-list .gpu-card {
+    background: rgba(17, 24, 39, 0.95);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(75, 85, 99, 0.4);
+    transition: all 0.2s ease-in-out;
+}
+#active-gpus-list .gpu-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+}
 </style>
 <body class="bg-gray-900 text-white min-h-screen p-6">
     <div class="text-center mb-4 text-yellow-400">
@@ -517,7 +568,11 @@ body {
                 <div class="grid gap-2">
                     <div>
                         <div class="stat-label">Current GPU</div>
-                        <div class="stat-value text-blue-400" id="current-gpu">No GPU</div>
+                        <div class="stat-value text-blue-400 cursor-pointer hover:text-blue-300 transition-colors" 
+                             onclick="openActiveGPUsModal()" 
+                             id="current-gpu">
+                            No GPU
+                        </div>
                     </div>
                     <div>
                         <div class="stat-label">GPU Temperature</div>
@@ -594,8 +649,68 @@ body {
             </div>
         </div>
     </div>
+    <!-- Add this right before the closing </body> tag -->
+    <div id="active-gpus-modal" class="active-gpus-modal hidden">
+        <div class="active-gpus-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-blue-400">Active GPUs</h2>
+                <button onclick="closeActiveGPUsModal()" 
+                        class="text-gray-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+            <div id="active-gpus-list">
+                <!-- GPUs will be listed here -->
+            </div>
+        </div>
+    </div>
     <script type="module">
-        import { login, pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js'; //imports config.js
+        import { login, pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js'; 
+        // Make functions globally available
+        window.openActiveGPUsModal = function() {
+            const modal = document.getElementById('active-gpus-modal');
+            modal.classList.remove('hidden');
+            updateActiveGPUsList();
+        }
+        window.closeActiveGPUsModal = function() {
+            const modal = document.getElementById('active-gpus-modal');
+            modal.classList.add('hidden');
+        }
+        function updateActiveGPUsList() {
+            const container = document.getElementById('active-gpus-list');
+            container.innerHTML = '';
+            if (!window.stats || !window.stats.gpus) return;
+            const activeGPUs = window.stats.gpus.filter(gpu => gpu.isActive);
+            activeGPUs.forEach(gpu => {
+                const card = document.createElement('div');
+                card.className = 'gpu-card';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-blue-400 mb-4">${gpu.name}</h3>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <p class="text-gray-400 mb-2">Performance</p>
+                                    <div class="space-y-2">
+                                        <p class="text-white">⚡ ${gpu.hashrate.toFixed(2)} MH/s</p>
+                                        <p class="text-white">🔌 ${gpu.power}W</p>
+                                        <p class="text-white">🌡️ ${gpu.temp}°C</p>
+                                        <p class="text-white">📊 ${(gpu.hashrate/gpu.power).toFixed(3)} MH/W</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400 mb-2">Status</p>
+                                    <div class="space-y-2">
+                                        <p class="text-emerald-400">✅ Active</p>
+                                        <p class="text-white">🔋 ${((gpu.power/500)*100).toFixed(1)}% Power Usage</p>
+                                        <p class="text-white">💻 GPU #${gpu.id}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
         // Make toggleMining globally available
         window.toggleMining = async function() {
             try {
@@ -898,12 +1013,13 @@ body {
             document.getElementById('power-draw').textContent = `${newPower.toFixed(0)}W`;
             document.getElementById('daily-revenue').textContent = `$${(typeof stats.dailyRevenue === 'number' ? stats.dailyRevenue : 0).toFixed(2)}`;
             document.getElementById('power-cost').textContent = `$${(typeof stats.powerCost === 'number' ? stats.powerCost : 0).toFixed(2)}`;
-            // Update current GPU display
+            // Update GPU count display
             if (stats.gpus && stats.gpus.length > 0) {
-                const activeGpu = stats.gpus.find(gpu => gpu.isActive);
-                document.getElementById('current-gpu').textContent = activeGpu ? activeGpu.name : 'No Active GPU';
+                const activeGPUs = stats.gpus.filter(gpu => gpu.isActive);
+                document.getElementById('current-gpu').textContent = 
+                    `${activeGPUs.length} Active GPU${activeGPUs.length !== 1 ? 's' : ''} (Click to view)`;
             } else {
-                document.getElementById('current-gpu').textContent = 'No GPU';
+                document.getElementById('current-gpu').textContent = 'No Active GPUs';
             }
             // Add color indicators for temperature
             const tempElement = document.getElementById('gpu-temp');
@@ -914,6 +1030,8 @@ body {
             } else {
                 tempElement.className = 'stat-value text-green-500'; // Good
             }
+            // Store stats globally for modal access
+            window.stats = stats;
         }
         function renderGpuInventory(stats) {
             console.log('Full stats data:', stats);
