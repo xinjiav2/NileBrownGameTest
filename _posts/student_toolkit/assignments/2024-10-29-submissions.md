@@ -177,36 +177,37 @@ layout: post
     <button id="nextPage" onclick="changePage(1)">Next</button>
 </div>
 <div class="Review-Group" id="Review-Group">Group Members: </div>
-    <div>
-        <label for="submissionContent" style="font-size: 18px;">Submission Content:</label>
-        <input type="url" id="submissionContent" required />
-    </div>
-    <br><br>
-    <div>
-        <label for="comments" style="font-size: 18px;">Comments:</label>
-        <textarea id="comments" rows="4" style="width: 100%;"></textarea>
-    </div>
-    <br><br>
-    <button id="submit-assignment">Submit Assignment</button>
-    <br><br>
-    <div class="output-box" id="outputBox"></div>
-    <br><br>
-    <h1>Previous Submissions for: </h1>
-    <div class="Assignment-Name" id="Assignment-name">Assignment-Content</div>
-    <br><br>
-    <table id="submissions-table" style="width: 100%; margin-top: 20px;">
-        <thead>
-            <tr>
-                <th>Submisssion Content</th>
-                <th>Grade</th>
-                <th>Feedback</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Submissions will be populated here -->
-        </tbody>
-    </table>
-    
+<br><br><br>
+<div>
+    <label for="submissionContent" style="font-size: 18px;">Submission Content:</label>
+    <input type="url" id="submissionContent" required />
+</div>
+<br><br>
+<div>
+    <label for="comments" style="font-size: 18px;">Comments:</label>
+    <textarea id="comments" rows="4" style="width: 100%;"></textarea>
+</div>
+<br><br>
+<button id="submit-assignment">Submit Assignment</button>
+<br><br>
+<div class="output-box" id="outputBox"></div>
+<br><br>
+<h1>Previous Submissions for: </h1>
+<div class="Assignment-Name" id="Assignment-name">Assignment-Content</div>
+<br><br>
+<table id="submissions-table" style="width: 100%; margin-top: 20px;">
+    <thead>
+        <tr>
+            <th>Submisssion Content</th>
+            <th>Grade</th>
+            <th>Feedback</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Submissions will be populated here -->
+    </tbody>
+</table>
+
 </div>
 
 
@@ -449,7 +450,7 @@ layout: post
         listofpeople.add(name);
         console.log(listofpeople);
         const reviewGroup = document.getElementById('Review-Group');
-        reviewGroup.textContent =  Array.from(listofpeople).join(", ");
+        reviewGroup.textContent =  "Group Members: "+Array.from(listofpeople).join(", ");
     };
 
     async function fetchAllStudents() {
