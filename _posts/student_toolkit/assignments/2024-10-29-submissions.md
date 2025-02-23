@@ -115,22 +115,21 @@ layout: post
         animation: shake 0.5s infinite;
     }
     #prevPage, #nextPage {
-        font-size: 12px; /* Reduce font size */
-        padding: 4px 8px; /* Decrease padding to make them smaller */
-        margin: 0 5px; /* Space between the buttons */
-        height: 30px; /* Decrease height */
-        width: auto; /* Let the width adjust automatically */
+        font-size: 12px;
+        padding: 4px 8px; 
+        margin: 0 5px; 
+        height: 30px; 
+        width: auto; 
     }
     #pageInfo {
-        font-size: 14px; /* Adjust the page info font size */
+        font-size: 14px; 
         margin-right: 10px;
     }
-    /* Container for page navigation */
     #pagination-container {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px; /* Space between elements */
+        gap: 10px; 
     }
 </style>
 
