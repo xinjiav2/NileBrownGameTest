@@ -50,7 +50,7 @@ class Projectile extends Character {
         if (progress >= 1) {
             if (this.delayStartTime === null) {
                 this.triggerExplosion();
-                this.randomDelay = Math.random() * this.data.TRANSLATE_SIMULATION.miliseconds;
+                this.randomDelay = Math.random() * this.data.TRANSLATE_SIMULATION.miliseconds * 5;
                 this.delayStartTime = Date.now();
             } else if (Date.now() - this.delayStartTime >= this.randomDelay) {
                 this.restart();
