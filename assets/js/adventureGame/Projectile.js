@@ -1,5 +1,4 @@
 import Character from './Character.js';
-
 import ProjectileExplosion from './ProjectileExplosion.js';
 
 function newProjectileExplosion(data, gameEnv) {
