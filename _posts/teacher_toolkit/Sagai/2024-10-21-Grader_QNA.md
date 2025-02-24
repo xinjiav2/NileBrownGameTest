@@ -1,7 +1,7 @@
 ---
 toc: false
 layout: post
-title: QNA
+title: Review Page
 description: Post questions and get replies from peers
 permalink: /student/sagai/QNA
 ---
@@ -196,8 +196,18 @@ permalink: /student/sagai/QNA
       border-bottom: 5px solid white; 
     } 
     h4 {
-      text-decoration: underline;
       border-bottom: 5px solid white; 
+    }
+    .post-meta {
+      display: none;
+    }
+    .subject-container  {
+      box-shadow: none !important;
+      background-color: #1e1e1e;
+      border: none !important;
+      padding-right: 20px;
+      padding-left: 20px;
+      padding-bottom: 20px;
     }
 </style>
 
@@ -238,37 +248,37 @@ permalink: /student/sagai/QNA
             <h2>Questions</h2>
             <!-- Questions will be dynamically inserted here -->
         </div>
-        <div id="questions-container-other">
-            <h4 class="underline">other</h4>
+        <div id="questions-container-other"  class="subject-container">
+            <h4>other</h4>
         </div>
-         <div id="questions-container-primitiveType">
+         <div id="questions-container-primitiveType" class="subject-container">
             <h4>primitive Type</h4>
         </div>
-        <div id="questions-container-objects">
+        <div id="questions-container-objects"   class="subject-container">
             <h4>objects</h4>
         </div>
-          <div id="questions-container-booleanAndIf">
+          <div id="questions-container-booleanAndIf"  class="subject-container">
             <h4>boolean And If</h4>
         </div>
-          <div id="questions-container-iteration">
+          <div id="questions-container-iteration"  class="subject-container">
             <h4>iteration</h4>
         </div>
-          <div id="questions-container-classes">
+          <div id="questions-container-classes"  class="subject-container">
             <h4>classes</h4>
         </div>
-          <div id="questions-container-array">
+          <div id="questions-container-array"  class="subject-container">
             <h4>array</h4>
         </div>
-          <div id="questions-container-arrayList">
+          <div id="questions-container-arrayList"  class="subject-container">
             <h4>arrayList</h4>
         </div>
-          <div id="questions-container-2DArray">
+          <div id="questions-container-2DArray"  class="subject-container">
             <h4>2DArray</h4>
         </div>
-         <div id="questions-container-inheritance">
+         <div id="questions-container-inheritance"  class="subject-container">
             <h4>inheritance</h4>
         </div>
-         <div id="questions-container-recursion">
+         <div id="questions-container-recursion"  class="subject-container">
             <h4>recursion</h4>
         </div>
         <table>
@@ -590,6 +600,7 @@ permalink: /student/sagai/QNA
     td.innerHTML = err;
     tr.appendChild(td);
     resultContainer.appendChild(tr);
+    alert(err);
   }
     document.getElementById('submit-button').addEventListener('click', createMessage);
 </script>  
