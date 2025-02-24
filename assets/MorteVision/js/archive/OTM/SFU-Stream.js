@@ -1,4 +1,4 @@
-import { javaURI } from '../../js/api/config.js';
+import { javaURI } from '../../../../js/api/config.js';
 let bruh = "https://justfornow.onrender.com"
 const servers = {
     iceServers:[
