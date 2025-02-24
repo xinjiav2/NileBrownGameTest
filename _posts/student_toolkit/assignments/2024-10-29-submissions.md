@@ -114,23 +114,6 @@ layout: post
     .shake {
         animation: shake 0.5s infinite;
     }
-    #prevPage, #nextPage {
-        font-size: 12px;
-        padding: 4px 8px; 
-        margin: 0 5px; 
-        height: 30px; 
-        width: auto; 
-    }
-    #pageInfo {
-        font-size: 14px; 
-        margin-right: 10px;
-    }
-    #pagination-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px; 
-    }
 </style>
 
 <div id="modal" class="modal">
@@ -171,11 +154,11 @@ layout: post
         </thead>
         <tbody id="namesTableBody"></tbody>
     </table>
-<div id="pagination-container">
+<!-- <div id="pagination-container">
     <button id="prevPage" onclick="changePage(-1)">Previous</button>
     <span id="pageInfo">Page 1 of 10</span>
     <button id="nextPage" onclick="changePage(1)">Next</button>
-</div>
+</div> -->
 <div class="Review-Group" id="Review-Group">Group Members: </div>
 <br><br><br>
 <div>
@@ -495,16 +478,16 @@ layout: post
         populateTable(filteredPeople.slice(startIdx, endIdx));
     };
 
-    window.changePage = function changePage(direction) {
-        if (direction === 'prev' && currentPage > 1) {
-            currentPage--;
-        } else if (direction === 'next' && currentPage < totalPages) {
-            currentPage++;
-        }
-        const startIdx = (currentPage - 1) * rowsPerPage;
-        const endIdx = startIdx + rowsPerPage;
-        populateTable(filteredPeople.slice(startIdx, endIdx));
-    };
+    // window.changePage = function changePage(direction) {
+    //     if (direction === 'prev' && currentPage > 1) {
+    //         currentPage--;
+    //     } else if (direction === 'next' && currentPage < totalPages) {
+    //         currentPage++;
+    //     }
+    //     const startIdx = (currentPage - 1) * rowsPerPage;
+    //     const endIdx = startIdx + rowsPerPage;
+    //     populateTable(filteredPeople.slice(startIdx, endIdx));
+    // };
 
     window.updatePageInfo = function updatePageInfo() {
     const pageInfo = document.getElementById("pageInfo");
