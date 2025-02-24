@@ -8,6 +8,29 @@ layout: post
 
 <title>Submission Form</title>
 <style>
+    #searchBar, #rowsPerPage {
+    width: auto; /* Automatically adjust to content size */
+    max-width: 250px; /* Limit max width */
+}
+    /* Container for search bar and rows per page */
+    #search-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    /* Adjust submission section size */
+    #submission-section {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    /* For the buttons and table in the student section */
+    #namesTableBody {
+        width: 75%;
+        max-height: 50px;  /* Add max height to allow for scrolling if needed */
+        overflow-y: auto;
+    }
     #timer-container {
         text-align: center;
         font-size: 24px;
@@ -91,6 +114,23 @@ layout: post
     .shake {
         animation: shake 0.5s infinite;
     }
+    #prevPage, #nextPage {
+        font-size: 12px;
+        padding: 4px 8px; 
+        margin: 0 5px; 
+        height: 30px; 
+        width: auto; 
+    }
+    #pageInfo {
+        font-size: 14px; 
+        margin-right: 10px;
+    }
+    #pagination-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px; 
+    }
 </style>
 
 <div id="modal" class="modal">
@@ -106,35 +146,68 @@ layout: post
     </div>
     <br><br>
     <div>
-        <label for="submissionContent" style="font-size: 18px;">Submission Content:</label>
-        <input type="url" id="submissionContent" required />
+        <label for="searchBar">Search for a name: </label>
+        <input type="text" id="searchBar" placeholder="Search for a name..." onkeyup="filterNames()">
     </div>
-    <br><br>
     <div>
-        <label for="comments" style="font-size: 18px;">Comments:</label>
-        <textarea id="comments" rows="4" style="width: 100%;"></textarea>
+        <label for="rowsPerPage">Rows per page: </label>
+        <select id="rowsPerPage" onchange="changeRowsPerPage()">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="1000">1000</option>
+            <option value="1000">2000</option>
+        </select>
     </div>
-    <br><br>
-    <button id="submit-assignment">Submit Assignment</button>
-    <br><br>
-    <div class="output-box" id="outputBox"></div>
-    <br><br>
-    <h1>Previous Submissions for: </h1>
-    <div class="Assignment-Name" id="Assignment-name">Assignment-Content</div>
-    <br><br>
-    <table id="submissions-table" style="width: 100%; margin-top: 20px;">
+    <table>
         <thead>
             <tr>
-                <th>Submisssion Content</th>
-                <th>Grade</th>
-                <th>Feedback</th>
+                <th>Name</th>
+                <th>Action</th>
             </tr>
         </thead>
-        <tbody>
-            <!-- Submissions will be populated here -->
-        </tbody>
+        <tbody id="namesTableBody"></tbody>
     </table>
-    
+<div id="pagination-container">
+    <button id="prevPage" onclick="changePage(-1)">Previous</button>
+    <span id="pageInfo">Page 1 of 10</span>
+    <button id="nextPage" onclick="changePage(1)">Next</button>
+</div>
+<div class="Review-Group" id="Review-Group">Group Members: </div>
+<br><br><br>
+<div>
+    <label for="submissionContent" style="font-size: 18px;">Submission Content:</label>
+    <input type="url" id="submissionContent" required />
+</div>
+<br><br>
+<div>
+    <label for="comments" style="font-size: 18px;">Comments:</label>
+    <textarea id="comments" rows="4" style="width: 100%;"></textarea>
+</div>
+<br><br>
+<button id="submit-assignment">Submit Assignment</button>
+<br><br>
+<div class="output-box" id="outputBox"></div>
+<br><br>
+<h1>Previous Submissions for: </h1>
+<div class="Assignment-Name" id="Assignment-name">Assignment-Content</div>
+<br><br>
+<table id="submissions-table" style="width: 100%; margin-top: 20px;">
+    <thead>
+        <tr>
+            <th>Submisssion Content</th>
+            <th>Grade</th>
+            <th>Feedback</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Submissions will be populated here -->
+    </tbody>
+</table>
+
 </div>
 
 
@@ -147,7 +220,9 @@ layout: post
     let assignIndex = 0;
     let assignments;
     let userId=-1;
+    let StuName;
     let Student;
+     let people = [], filteredPeople = [], listofpeople = new Set(), currentPage = 1, rowsPerPage = 5, totalPages = 1;
 
     document.getElementById("submit-assignment").addEventListener("click", Submit);
     function Submit() {
@@ -307,6 +382,9 @@ layout: post
             })
             .then(data => {
                 userId=data.id;
+                console.log("here",data);
+                StuName=data.name;
+                addName(StuName);
 
 
             })
@@ -359,6 +437,75 @@ layout: post
            
         });
     }
+    window.filterNames = function filterNames() {
+        const searchTerm = document.getElementById("searchBar").value.toLowerCase();
+        filteredPeople = people.filter(person => person.name.toLowerCase().includes(searchTerm));
+        totalPages = Math.ceil(filteredPeople.length / rowsPerPage);
+        currentPage = 1; // Reset to first page after filtering
+        populateTable(filteredPeople.slice(0, rowsPerPage));
+    };
+
+    window.addName = function(name) {
+        console.log("Added name:", name);
+        listofpeople.add(name);
+        console.log(listofpeople);
+        const reviewGroup = document.getElementById('Review-Group');
+        reviewGroup.textContent =  "Group Members: "+Array.from(listofpeople).join(", ");
+    };
+
+    async function fetchAllStudents() {
+        try {
+            const response = await fetch(javaURI + "/api/people", fetchOptions);
+            if (!response.ok) throw new Error(`Error: ${response.status}`);
+            people = await response.json();
+            filteredPeople = people;
+            totalPages = Math.ceil(people.length / rowsPerPage);
+            populateTable(people.slice(0, rowsPerPage));
+        } catch (error) {
+            console.error("Error fetching names:", error);
+        }
+    }
+
+    window.changeRowsPerPage = function changeRowsPerPage() {
+        rowsPerPage = parseInt(document.getElementById("rowsPerPage").value);
+        currentPage = 1;
+        totalPages = Math.ceil(filteredPeople.length / rowsPerPage);
+        const startIdx = 0;
+        const endIdx = rowsPerPage;
+        populateTable(filteredPeople.slice(startIdx, endIdx));
+    };
+
+    window.changePage = function changePage(direction) {
+        if (direction === 'prev' && currentPage > 1) {
+            currentPage--;
+        } else if (direction === 'next' && currentPage < totalPages) {
+            currentPage++;
+        }
+        const startIdx = (currentPage - 1) * rowsPerPage;
+        const endIdx = startIdx + rowsPerPage;
+        populateTable(filteredPeople.slice(startIdx, endIdx));
+    };
+
+    window.updatePageInfo = function updatePageInfo() {
+    const pageInfo = document.getElementById("pageInfo");
+    pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+    document.getElementById("prevPage").disabled = currentPage === 1;
+    document.getElementById("nextPage").disabled = currentPage === totalPages;
+};
+
+
+    function populateTable(names) {
+        const tableBody = document.getElementById("namesTableBody");
+        tableBody.innerHTML = "";
+        names.forEach(name => {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${name.name}</td><td><button onclick="addName('${name.name}')">Add</button></td>`;
+            tableBody.appendChild(row);
+        });
+        updatePageInfo();
+    }
+
+    fetchAllStudents();
 
     getUserId();
     fetchSubmissions();
