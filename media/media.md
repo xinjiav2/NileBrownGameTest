@@ -58,6 +58,12 @@ permalink: /media
 .collapsible-btn.active + .collapsible-content {
   margin-bottom: 20px; /* Adds space when expanded */
 }
+.bin {
+  width: 30%;
+  padding: 10px;
+  border: 1px solid rgb(71, 167, 75);
+  min-height: 100px;
+}
 </style>
 <body>
     <button class="collapsible-btn" onclick="toggleCollapse(this)">Leaderboard<span class="arrow"> ▼</span></button>
@@ -125,9 +131,9 @@ permalink: /media
         <div id="score" style="font-size: 24px;">Score: 0</div>
     </div>
     <div id="bins" style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-        <div class="bin" data-bin="Left" style="width: 30%; padding: 10px; border: 1px solid black; min-height: 100px;">Left</div>
-        <div class="bin" data-bin="Center" style="width: 30%; padding: 10px; border: 1px solid black; min-height: 100px;">Center</div>
-        <div class="bin" data-bin="Right" style="width: 30%; padding: 10px; border: 1px solid black; min-height: 100px;">Right</div>
+        <div class="bin" data-bin="Left">Left</div>
+        <div class="bin" data-bin="Center">Center</div>
+        <div class="bin" data-bin="Right">Right</div>
     </div>
     <div id="images" style="display: flex; flex-wrap: wrap; gap: 10px;">
         <script>
