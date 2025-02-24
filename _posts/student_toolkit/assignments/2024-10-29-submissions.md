@@ -223,6 +223,7 @@ layout: post
     let StuName;
     let Student;
      let people = [], filteredPeople = [], listofpeople = new Set(), currentPage = 1, rowsPerPage = 5, totalPages = 1;
+     let listofpeopleIds=new Set();
 
     document.getElementById("submit-assignment").addEventListener("click", Submit);
     function Submit() {
@@ -243,6 +244,8 @@ layout: post
         console.log(now);
         console.log(deadlineDate);
         console.log(deadlineDate-now);
+
+        console.log(listofpeopleIds);
         // const dataRequest = {
         //     "studentId":studentId,
         //     "content": submissionContent,
@@ -255,12 +258,23 @@ layout: post
         formData.append('comment', comment);
         formData.append('isLate', deadlineDate-now<0);
 
+        // const data;
+        console.log(Array.from(listofpeopleIds));
+        const submissionData = {
+            assignmentId: assigmentId,  
+            studentIds: Array.from(listofpeopleIds), 
+            content: submissionContent,
+            comment: comment,
+            isLate: deadlineDate - now < 0
+        };
+        console.log(JSON.stringify(submissionData));
+
         // console.log(dataRequest);
 
         fetch(urllink_submit, {
-                fetchOptions,
+                ...fetchOptions,
                 method: "POST",
-                 body: formData
+                 body: JSON.stringify(submissionData)
             })
         .then(response => {
             const outputBox = document.getElementById('outputBox');
@@ -384,7 +398,9 @@ layout: post
                 userId=data.id;
                 console.log("here",data);
                 StuName=data.name;
-                addName(StuName);
+                let info=data.name+","+String(data.id);
+                console.log(info);
+                addName(info);
 
 
             })
@@ -445,12 +461,16 @@ layout: post
         populateTable(filteredPeople.slice(0, rowsPerPage));
     };
 
-    window.addName = function(name) {
-        console.log("Added name:", name);
-        listofpeople.add(name);
+    window.addName = function(info) {
+        console.log(info.split(","));
+        info=info.split(",");
+        console.log("Added name:", info[0]);
+        listofpeople.add(info[0]);
+        listofpeopleIds.add(Number(info[1]));
         console.log(listofpeople);
         const reviewGroup = document.getElementById('Review-Group');
         reviewGroup.textContent =  "Group Members: "+Array.from(listofpeople).join(", ");
+        console.log(listofpeopleIds);
     };
 
     async function fetchAllStudents() {
@@ -499,7 +519,9 @@ layout: post
         tableBody.innerHTML = "";
         names.forEach(name => {
             const row = document.createElement("tr");
-            row.innerHTML = `<td>${name.name}</td><td><button onclick="addName('${name.name}')">Add</button></td>`;
+            let info=[name.name,name.id];
+            
+            row.innerHTML = `<td>${name.name}</td><td><button onclick="addName('${info}')">Add</button></td>`;
             tableBody.appendChild(row);
         });
         updatePageInfo();
