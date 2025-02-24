@@ -7,32 +7,29 @@ from static.assets.api.assets import javaURI
 
 app = Flask(__name__)
 
-# Static queue data (replace with a dynamic backend if needed)
+# Static queue data (replace with a dynamic backend)
 queue = ["John Mortensen", "Srijan Atti"]
 current_user = ""
 next_up = "Matthew Wakayama"
 
+import sys
+import select
+
+@app.route("/scan-barcode", methods=["POST"])
 def barcode_reader():
-    """Barcode scanner implementation"""
-    hid = {4: 'a', 5: 'b', 6: 'c', 7: 'd', 8: 'e', 9: 'f', 10: 'g', 11: 'h', 12: 'i', 13: 'j', 14: 'k', 15: 'l', 
-           16: 'm', 17: 'n', 18: 'o', 19: 'p', 20: 'q', 21: 'r', 22: 's', 23: 't', 24: 'u', 25: 'v', 26: 'w', 27: 'x', 
-           28: 'y', 29: 'z', 30: '1', 31: '2', 32: '3', 33: '4', 34: '5', 35: '6', 36: '7', 37: '8', 38: '9', 39: '0'}
+    data = request.get_json()
+    scanned_id = data.get("student_id")
 
-    fp = open('/dev/hidraw0', 'rb')
-    ss = ""
-    done = False
+    if scanned_id:
+        print(f"Received barcode: {scanned_id}")
+        name = get_name_by_sid(scanned_id)  # Fetch student name
+        add_to_queue("jmort1021@gmail.com", name, javaURI)
 
-    while not done:
-        buffer = fp.read(8)
-        for c in buffer:
-            if ord(c) > 0:
-                if int(ord(c)) == 40:  # Enter key (end of barcode)
-                    done = True
-                    break
-                else:
-                    ss += hid.get(int(ord(c)), '')
+        return jsonify({"message": "Scan received", "student": name}), 200
+    
+    return jsonify({"error": "Invalid scan"}), 400
 
-    return ss
+
 
 def send_barcode_to_server(student_id):
     """Send barcode data to Flask endpoint"""
@@ -50,35 +47,47 @@ def barcode_listener():
     while True:
         student_id = barcode_reader()
         send_barcode_to_server(student_id)
-        
+
 def get_name_by_sid(sid):
-    url = f"localhost:8085/api/{sid}"
+    url = f"http://localhost:8085/api/{sid}"
     try:
         response = requests.get(url)
-        if response.status_code == 200:
-            print("Data fetched successfully:", response.json())
-            return response.json()
+        if response.status_code == 200 and response.text.strip():
+            print("Data fetched successfully:", response.text)
+            return response.text.strip()  # No need to parse JSON, just return the text
         else:
-            print(f"GET req failed {response.status_code}: {response.text}")
+            print(f"GET request failed {response.status_code}: {response.text}")
+            return None
     except requests.exceptions.RequestException as e:
         print("Error during GET request:", e)
+        return None
+
+
 
 def add_to_queue(teacherEmail, studentName, uri):
     payload = {
-        "studentName":studentName,
-        "teacherEmail":teacherEmail,
-        "uri":uri
+        "studentName": studentName,
+        "teacherEmail": teacherEmail,
+        "uri": uri
     }
-    url = "localhost:8085/api/queue/add"
+    url = "http://localhost:8085/api/queue/add"
     headers = {"Content-Type": "application/json"}
+    
     try:
         response = requests.post(url, json=payload, headers=headers)
         if response.status_code == 201:
-            print("Data posted successfully: ", response.json)
+            try:
+                # Try to parse the response as JSON
+                data = response.json()
+                print("Data posted successfully:", data)
+            except ValueError:
+                # Handle if the response is not JSON (maybe plain text)
+                print("Data posted successfully, but no JSON returned:", response.text)
         else:
-            print(f"POST req failed with status code {response.status_code}: {response.text}")
+            print(f"POST request failed with status code {response.status_code}: {response.text}")
     except requests.exceptions.RequestException as e:
-        print("Error during POST req:", e)
+        print("Error during POST request:", e)
+
     
 @app.route('/')
 def home():
@@ -108,6 +117,6 @@ def scan_barcode():
 if __name__ == '__main__':
     # Start barcode listening thread
     threading.Thread(target=barcode_listener, daemon=True).start()
-
+    
     # Run Flask app
     app.run(port=4100, debug=True)
