@@ -189,6 +189,7 @@
     //    location.reload();
     //}, 10000);
     
+    const tinkleURL = javaURI + '/api/tinkle/add';
 // Load users from localStorage
     function loadUsers() {
         const storedUsers = localStorage.getItem('users');
@@ -206,6 +207,15 @@
         saveUsers();
     }
 
+    function getTime()
+    {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes().toString().padStart(2, "0"); // Ensures 2 digits
+        const seconds = now.getSeconds().toString().padStart(2, "0");
+        const time = `${hours}:${minutes}:${seconds}`;
+        return time;
+    }
     // Initialize users from localStorage
     let users = loadUsers();
     console.log(users);
@@ -226,14 +236,43 @@
                     console.log("Empty barcode, ignoring...");
                     return;
                 }
-
+                
                 // Handle returning user
-                let currentAway = document.getElementById('current-away').textContent;
+                let currentAway = document.getElementById('current-away').textContent.trim();
                 if (users[currentAway] === barcode) {
-                    console.log("Removing ", currentAway);
+                    console.log("Removing ", currentAway);                    
+                    var timeIn = getTime();
+                    var timeOut = localStorage.getItem("timeout");
+                    var time = `${timeOut}-${timeIn}`;
+                    
+                    const postOptions = {
+                        ...fetchOptions,
+                        method: 'POST',
+                    }
+                    let tinkleBody = {
+                        studentEmail: currentAway,
+                        timeIn: time
+                    };
+
+                    setTimeout( function() {
+                        fetch(tinkleURL, {
+                            ...postOptions,
+                            body: JSON.stringify(tinkleBody),
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                console.log("Time added to database");
+                            } else {
+                                alert("Failed to add time to database.");
+                            }
+                        })
+                    }
+                    ,500);
                     document.getElementById('current-away').innerHTML = 'Nobody';
+
                     removeUser(currentAway);
-                    removeFromQueue();
+                    setTimeout(
+                        removeFromQueue(),500);    
                     check_glow();
                     barcodeInput.value = "";
                     return;
@@ -241,6 +280,8 @@
                 if (currentAway === 'Nobody' & barcode == users[document.getElementById('next-up').textContent])
                 {
                     fetchQueueData();
+                    var timeOut = getTime();
+                    localStorage.setItem("timeout", timeOut);
                     location.reload();
                 }
                 for (const key in users)
@@ -264,6 +305,8 @@
                         users[resp.student] = barcode;
                         saveUsers(); // Save updated users list
                         console.log("User added:", resp.student);
+                        localStorage.setItem('timeout', getTime())
+                        console.log('timeout', getTime());
                     } else {
                         console.log("Invalid response:", resp);
                     }
