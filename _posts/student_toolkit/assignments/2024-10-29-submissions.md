@@ -402,6 +402,7 @@ layout: post
         try {
             const response = await fetch(`${urllink}/${userId}`, fetchOptions);
             const Submissions=await response.json();
+            console.log(Submissions);
             populateSubmissionsTable(Submissions);
         } catch (error) {
             console.error('Error fetching submissions:', error);
@@ -414,7 +415,7 @@ layout: post
     
         submissions.forEach(submission => {
             const row = document.createElement('tr');
-            //console.log(submission.assignmentid+" "+assignIndex);
+            console.log(submission.assignmentid+" "+assignIndex);
             if(submission.assignmentid==assignIndex){
                 const contentCell = document.createElement('td');
                 contentCell.textContent = submission.content || 'N/A'; 
@@ -423,6 +424,7 @@ layout: post
                 const gradeCell = document.createElement('td');
                 gradeCell.textContent = submission.grade || 'Ungraded'; 
                 row.appendChild(gradeCell);
+                console.log(submission.grade);
     
                 const feedbackCell = document.createElement('td');
                 feedbackCell.textContent = submission.feedback || 'No feedback yet'; 
