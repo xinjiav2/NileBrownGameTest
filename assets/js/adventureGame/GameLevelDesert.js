@@ -18,7 +18,7 @@ class GameLevelDesert {
     const image_src_desert = path + "/images/gamify/desert.png"; // be sure to include the path
     const image_data_desert = {
         name: 'desert',
-        greeting: "Welcome to the desert!  It is hot and dry here, but there are many adventures to be had!",
+        greeting: "Welcome to the desert! It is hot and dry here, but there are many adventures to be had!",
         src: image_src_desert,
         pixels: {height: 580, width: 1038}
     };
@@ -32,9 +32,9 @@ class GameLevelDesert {
         greeting: "Hi I am Chill Guy, the desert wanderer. I am looking for wisdom and adventure!",
         src: sprite_src_chillguy,
         SCALE_FACTOR: CHILLGUY_SCALE_FACTOR,
-        STEP_FACTOR: 1000,
+        STEP_FACTOR: 50, // Adjusted for better movement in the maze
         ANIMATION_RATE: 50,
-        INIT_POSITION: { x: 0, y: height - (height/CHILLGUY_SCALE_FACTOR) }, 
+        INIT_POSITION: { x: 50, y: height - 100 }, // Adjusted initial position
         pixels: {height: 384, width: 512},
         orientation: {rows: 3, columns: 4 },
         down: {row: 0, start: 0, columns: 3 },
@@ -48,7 +48,7 @@ class GameLevelDesert {
 
     // NPC data for Tux 
     const sprite_src_tux = path + "/images/gamify/tux.png"; // be sure to include the path
-    const sprite_greet_tux = "Hi I am Tux, the Linux mascot.  I am very happy to spend some linux shell time with you!";
+    const sprite_greet_tux = "Hi I am Tux, the Linux mascot. I am very happy to spend some linux shell time with you!";
     const sprite_data_tux = {
         id: 'Tux',
         greeting: sprite_greet_tux,
@@ -56,7 +56,7 @@ class GameLevelDesert {
         SCALE_FACTOR: 8,  // Adjust this based on your scaling needs
         ANIMATION_RATE: 50,
         pixels: {height: 256, width: 352},
-        INIT_POSITION: { x: (width / 2), y: (height / 2)},
+        INIT_POSITION: { x: width - 100, y: 50 }, // Position Tux at the end of the maze
         orientation: {rows: 8, columns: 11 },
         down: {row: 5, start: 0, columns: 3 },  // This is the stationary npc, down is default 
         hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
@@ -253,6 +253,7 @@ class GameLevelDesert {
 
     // Add maze to the game environment
     this.maze = maze;
+    this.tileSize = 50; // Define the size of each tile in the maze
     
   }
 
