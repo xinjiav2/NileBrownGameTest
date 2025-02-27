@@ -28,12 +28,12 @@ class GameLevelWater {
     const OCTOPUS_SCALE_FACTOR = 5;
     const sprite_data_octopus = {
         id: 'Octopus',
-        greeting: "Hi I am Octopus, the water wanderer. I am looking for wisdome and adventure!",
+        greeting: "Hi I am Octopus, the water wanderer. I am looking for wisdom and adventure!",
         src: sprite_src_octopus,
         SCALE_FACTOR: OCTOPUS_SCALE_FACTOR,
-        STEP_FACTOR: 1000,
+        STEP_FACTOR: 50, // Adjusted for better movement in the maze
         ANIMATION_RATE: 50,
-        INIT_POSITION: { x: 0, y: height - (height/OCTOPUS_SCALE_FACTOR) }, 
+        INIT_POSITION: { x: 50, y: height - 100 }, // Adjusted initial position
         pixels: {height: 250, width: 167},
         orientation: {rows: 3, columns: 2 },
         down: {row: 0, start: 0, columns: 2 },
@@ -48,7 +48,7 @@ class GameLevelWater {
     const sprite_src_nomad = path + "/images/gamify/animwizard.png"; // be sure to include the path
     const sprite_data_nomad = {
         id: 'JavaWorld',
-        greeting: "Hi I am Java Portal.  Leave this world and go on a Java adventure!",
+        greeting: "Hi I am Java Portal. Leave this world and go on a Java adventure!",
         src: sprite_src_nomad,
         SCALE_FACTOR: 10,  // Adjust this based on your scaling needs
         ANIMATION_RATE: 100,
@@ -67,12 +67,12 @@ class GameLevelWater {
           // Define the game in game level
           let levelArray = [GameLevelStarWars];
           // Define a new GameControl instance with the StarWars level
-          let gameInGame = new GameControl(path,levelArray);
+          let gameInGame = new GameControl(path, levelArray);
           // Pause the primary game 
           primaryGame.pause();
           // Start the game in game
           gameInGame.start();
-          // Setup "callback" function to allow transition from game in gaame to the underlying game
+          // Setup "callback" function to allow transition from game in game to the underlying game
           gameInGame.gameOver = function() {
             // Call .resume on primary game
             primaryGame.resume();
@@ -80,12 +80,78 @@ class GameLevelWater {
         }
       };
 
+    // Maze data
+    const maze = [
+      // Define the maze structure here
+      // Example: 0 = path, 1 = wall
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+      [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
+      [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+      [1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1],
+      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    ];
+
     // List of classes and supporting definitions to create the game level
     this.classes = [
       { class: Background, data: image_data_water },
       { class: Player, data: sprite_data_octopus },
       { class: Npc, data: sprite_data_nomad },
     ];
+
+    // Add maze to the game environment
+    this.maze = maze;
+    this.tileSize = width / maze[0].length; // Define the size of each tile in the maze
+  }
+
+  // Method to check if the player can move to a new position
+  canMoveTo(x, y) {
+    const mazeX = Math.floor(x / this.tileSize);
+    const mazeY = Math.floor(y / this.tileSize);
+    return this.maze[mazeY] && this.maze[mazeY][mazeX] === 0;
+  }
+
+  // Method to handle player movement
+  handlePlayerMovement(player, direction) {
+    let newX = player.x;
+    let newY = player.y;
+
+    switch (direction) {
+      case 'up':
+        newY -= player.STEP_FACTOR;
+        break;
+      case 'down':
+        newY += player.STEP_FACTOR;
+        break;
+      case 'left':
+        newX -= player.STEP_FACTOR;
+        break;
+      case 'right':
+        newX += player.STEP_FACTOR;
+        break;
+    }
+
+    if (this.canMoveTo(newX, newY)) {
+      player.x = newX;
+      player.y = newY;
+    }
+  }
+
+  // Method to render the maze
+  renderMaze(ctx) {
+    ctx.fillStyle = 'red';
+    for (let y = 0; y < this.maze.length; y++) {
+      for (let x = 0; x < this.maze[y].length; x++) {
+        if (this.maze[y][x] === 1) {
+          ctx.fillRect(x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);
+        }
+      }
+    }
   }
 }
 
