@@ -233,7 +233,7 @@ class GameLevelDesert {
     backstoryDiv.style.left = '50%';
     backstoryDiv.style.transform = 'translate(-50%, -50%)';
     backstoryDiv.style.padding = '20px';
-    backstoryDiv.style.backgroundColor = 'white';
+    backstoryDiv.style.backgroundColor = 'black';
     backstoryDiv.style.border = '2px solid black';
     backstoryDiv.style.zIndex = '1000';
     backstoryDiv.innerHTML = `<p>${backstoryText}</p><button id="startGameButton">Start Game</button>`;
