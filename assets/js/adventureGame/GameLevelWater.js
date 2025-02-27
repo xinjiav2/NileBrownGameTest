@@ -153,6 +153,18 @@ class GameLevelWater {
       }
     }
   }
+
+  // Method to start the game
+  startGame(ctx) {
+    // Initialize game objects and start the game
+    this.classes.forEach(obj => {
+      const instance = new obj.class(obj.data);
+      instance.initialize();
+    });
+
+    // Render the maze
+    this.renderMaze(ctx);
+  }
 }
 
 export default GameLevelWater;
