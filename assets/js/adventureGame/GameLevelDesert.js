@@ -103,8 +103,8 @@ class GameLevelDesert {
     const sprite_src_octocat = path + "/images/gamify/octocat.png"; // be sure to include the path
     const sprite_greet_octocat = [
       "I AM A MUTANT OCTOPUS CAT! I WILL TAKE OVER THIS DESERT AND MAKE IT A GITHUB REPOSITORY!",
-      "You cannot escape the grasp of Octocat!",
-      "Prepare to be merged into my repository!"
+      "YOU CANNOT ESCAPE THE GRASP OF OCTOPUS CAT!!!!!",
+      "PREPARE TO BE CLONED INTO A GITHUB REPOSITORY!"
     ];
     const sprite_data_octocat = {
         id: 'Octocat',
