@@ -46,7 +46,11 @@ class GameLevelDesert {
 
     // NPC data for Tux 
     const sprite_src_tux = path + "/images/gamify/tux.png"; // be sure to include the path
-    const sprite_greet_tux = "I AM THE BOSS PENGUIN!!! I WILL TAKE CONTROL OF THIS DESERT AND MAKE IT SO THAT THIS DESERT WILL BECOME SNOW";
+    const sprite_greet_tux = [
+      "I AM THE BOSS PENGUIN!!! I WILL TAKE CONTROL OF THIS DESERT AND MAKE IT SO THAT THIS DESERT WILL BECOME SNOW",
+      "You cannot defeat me, I am the mighty Tux!",
+      "Prepare yourself for a cold takeover!"
+    ];
     const sprite_data_tux = {
         id: 'Tux',
         greeting: sprite_greet_tux,
@@ -75,7 +79,8 @@ class GameLevelDesert {
           ] 
         },
         reaction: function() {
-          alert(sprite_greet_tux);
+          const randomIndex = Math.floor(Math.random() * sprite_greet_tux.length);
+          alert(sprite_greet_tux[randomIndex]);
         },
         interact: function() {
           let quiz = new Quiz(); // Create a new Quiz instance
@@ -96,7 +101,11 @@ class GameLevelDesert {
 
     // NPC data for Octocat
     const sprite_src_octocat = path + "/images/gamify/octocat.png"; // be sure to include the path
-    const sprite_greet_octocat = "I AM A MUTANT OCTOPUS CAT! I WILL TAKE OVER THIS DESERT AND MAKE IT A GITHUB REPOSITORY!";
+    const sprite_greet_octocat = [
+      "I AM A MUTANT OCTOPUS CAT! I WILL TAKE OVER THIS DESERT AND MAKE IT A GITHUB REPOSITORY!",
+      "You cannot escape the grasp of Octocat!",
+      "Prepare to be merged into my repository!"
+    ];
     const sprite_data_octocat = {
         id: 'Octocat',
         greeting: sprite_greet_octocat,
@@ -125,7 +134,8 @@ class GameLevelDesert {
           ] 
         },
         reaction: function() {
-          alert(sprite_greet_octocat);
+          const randomIndex = Math.floor(Math.random() * sprite_greet_octocat.length);
+          alert(sprite_greet_octocat[randomIndex]);
         },
         interact: function() {
           let quiz = new Quiz(); // Create a new Quiz instance
@@ -136,7 +146,11 @@ class GameLevelDesert {
 
     // NPC data for Robot
     const sprite_src_robot = path + "/images/gamify/robot.png"; // be sure to include the path
-    const sprite_greet_robot = "YOUR LINUX SHELL TIME IS NOW MINE!! I WILL TAKE OVER THIS DESERT AND TURN IT INTO A LINUX FACTORY";
+    const sprite_greet_robot = [
+      "YOUR LINUX SHELL TIME IS NOW MINE!! I WILL TAKE OVER THIS DESERT AND TURN IT INTO A LINUX FACTORY",
+      "You cannot outsmart me, I am the ultimate Robot!",
+      "Prepare to be automated!"
+    ];
     const sprite_data_robot = {
         id: 'Robot',
         greeting: sprite_greet_robot,
@@ -165,7 +179,8 @@ class GameLevelDesert {
           ] 
         },
         reaction: function() {
-          alert(sprite_greet_robot);
+          const randomIndex = Math.floor(Math.random() * sprite_greet_robot.length);
+          alert(sprite_greet_robot[randomIndex]);
         },
         interact: function() {
           let quiz = new Quiz(); // Create a new Quiz instance
@@ -176,7 +191,11 @@ class GameLevelDesert {
 
     // NPC data for R2D2
     const sprite_src_r2d2 = path + "/images/gamify/r2_idle.png"; // be sure to include the path
-    const sprite_greet_r2d2 = "Hi I am R2D2. Everyone here is crazy, come to Hoth with me and escape this dystopia!";
+    const sprite_greet_r2d2 = [
+      "Hi I am R2D2. Everyone here is crazy, come to Hoth with me and escape this dystopia!",
+      "Beep boop! Let's get out of here!",
+      "Join me on an adventure to Hoth!"
+    ];
     const sprite_data_r2d2 = {
         id: 'StarWarsR2D2',
         greeting: sprite_greet_r2d2,
@@ -189,7 +208,8 @@ class GameLevelDesert {
         down: {row: 0, start: 0, columns: 3 },  // This is the stationary npc, down is default 
         hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
         reaction: function() {
-          alert(sprite_greet_r2d2);
+          const randomIndex = Math.floor(Math.random() * sprite_greet_r2d2.length);
+          alert(sprite_greet_r2d2[randomIndex]);
         },
         interact: function() {
           // Set a primary game reference from the game environment
