@@ -100,7 +100,7 @@ class GameLevelDesert {
     };
 
     // NPC data for Octocat
-    const sprite_src_octocat = path + "/images/gamify/octocat.png"; // be sure to include the path
+    const sprite_src_octocat = path + "/images/gamify/nahhur.png"; // be sure to include the path
     const sprite_greet_octocat = [
       "I AM A MUTANT OCTOPUS CAT! I WILL TAKE OVER THIS DESERT AND MAKE IT A GITHUB REPOSITORY!",
       "YOU CANNOT ESCAPE THE GRASP OF OCTOPUS CAT!!!!!",
