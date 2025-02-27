@@ -119,18 +119,18 @@ class GameLevelDesert {
         hitbox: { widthPercentage: 0.1, heightPercentage: 0.1 },
         // GitHub command quiz 
         quiz: { 
-          title: "ZA GITHUB COMMAND QUIZ",
+          title: "BRAINROT QUIZ!!",
           questions: [
-            "Which command is used to clone a repository?\n1. git clone\n2. git fork\n3. git copy\n4. git download",
-            "Which command is used to add changes to the staging area?\n1. git add\n2. git stage\n3. git commit\n4. git push",
-            "Which command is used to commit changes?\n1. git commit\n2. git add\n3. git save\n4. git push",
-            "Which command is used to push changes to a remote repository?\n1. git push\n2. git upload\n3. git send\n4. git commit",
-            "Which command is used to pull changes from a remote repository?\n1. git pull\n2. git fetch\n3. git receive\n4. git update",
-            "Which command is used to check the status of the working directory and staging area?\n1. git status\n2. git check\n3. git info\n4. git log",
-            "Which command is used to create a new branch?\n1. git branch\n2. git create-branch\n3. git new-branch\n4. git checkout",
-            "Which command is used to switch to a different branch?\n1. git checkout\n2. git switch\n3. git change-branch\n4. git branch",
-            "Which command is used to merge branches?\n1. git merge\n2. git combine\n3. git join\n4. git integrate",
-            "Which command is used to view the commit history?\n1. git log\n2. git history\n3. git commits\n4. git show"
+            "When you buy a property in egypt, what is the first thing they do?\n1. give you the property\n2. tax you immediately\n3. take the property from you\n4. force you to mine bitcoin for the srekenit",
+            "What does chopped chin do that is so tuff?\n1. nod his head\n2. dance\n3. sing\n4. rap",
+            "What does the eye of rah have on his head?\n1. a cheeto\n2. hair\n3. nothing\n4. a crown",
+            "What do you raise?\n1. your ya ya ya\n2. your head\n3. your money\n4. your hand",
+            "What did that one girl say during an interview?\n1. hawk tuah\n2. nighthawk\n3. griffith did nothing wrong\n4. hawkeye",
+            "What do you do with your tongue?\n1. mew\n2. mewtwo\n3. lick\n4. eat",
+            "Skibidi ______\n1. toilet\n2. gyatt\n3. rizz\n4. dop",
+            "What am I?\n1. A SURGEON!!!\n2. a rizzler\n3. a sigma\n4. an alpha male",
+            "What did you do today?\n1. pray\n2. mew\n3. goon\n4. skibidi",
+            "What level gyatt does Varra have?\n1. level 11 gyatt\n2. level 10 gyatt\n3. level 3 gyatt\n4. level 999 gyatt"
           ] 
         },
         reaction: function() {
