@@ -24,7 +24,7 @@ class GameLevelDesert {
     };
 
     // Player data for Chillguy
-    const sprite_src_chillguy = path + "/images/gamify/chillguy.png"; // be sure to include the path
+    const sprite_src_chillguy = path + "/images/gamify/chillguy2.png"; // be sure to include the path
     const CHILLGUY_SCALE_FACTOR = 5;
     const sprite_data_chillguy = {
         id: 'Chill Guy',
