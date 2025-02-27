@@ -120,7 +120,7 @@ class Quiz {
         console.log("Submitted Answers:", answers);
     
         // Handle the submission logic (e.g., save answers, validate, etc.)
-        alert("Your answers have been submitted!");
+        alert("HA HA HA! YOU THINK YOU CAN OUTSMART ME?!");
     
         // Close the prompt and go back to the main level
         this.isOpen = false;

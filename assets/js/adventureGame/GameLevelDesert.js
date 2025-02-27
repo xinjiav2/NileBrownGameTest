@@ -60,7 +60,7 @@ class GameLevelDesert {
         hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
         // Linux command quiz
         quiz: { 
-          title: "Linux Command Quiz",
+        title: "ZA LINUX COMMAND QUIZ",
           questions: [
             "Which command is used to list files in a directory?\n1. ls\n2. dir\n3. list\n4. show",
             "Which command is used to change directories?\n1. cd\n2. chdir\n3. changedir\n4. changedirectory",
@@ -110,7 +110,7 @@ class GameLevelDesert {
         hitbox: { widthPercentage: 0.1, heightPercentage: 0.1 },
         // GitHub command quiz 
         quiz: { 
-          title: "GitHub Command Quiz",
+          title: "ZA GITHUB COMMAND QUIZ",
           questions: [
             "Which command is used to clone a repository?\n1. git clone\n2. git fork\n3. git copy\n4. git download",
             "Which command is used to add changes to the staging area?\n1. git add\n2. git stage\n3. git commit\n4. git push",
@@ -150,7 +150,7 @@ class GameLevelDesert {
         hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
         // Jupyter Notebook command quiz
         quiz: { 
-          title: "Jupyter Notebook Command Quiz",
+          title: "ZA JUPYTER NOTEBOOK QUIZ",
           questions: [
             "Which shortcut is used to run a cell in Jupyter Notebook?\n1. Shift + Enter\n2. Ctrl + Enter\n3. Alt + Enter\n4. Tab + Enter",
             "Which shortcut adds a new cell above the current cell?\n1. A\n2. B\n3. C\n4. D",
