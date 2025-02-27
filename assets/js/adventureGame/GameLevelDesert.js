@@ -18,21 +18,20 @@ class GameLevelDesert {
     const image_src_desert = path + "/images/gamify/desert.png"; // be sure to include the path
     const image_data_desert = {
         name: 'desert',
-        greeting: "Welcome to the desert! It is hot and dry here, but there are many adventures to be had!",
+        greeting: "Welcome to the desert! It is hot and dry here, but there are many enemies to be killed!",
         src: image_src_desert,
         pixels: {height: 580, width: 1038}
     };
-
 
     // Player data for Chillguy
     const sprite_src_chillguy = path + "/images/gamify/chillguy.png"; // be sure to include the path
     const CHILLGUY_SCALE_FACTOR = 5;
     const sprite_data_chillguy = {
         id: 'Chill Guy',
-        greeting: "Hi I am Chill Guy, the desert wanderer. I am looking for wisdom and adventure!",
+        greeting: "Hi I am Chill Guy, the desert warrior. I am looking for wisdom and adventure!",
         src: sprite_src_chillguy,
         SCALE_FACTOR: CHILLGUY_SCALE_FACTOR,
-        STEP_FACTOR: 50, // Adjusted for better movement in the maze
+        STEP_FACTOR: 50, // Adjusted for better movement
         ANIMATION_RATE: 50,
         INIT_POSITION: { x: 50, y: height - 100 }, // Adjusted initial position
         pixels: {height: 384, width: 512},
@@ -45,10 +44,9 @@ class GameLevelDesert {
         keypress: { up: 87, left: 65, down: 83, right: 68 } // W, A, S, D
     };
 
-
     // NPC data for Tux 
     const sprite_src_tux = path + "/images/gamify/tux.png"; // be sure to include the path
-    const sprite_greet_tux = "Hi I am Tux, the Linux mascot. I am very happy to spend some linux shell time with you!";
+    const sprite_greet_tux = "I AM THE BOSS PENGUIN!!! I WILL TAKE CONTROL OF THIS DESERT AND MAKE IT SO THAT THIS DESERT WILL BECOME SNOW";
     const sprite_data_tux = {
         id: 'Tux',
         greeting: sprite_greet_tux,
@@ -94,15 +92,12 @@ class GameLevelDesert {
             }
           }
         }
-    
-      };
+    };
 
-
-
-      // NPC data for Octocat
-      const sprite_src_octocat = path + "/images/gamify/octocat.png"; // be sure to include the path
-      const sprite_greet_octocat = "Hi I am Octocat! I am the GitHub code code code collaboration mascot";
-      const sprite_data_octocat = {
+    // NPC data for Octocat
+    const sprite_src_octocat = path + "/images/gamify/octocat.png"; // be sure to include the path
+    const sprite_greet_octocat = "I AM A MUTANT OCTOPUS CAT! I WILL TAKE OVER THIS DESERT AND MAKE IT A GITHUB REPOSITORY!";
+    const sprite_data_octocat = {
         id: 'Octocat',
         greeting: sprite_greet_octocat,
         src: sprite_src_octocat,
@@ -137,111 +132,85 @@ class GameLevelDesert {
           quiz.initialize();
           quiz.openPanel(sprite_data_octocat.quiz);
         }
-    }
-  
-
-    const sprite_src_robot = path + "/images/gamify/robot.png"; // be sure to include the path
-    const sprite_greet_robot = "Hi I am Robot, the Jupyter Notebook mascot.  I am very happy to spend some linux shell time with you!";
-    const sprite_data_robot = {
-      id: 'Robot',
-      greeting: sprite_greet_robot,
-      src: sprite_src_robot,
-      SCALE_FACTOR: 10,  // Adjust this based on your scaling needs
-      ANIMATION_RATE: 100,
-      pixels: {height: 316, width: 627},
-      INIT_POSITION: { x: (width * 3 / 4), y: (height * 1 / 4)},
-      orientation: {rows: 3, columns: 6 },
-      down: {row: 1, start: 0, columns: 6 },  // This is the stationary npc, down is default 
-      hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
-      // Linux command quiz
-      quiz: { 
-        title: "Jupyter Notebook Command Quiz",
-        questions: [
-          "Which shortcut is used to run a cell in Jupyter Notebook?\n1. Shift + Enter\n2. Ctrl + Enter\n3. Alt + Enter\n4. Tab + Enter",
-          "Which shortcut adds a new cell above the current cell?\n1. A\n2. B\n3. C\n4. D",
-          "Which shortcut adds a new cell below the current cell?\n1. B\n2. A\n3. C\n4. D",
-          "Which shortcut changes a cell to Markdown format?\n1. M\n2. Y\n3. R\n4. K",
-          "Which shortcut changes a cell to Code format?\n1. Y\n2. M\n3. C\n4. D",
-          "Which shortcut deletes the current cell?\n1. D, D\n2. X\n3. Del\n4. Ctrl + D",
-          "Which shortcut saves the current notebook?\n1. Ctrl + S\n2. Alt + S\n3. Shift + S\n4. Tab + S",
-          "Which shortcut restarts the kernel?\n1. 0, 0\n2. R, R\n3. K, K\n4. Shift + R",
-          "Which shortcut interrupts the kernel?\n1. I, I\n2. Ctrl + C\n3. Shift + I\n4. Alt + I",
-          "Which shortcut toggles line numbers in a cell?\n1. L\n2. N\n3. T\n4. G"
-        ] 
-      },
-      reaction: function() {
-        alert(sprite_greet_robot);
-      },
-      interact: function() {
-        let quiz = new Quiz(); // Create a new Quiz instance
-        quiz.initialize();
-        quiz.openPanel(sprite_data_robot.quiz);
-      }
-    }
-
-    // NPC Data for R2D2
-    const sprite_src_r2d2 = path + "/images/gamify/r2_idle.png"; // be sure to include the path
-    const sprite_greet_r2d2 = "Hi I am R2D2.  Leave this planet and help defent the rebel base on Hoth!";
-    const sprite_data_r2d2 = {
-      id: 'StarWarsR2D2',
-      greeting: sprite_greet_r2d2,
-      src: sprite_src_r2d2,
-      SCALE_FACTOR: 8,  // Adjust this based on your scaling needs
-      ANIMATION_RATE: 100,
-      pixels: {width: 505, height: 223},
-      INIT_POSITION: { x: (width * 1 / 4), y: (height * 3 / 4)}, // Adjusted position
-      orientation: {rows: 1, columns: 3 },
-      down: {row: 0, start: 0, columns: 3 },  // This is the stationary npc, down is default 
-      hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
-      /* Reaction function
-      *  This function is called when the player interacts with the NPC
-      *  It displays an alert with the greeting message
-      */
-      reaction: function() {
-        alert(sprite_greet_r2d2);
-      },
-      /* Interact function
-      *  This function is called when the player interacts with the NPC
-      *  It pauses the main game, creates a new GameControl instance with the StarWars level,
-      */
-      interact: function() {
-        // Set a primary game reference from the game environment
-        let primaryGame = gameEnv.gameControl;
-        // Define the game in game level
-        let levelArray = [GameLevelStarWars];
-        // Define a new GameControl instance with the StarWars level
-        let gameInGame = new GameControl(path,levelArray);
-        // Pause the primary game 
-        primaryGame.pause();
-        // Start the game in game
-        gameInGame.start();
-        // Setup "callback" function to allow transition from game in gaame to the underlying game
-        gameInGame.gameOver = function() {
-          // Call .resume on primary game
-          primaryGame.resume();
-        }
-      }
-
     };
 
-    // Maze data
-    const maze = [
-      // Define the maze structure here
-      // Example: 0 = path, 1 = wall
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
-      [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
-      [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-      [1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1],
-      [1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1],
-      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
-      [1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    ];
+    // NPC data for Robot
+    const sprite_src_robot = path + "/images/gamify/robot.png"; // be sure to include the path
+    const sprite_greet_robot = "YOUR LINUX SHELL TIME IS NOW MINE!! I WILL TAKE OVER THIS DESERT AND TURN IT INTO A LINUX FACTORY";
+    const sprite_data_robot = {
+        id: 'Robot',
+        greeting: sprite_greet_robot,
+        src: sprite_src_robot,
+        SCALE_FACTOR: 10,  // Adjust this based on your scaling needs
+        ANIMATION_RATE: 100,
+        pixels: {height: 316, width: 627},
+        INIT_POSITION: { x: (width * 3 / 4), y: (height * 1 / 4)},
+        orientation: {rows: 3, columns: 6 },
+        down: {row: 1, start: 0, columns: 6 },  // This is the stationary npc, down is default 
+        hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
+        // Jupyter Notebook command quiz
+        quiz: { 
+          title: "Jupyter Notebook Command Quiz",
+          questions: [
+            "Which shortcut is used to run a cell in Jupyter Notebook?\n1. Shift + Enter\n2. Ctrl + Enter\n3. Alt + Enter\n4. Tab + Enter",
+            "Which shortcut adds a new cell above the current cell?\n1. A\n2. B\n3. C\n4. D",
+            "Which shortcut adds a new cell below the current cell?\n1. B\n2. A\n3. C\n4. D",
+            "Which shortcut changes a cell to Markdown format?\n1. M\n2. Y\n3. R\n4. K",
+            "Which shortcut changes a cell to Code format?\n1. Y\n2. M\n3. C\n4. D",
+            "Which shortcut deletes the current cell?\n1. D, D\n2. X\n3. Del\n4. Ctrl + D",
+            "Which shortcut saves the current notebook?\n1. Ctrl + S\n2. Alt + S\n3. Shift + S\n4. Tab + S",
+            "Which shortcut restarts the kernel?\n1. 0, 0\n2. R, R\n3. K, K\n4. Shift + R",
+            "Which shortcut interrupts the kernel?\n1. I, I\n2. Ctrl + C\n3. Shift + I\n4. Alt + I",
+            "Which shortcut toggles line numbers in a cell?\n1. L\n2. N\n3. T\n4. G"
+          ] 
+        },
+        reaction: function() {
+          alert(sprite_greet_robot);
+        },
+        interact: function() {
+          let quiz = new Quiz(); // Create a new Quiz instance
+          quiz.initialize();
+          quiz.openPanel(sprite_data_robot.quiz);
+        }
+    };
 
-    // List of objects defnitions for this level
+    // NPC data for R2D2
+    const sprite_src_r2d2 = path + "/images/gamify/r2_idle.png"; // be sure to include the path
+    const sprite_greet_r2d2 = "Hi I am R2D2. Everyone here is crazy, answer my questions correctly and I will see if you are worthy enough to go to Hoth with me.";
+    const sprite_data_r2d2 = {
+        id: 'StarWarsR2D2',
+        greeting: sprite_greet_r2d2,
+        src: sprite_src_r2d2,
+        SCALE_FACTOR: 8,  // Adjust this based on your scaling needs
+        ANIMATION_RATE: 100,
+        pixels: {width: 505, height: 223},
+        INIT_POSITION: { x: (width * 1 / 4), y: (height * 3 / 4)}, // Adjusted position
+        orientation: {rows: 1, columns: 3 },
+        down: {row: 0, start: 0, columns: 3 },  // This is the stationary npc, down is default 
+        hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
+        reaction: function() {
+          alert(sprite_greet_r2d2);
+        },
+        interact: function() {
+          // Set a primary game reference from the game environment
+          let primaryGame = gameEnv.gameControl;
+          // Define the game in game level
+          let levelArray = [GameLevelStarWars];
+          // Define a new GameControl instance with the StarWars level
+          let gameInGame = new GameControl(path, levelArray);
+          // Pause the primary game 
+          primaryGame.pause();
+          // Start the game in game
+          gameInGame.start();
+          // Setup "callback" function to allow transition from game in game to the underlying game
+          gameInGame.gameOver = function() {
+            // Call .resume on primary game
+            primaryGame.resume();
+          }
+        }
+    };
+
+    // List of objects definitions for this level
     this.classes = [
       { class: Background, data: image_data_desert },
       { class: Player, data: sprite_data_chillguy },
@@ -251,57 +220,39 @@ class GameLevelDesert {
       { class: Npc, data: sprite_data_r2d2 },
     ];
 
-    // Add maze to the game environment
-    this.maze = maze;
-    this.tileSize = 50; // Define the size of each tile in the maze
-    
+    // Show the backstory text box
+    this.showBackstory();
   }
 
-  // Method to check if the player can move to a new position
-  canMoveTo(x, y) {
-    const mazeX = Math.floor(x / this.tileSize);
-    const mazeY = Math.floor(y / this.tileSize);
-    return this.maze[mazeY] && this.maze[mazeY][mazeX] === 0;
+  // Method to show the backstory text box
+  showBackstory() {
+    const backstoryText = "Mutant mascots have taken over this desktop to force laborers to learn their code. You must answer questions to fight them!";
+    const backstoryDiv = document.createElement('div');
+    backstoryDiv.style.position = 'absolute';
+    backstoryDiv.style.top = '50%';
+    backstoryDiv.style.left = '50%';
+    backstoryDiv.style.transform = 'translate(-50%, -50%)';
+    backstoryDiv.style.padding = '20px';
+    backstoryDiv.style.backgroundColor = 'white';
+    backstoryDiv.style.border = '2px solid black';
+    backstoryDiv.style.zIndex = '1000';
+    backstoryDiv.innerHTML = `<p>${backstoryText}</p><button id="startGameButton">Start Game</button>`;
+    document.body.appendChild(backstoryDiv);
+
+    document.getElementById('startGameButton').addEventListener('click', () => {
+      document.body.removeChild(backstoryDiv);
+      this.startGame();
+    });
   }
 
-  // Method to handle player movement
-  handlePlayerMovement(player, direction) {
-    let newX = player.x;
-    let newY = player.y;
-
-    switch (direction) {
-      case 'up':
-        newY -= player.STEP_FACTOR;
-        break;
-      case 'down':
-        newY += player.STEP_FACTOR;
-        break;
-      case 'left':
-        newX -= player.STEP_FACTOR;
-        break;
-      case 'right':
-        newX += player.STEP_FACTOR;
-        break;
-    }
-
-    if (this.canMoveTo(newX, newY)) {
-      player.x = newX;
-      player.y = newY;
-    }
+  // Method to start the game
+  startGame() {
+    // Initialize game objects and start the game
+    this.classes.forEach(obj => {
+      const instance = new obj.class(obj.data);
+      instance.initialize();
+    });
   }
-
-  // Method to render the maze
-  renderMaze(ctx) {
-    ctx.fillStyle = 'black';
-    for (let y = 0; y < this.maze.length; y++) {
-      for (let x = 0; x < this.maze[y].length; x++) {
-        if (this.maze[y][x] === 1) {
-          ctx.fillRect(x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);
-        }
-      }
-    }
-  }
-
 }
 
 export default GameLevelDesert;
