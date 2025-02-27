@@ -176,7 +176,7 @@ class GameLevelDesert {
 
     // NPC data for R2D2
     const sprite_src_r2d2 = path + "/images/gamify/r2_idle.png"; // be sure to include the path
-    const sprite_greet_r2d2 = "Hi I am R2D2. Everyone here is crazy, answer my questions correctly and I will see if you are worthy enough to go to Hoth with me.";
+    const sprite_greet_r2d2 = "Hi I am R2D2. Everyone here is crazy, come to Hoth with me and escape this dystopia!";
     const sprite_data_r2d2 = {
         id: 'StarWarsR2D2',
         greeting: sprite_greet_r2d2,
