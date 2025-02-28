@@ -272,6 +272,11 @@ class GameLevelDesert {
       const instance = new obj.class(obj.data);
       instance.initialize();
     });
+
+    // Play background audio
+    const audio = new Audio(this.gameEnv.path + '/audio/test.mp3');
+    audio.loop = true; // Loop the audio
+    audio.play();
   }
 }
 
